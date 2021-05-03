@@ -24,7 +24,7 @@
 /* programa */
 /************/
 
-programa ::= inicio_programa bloque_programa
+programa : inicio_programa | bloque_programa
 inicio_programa ::= ’programa’ IDENTIFICADOR ’;’ [ ’cabecera’ ( RUTA )+ ’;’ ]*
 bloque_programa ::=
 [ declaraciones_tipos ]?
