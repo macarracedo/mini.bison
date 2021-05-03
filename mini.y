@@ -44,9 +44,11 @@
 /* declaracion de tipos */
 /************************/
 
-declaraciones_tipos : TIPOS declaracion_tipo fin ';'
+declaraciones_tipos : 'tipos' [ declaracion_tipo ]+ 'fin' ';'
 
 declaracion_tipo : IDENTIFICADOR ES especifiacion_tipo ';' 
+
+especificacion_tipo : [ 'ref' ]* tipo_basico
 
 
 tipo_basico : IDENTIFICADOR 
@@ -55,13 +57,24 @@ tipo_basico : IDENTIFICADOR
   ;
 
 
-tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC}};
-  |REAL
-  |CARACTER           {$$ = {CARACTER}};
-  |CADENA             {$$ = {CADENA}};
+tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC};}
+  |REAL               {$$ = {NUMREAL}|| {NUMREALEXP};}
+  |CARACTER           {$$ = {CARACTER};}
+  |CADENA             {$$ = {CADENA};}
   |FICHERO            
   |EXCEPCION ;
 
+
+tipo_enumerado: 'array' 'de' especificacion_tipo
+| 'hash' 'de' especificacion_tipo
+| 'conjunto' 'de' especificacion_tipo
+
+tipo_estructurado : 'estructura' 'principio' [ linea_campos ]+ 'fin'
+| 'union' 'principio' [ linea_campos ]+ 'fin'
+
+linea_campo: s ',' linea_campo 'es' especificacion_tipo ';'
+           | linea_campo 'es' especificacion_tipo ';' 
+           ;
 
 
 /*****************************/
