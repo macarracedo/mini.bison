@@ -24,7 +24,14 @@
 /* programa */
 /************/
 
-
+programa ::= inicio_programa bloque_programa
+inicio_programa ::= ’programa’ IDENTIFICADOR ’;’ [ ’cabecera’ ( RUTA )+ ’;’ ]*
+bloque_programa ::=
+[ declaraciones_tipos ]?
+[ declaraciones_constantes ]?
+[ declaraciones_variables ]?
+[ declaracion_funcion ]*
+bloque_instrucciones
 
 /************************/
 /* declaracion de tipos */
