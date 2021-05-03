@@ -24,6 +24,8 @@
 /* programa */
 /************/
 
+Esto es un prueba de lo que puede ser un programa
+con 2 lineas.
 
 /************************/
 /* declaracion de tipos */
