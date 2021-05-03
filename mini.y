@@ -29,16 +29,6 @@
 /* declaracion de tipos */
 /************************/
 
-tipos
-  tabla es array de entero;
-  tabla_bidimensional es array de array de entero;
-  persona es estructura principio
-   nombre es cadena;
-   apellidos es cadena;
-   edad es entero;
-   direccion es cadena;
-   fin;
-fin
 
 /*****************************/
 /* declaracion de constantes */
