@@ -1,6 +1,6 @@
  
 %{
-  sdsdasdasdasdasd
+  
   #include <stdio.h>
   extern FILE *yyin;
   extern int yylex();
@@ -24,14 +24,13 @@
 /* programa */
 /************/
 
-Esto es un prueba de lo que puede ser un programa
-con 2 lineas.
+
 
 /************************/
 /* declaracion de tipos */
 /************************/
 
-otro cambio en la sección de tipos.
+
 
 /*****************************/
 /* declaracion de constantes */
