@@ -33,6 +33,7 @@ bloque_programa ::=
 [ declaracion_funcion ]*
 bloque_instrucciones
 
+
 /************************/
 /* declaracion de tipos */
 /************************/
