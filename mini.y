@@ -31,6 +31,7 @@ con 2 lineas.
 /* declaracion de tipos */
 /************************/
 
+otro cambio en la sección de tipos.
 
 /*****************************/
 /* declaracion de constantes */
