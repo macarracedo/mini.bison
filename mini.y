@@ -1,4 +1,4 @@
- 
+
 %{
   
   #include <stdio.h>
@@ -24,14 +24,43 @@
 /* programa */
 /************/
 
-programa : inicio_programa | bloque_programa;
 
-inicio_programa : programa IDENTIFICADOR
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /************************/
 /* declaracion de tipos */
 /************************/
+
+declaraciones_tipos : TIPOS declaracion_tipo fin ';'
+
+declaracion_tipo : IDENTIFICADOR ES especifiacion_tipo ';' 
+
+
+tipo_basico : IDENTIFICADOR 
+  |tipo_escalar
+  |tipo_enumerado 
+  ;
+
+
+tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC}};
+  |REAL
+  |CARACTER           {$$ = {CARACTER}};
+  |CADENA             {$$ = {CADENA}};
+  |FICHERO            
+  |EXCEPCION ;
 
 
 
