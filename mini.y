@@ -1,4 +1,4 @@
-
+Este documento esta en la rama Manuel
 %{
   
   #include <stdio.h>
@@ -11,6 +11,11 @@
 
 %}
 
+%union {
+  int valor_entero;
+  double valor_real;
+  char * texto;
+}
 
 %token AND AND_ASIG ARRAY CABECERA CADA CADENA CARACTER CONJUNTO CONSTANTES CONTINUAR CTC_CADENA
 %token CTC_CARACTER CTC_ENTERA CTC_REAL DE DEFECTO DIV_ASIG DEVOLVER EJECUTA ENCAMBIO ENTERO EQ ES
@@ -94,6 +99,13 @@ linea_campo: s ',' linea_campo 'es' especificacion_tipo ';'
 /***************/
 /* expresiones */
 /***************/
+expresion: expresion_constante
+  | expresion
+expresion: CTC_REAL                         { $$ = $1; }
+  | CTC_ENTERA                              { $$ = (double) $1; }
+  | CTC_CADENA                              { ;}
+  | CTC_CARACTER                            { ;}
+  ;
 
     
 %%
