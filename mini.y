@@ -60,7 +60,7 @@ especificacion_tipo : especifiacion_tipo 'ref' tipo_basico
 tipo_basico : IDENTIFICADOR 
   |tipo_escalar
   |tipo_enumerado 
-  ;
+;
 
 
 tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC};}
@@ -182,7 +182,7 @@ instruccion_captura_excepcion : 'ejecuta' bloque_instrucciones clausulas
 
 clausulas : clausulas_excepcion c
   | clausula_defecto
-  ;
+;
 
 c : clausula_defecto
   |
