@@ -95,6 +95,11 @@ linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
 /* declaracion de variables */
 /****************************/
 
+declaracion_variables : 'variables' declaracion_variables declaracion_variables 'fin'
+|'variables' 'fin'
+;
+
+declaracion_variables: declaracion_variables ',' IDENTIFICADOR  
 
 /****************************/
 /* declaracion de funciones */
