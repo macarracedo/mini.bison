@@ -139,6 +139,53 @@ a : a otros_casos
   |
   ;
 
+otros_casos : 'si' 'encambio' '(' expresion ')' accion
+  ;
+
+accion : instruccion
+  | bloque_instrucciones
+  ;
+
+instruccion_bucle ::= ’mientras’ ’(’ expresion ’)’ accion
+  | ’hacer’ accion ’mientras’ ’( expresion ’)’ ’;’
+  | ’para’ ’(’ ( asignacion )+ ’;’ expresion ’;’ ( asignacion ) + ’)’ accion
+  | ’para’ ’cada’ IDENTIFICADOR ’(’ expresion ’)’ accion
+  ;
+
+instruccion_salto : ’saltar’ IDENTIFICADOR ’;’ | ’continuar’ ’;’ | ’escape’ ’;’
+;
+
+instruccion_destino_salto : ’etiqueta’ IDENTIFICADOR ’;’
+;
+
+instruccion_devolver : ’devolver’ [ expresion ]? ’;’
+;
+
+instruccion_vacia : ’;’
+;
+
+instruccion_lanzamiento_excepcion ::= ’lanza’ ’excepcion’ IDENTIFICADOR ’;’
+;
+
+instruccion_captura_excepcion : ’ejecuta’ bloque_instrucciones clausulas
+;
+
+clausulas : clausulas_excepcion [ clausula_defecto ]?
+  | clausula_defecto
+  ;
+clausulas_excepcion : [ clausula_excepcion_especifica ]* clausula_excepcion_general
+;
+
+clausula_excepcion_especifica : ’excepcion’ IDENTIFICADOR bloque_instrucciones
+;
+
+clausula_excepcion_general : ’otra’ ’excepcion’ bloque_instrucciones
+;
+
+clausula_defecto : ’defecto’ bloque_instrucciones
+;
+
+
 /***************/
 /* expresiones */
 /***************/
@@ -172,9 +219,28 @@ a : IDENTIFICADOR a ',' expresion
 |expresion
 ; 
 
+operador_logico : '&&'
+| '||'
+;
+
+operador_binario: '&'
+| '@'
+| '|'
+;
+
+operador_comparacion: '<'
+| '>'
+| '=<'
+| '=>'
+| '=='
+| '=!'
+;
+
 expresion : expresion_logica
 | expresion_logica 'si' expresion 'sino' expresion
 ;
+
+
 
     
 %%
