@@ -11,6 +11,13 @@
 
 %}
 
+%union {
+  int valor_entero;
+  double valor_real;
+  char * texto;
+}
+
+%nonassoc NEQ
 
 %token AND AND_ASIG ARRAY CABECERA CADA CADENA CARACTER CONJUNTO CONSTANTES CONTINUAR CTC_CADENA
 %token CTC_CARACTER CTC_ENTERA CTC_REAL DE DEFECTO DIV_ASIG DEVOLVER EJECUTA ENCAMBIO ENTERO EQ ES
@@ -18,6 +25,8 @@
 %token FUNCION HACER HASH GE IDENTIFICADOR INDIRECCION LANZA LE MIENTRAS MOD_ASIG MULT_ASIG NADA NEQ
 %token OR OTRA OR_ASIG PARA POT_ASIG PRINCIPIO PROGRAMA POTENCIA REAL REF RESTA_ASIG RUTA SALTAR SI
 %token SINO SUMA_ASIG TAMANO TIPOS UNION VARIABLES XOR_ASIG 
+
+
 
 %%
 
@@ -172,6 +181,7 @@ instruccion_captura_excepcion : ’ejecuta’ bloque_instrucciones clausulas
 clausulas : clausulas_excepcion [ clausula_defecto ]?
   | clausula_defecto
   ;
+
 clausulas_excepcion : [ clausula_excepcion_especifica ]* clausula_excepcion_general
 ;
 
