@@ -32,7 +32,7 @@ inicio_programa ::= ’programa’ IDENTIFICADOR ’;’ [ ’cabecera’ ( {RUT
 inicio_programa : PROGRAMA IDENTIFICADOR ’;’
                 | PROGRAMA IDENTIFICADOR ’;’ ’cabecera’ ’,’ {RUTA} ’;’
 
-cambios en la rama Manuel
+
 
 
 /************************/
@@ -134,6 +134,10 @@ expresion_funcional : IDENTIFICADOR '(' a ')'
 a : IDENTIFICADOR a ',' expresion
 |expresion
 ; 
+
+expresion : expresion_logica
+| expresion_logica 'si' expresion 'sino' expresion
+;
 
     
 %%
