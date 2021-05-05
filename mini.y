@@ -101,6 +101,43 @@ linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
 /* instrucciones */
 /*****************/
 
+instruccion : instruccion_expresion
+  | instruccion_bifurcacion
+  | instruccion_bucle
+  | instruccion_salto
+  | instruccion_destino_salto
+  | instruccion_devolver
+  | instruccion_vacia
+  | instruccion_lanzamiento_excepcion
+  | instruccion_captura_excepcion
+  ;
+
+instruccion_expresion : expresion_funcional ';'
+  | asignacion ';'
+  ;
+
+asignacion : expresion_indexada operador_asignacion expresion ;
+
+operador_asignacion : '='
+  | '=+'
+  | '=-' 
+  | '=*'
+  | '=/' 
+  | '=%' 
+  | '=**' 
+  | '=<-' 
+  | '=->' 
+  | '=&' 
+  | '=@' 
+  | '=|'
+  ;
+
+instruccion_bifurcacion : 'si' '(' expresion ')' accion a [ 'sino' accion ]?
+  'fin'
+
+a : a otros_casos
+  |
+  ;
 
 /***************/
 /* expresiones */
