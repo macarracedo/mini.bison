@@ -32,6 +32,7 @@ inicio_programa ::= 'programa' IDENTIFICADOR ';' [ 'cabecera' ( {RUTA} )+ ';' ]*
 inicio_programa : PROGRAMA IDENTIFICADOR ';'
                 | PROGRAMA IDENTIFICADOR ';' 'cabecera' ',' {RUTA} ';'
 
+cambios en la rama Manuel
 
 
 /************************/
