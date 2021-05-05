@@ -12,7 +12,7 @@
 %}
 
 %left '*' '/' '%' '+' FLECHA_IZDA FLECHA_DCHA '&' '@' '|' '<' '>' GE LE EQ NEQ AND OR
-%right '**' 
+%right POTENCIA 
 %nonassoc '-' '~' '!' TAMANO
 
 
@@ -223,25 +223,30 @@ a : IDENTIFICADOR a ',' expresion
 |expresion
 ; 
 
-operador_desplazamiento: '<-'
-
-operador_logico : '&&'
-| '||'
-;
 
 operador_binario: '&'
 | '@'
 | '|'
+| POTENCIA
+| '+'
+| FLECHA_IZDA
+| FLECHA_DCHA
+| AND
+| OR
+| LE
+| GE
+| EQ
+| NEQ
+| '>'
+| '<'
 ;
 
-operador_comparacion: '<-'
-| '->'
-| '>'
-| '=<'
-| '=>'
-| '=='
-| '=!'
+operador_unario: '-'
+| '~'
+| '!'
+| TAMANO
 ;
+
 
 expresion : expresion_logica
 | expresion_logica 'si' expresion 'sino' expresion
