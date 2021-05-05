@@ -223,6 +223,9 @@ a : IDENTIFICADOR a ',' expresion
 |expresion
 ; 
 
+operador : operador_binario
+| operador_unario
+;
 
 operador_binario: '&'
 | '@'
