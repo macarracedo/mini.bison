@@ -39,11 +39,15 @@ cambios en la rama Manuel
 /* declaracion de tipos */
 /************************/
 
-declaraciones_tipos : 'tipos' [ declaracion_tipo ]+ 'fin' ';'
+declaraciones_tipos : 'tipos' s declaracion_tipo 'fin' ';'
+| 'tipos' declaracion_tipo 'fin' ';'
+;
 
-declaracion_tipo : IDENTIFICADOR ES especifiacion_tipo ';' 
+declaracion_tipo : IDENTIFICADOR 'es' especifiacion_tipo ';' 
 
-especificacion_tipo : [ 'ref' ]* tipo_basico
+especificacion_tipo : especifiacion_tipo 'ref' tipo_basico
+| tipo_basico
+;
 
 
 tipo_basico : IDENTIFICADOR 
@@ -63,12 +67,18 @@ tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC};}
 tipo_enumerado: 'array' 'de' especificacion_tipo
 | 'hash' 'de' especificacion_tipo
 | 'conjunto' 'de' especificacion_tipo
+;
 
-tipo_estructurado : 'estructura' 'principio' [ linea_campos ]+ 'fin'
-| 'union' 'principio' [ linea_campos ]+ 'fin'
 
-linea_campo: s ',' linea_campo 'es' especificacion_tipo ';'
-           | linea_campo 'es' especificacion_tipo ';' 
+tipo_estructurado : 'estructura' 'principio' tipo_estructurado linea_campos 'fin'
+| 'estructura' 'principio' linea_campos 'fin'
+| 'union' 'principio' tipo_estructurado linea_campos 'fin'
+| 'union' 'principio' linea_campos 'fin'
+;
+
+
+linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
+           | IDENTIFICADOR 'es' especificacion_tipo ';' 
            ;
 
 
@@ -95,6 +105,35 @@ linea_campo: s ',' linea_campo 'es' especificacion_tipo ';'
 /***************/
 /* expresiones */
 /***************/
+
+expresion_constante : CTC_ENTERA
+| CTC_REAL
+| CTC_CADENA
+| CTC_CARACTER
+;
+
+expresion_indexada : expresion_basica
+| expresion_indexada '.' expresion_basica
+| expresion_indexada '^.' expresion_basica
+| expresion_indexada indice
+| expresion_indexada '^.' indice
+;
+
+expresion_basica : IDENTIFICADOR
+| '(' expresion ')'
+| '^' expresion_basica
+| '\' expresion_basica
+;
+
+indice : '[' expresion ']'
+| '{' expresion '}'
+;
+
+expresion_funcional : IDENTIFICADOR '(' a ')'
+|;
+a : IDENTIFICADOR a ',' expresion
+|expresion
+; 
 
     
 %%
