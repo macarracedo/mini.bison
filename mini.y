@@ -11,6 +11,10 @@
 
 %}
 
+%left '*' '/' '%' '+' FLECHA_IZDA FLECHA_DCHA '&' '@' '|' '<' '>' GE LE EQ NEQ AND OR
+%right '**' 
+%nonassoc '-' '~' '!' TAMANO
+
 
 %token AND AND_ASIG ARRAY CABECERA CADA CADENA CARACTER CONJUNTO CONSTANTES CONTINUAR CTC_CADENA
 %token CTC_CARACTER CTC_ENTERA CTC_REAL DE DEFECTO DIV_ASIG DEVOLVER EJECUTA ENCAMBIO ENTERO EQ ES
@@ -219,6 +223,8 @@ a : IDENTIFICADOR a ',' expresion
 |expresion
 ; 
 
+operador_desplazamiento: '<-'
+
 operador_logico : '&&'
 | '||'
 ;
@@ -228,7 +234,8 @@ operador_binario: '&'
 | '|'
 ;
 
-operador_comparacion: '<'
+operador_comparacion: '<-'
+| '->'
 | '>'
 | '=<'
 | '=>'
