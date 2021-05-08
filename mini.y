@@ -96,6 +96,53 @@ linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
 /* declaracion de constantes */
 /*****************************/
 
+declaraciones_constantes : 'constantes' s 'fin'
+;
+
+s : s declaracion_constante
+  | declaracion_constante
+  ;
+
+declaracion_constante : IDENTIFICADOR 'es' tipo_basico '=' constante ';'
+;
+
+constante: CTC_ENTERA
+| CTC_REAL
+| CTC_CARACTER
+| CTC_CADENA
+| constante_enumerada
+| constante_estructurada
+;
+
+constante_enumerada : '(' sa ')'
+| '(' sb ')'
+;
+
+sa : saa
+ |
+ ;
+saa : saa ',' constante
+ | constante
+ ;
+
+sb : sbb
+ |
+ ;
+sbb : sbb ',' elemento_hash
+ | elemento_hash
+ ;  
+
+elemento_hash : CTC_CADENA '->' constante
+;
+
+constante_estructurada : '{' sc '}'
+
+sc : sc ',' campo_constante
+ | campo_constante
+ ;
+
+campo_constante : IDENTIFICADOR '=' constante
+;
 
 
 /****************************/
