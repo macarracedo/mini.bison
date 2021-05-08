@@ -175,6 +175,56 @@ sa : sa ',' IDENTIFICADOR
 /****************************/
 
 
+declaracion_funcion : 'funcion' IDENTIFICADOR '->' tipo_salida cuerpo_funcion
+ | 'funcion' IDENTIFICADOR lista_parametros '->' tipo_salida cuerpo_funcion
+ ;
+
+lista_parametros : '(' d parametros ')'
+
+d : d parametros ';'
+ | 
+ ;
+
+parametros : da ':' especificacion_tipo 
+ | da ':' especificacion_tipo '=' db
+ ;
+
+da: da ',' IDENTIFICADOR
+ | IDENTIFICADOR
+ ;
+
+db : db ',' expresion_constante
+ | expresion_constante
+ ;
+
+tipo_salida : especificacion_tipo 
+| 'nada'
+;
+
+cuerpo_funcion: dc
+ | dd
+ | de
+ | bloque_instrucciones
+ ;
+
+dc :  
+ | declaraciones_constantes
+ ;
+
+dd : 
+ | declaraciones_variables
+ ;
+
+de : de declaracion_funcion
+ | 
+ ;
+
+bloque_instrucciones : 'principio' df 'fin'
+
+df :  df instruccion
+ | instruccion
+ ;
+
 /*****************/
 /* instrucciones */
 /*****************/
