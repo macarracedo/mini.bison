@@ -11,6 +11,12 @@
 
 %}
 
+%union {
+  int valor_entero;
+  double valor_real;
+  char * texto;
+}
+
 %left '*' '/' '%' '+' FLECHA_IZDA FLECHA_DCHA '&' '@' '|' '<' '>' GE LE EQ NEQ AND OR
 %right POTENCIA 
 %nonassoc '-' '~' '!' TAMANO
@@ -101,6 +107,28 @@ declaracion_variables : 'variables' declaracion_variables declaracion_variables 
 
 declaracion_variables: declaracion_variables ',' IDENTIFICADOR  
 
+
+
+declaraciones_variables : 'variables' [ declaracion_variables ]+ 'fin'
+
+s: s declaracion_variables
+  | declaracion_variables
+  ;
+
+declaracion_variables : sa ':'' especificacion_tipo ';'
+  | sa ':'' especificacion_tipo [ '=' sb ]? ';'
+  ;
+
+sb :  sb ',' expresion
+  | expresion
+  ;
+
+sa : sa ',' IDENTIFICADOR
+  | IDENTIFICADOR
+  ;
+
+
+
 /****************************/
 /* declaracion de funciones */
 /****************************/
@@ -141,10 +169,14 @@ operador_asignacion : '='
   | '=|'
   ;
 
-instruccion_bifurcacion : 'si' '(' expresion ')' accion a [ 'sino' accion ]?
+instruccion_bifurcacion : 'si' '(' expresion ')' accion a b
   'fin'
 
 a : a otros_casos
+  |
+  ;
+
+b : 'sino' accion
   |
   ;
 
@@ -161,37 +193,44 @@ instruccion_bucle ::= ’mientras’ ’(’ expresion ’)’ accion
   | ’para’ ’cada’ IDENTIFICADOR ’(’ expresion ’)’ accion
   ;
 
-instruccion_salto : ’saltar’ IDENTIFICADOR ’;’ | ’continuar’ ’;’ | ’escape’ ’;’
+instruccion_salto : 'saltar' IDENTIFICADOR ';'
+| 'continuar' ';' 
+| 'escape' ';'
 ;
 
-instruccion_destino_salto : ’etiqueta’ IDENTIFICADOR ’;’
+instruccion_destino_salto : 'etiqueta' IDENTIFICADOR ';'
 ;
 
-instruccion_devolver : ’devolver’ [ expresion ]? ’;’
+instruccion_devolver : 'devolver' [ expresion ]? ';'
 ;
 
-instruccion_vacia : ’;’
+instruccion_vacia : ';'
 ;
 
-instruccion_lanzamiento_excepcion ::= ’lanza’ ’excepcion’ IDENTIFICADOR ’;’
+instruccion_lanzamiento_excepcion : 'lanza' 'excepcion' IDENTIFICADOR ';'
 ;
 
-instruccion_captura_excepcion : ’ejecuta’ bloque_instrucciones clausulas
+instruccion_captura_excepcion : 'ejecuta' bloque_instrucciones clausulas
 ;
 
-clausulas : clausulas_excepcion [ clausula_defecto ]?
+clausulas : clausulas_excepcion c
   | clausula_defecto
   ;
+
+c : clausula_defecto
+  |
+  ;
+  
 clausulas_excepcion : [ clausula_excepcion_especifica ]* clausula_excepcion_general
 ;
 
-clausula_excepcion_especifica : ’excepcion’ IDENTIFICADOR bloque_instrucciones
+clausula_excepcion_especifica : 'excepcion' IDENTIFICADOR bloque_instrucciones
 ;
 
-clausula_excepcion_general : ’otra’ ’excepcion’ bloque_instrucciones
+clausula_excepcion_general : 'otra' 'excepcion' bloque_instrucciones
 ;
 
-clausula_defecto : ’defecto’ bloque_instrucciones
+clausula_defecto : 'defecto' bloque_instrucciones
 ;
 
 
