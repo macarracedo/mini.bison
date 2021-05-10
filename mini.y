@@ -17,9 +17,11 @@
   char * texto;
 }
 
+
 %left '*' '/' '%' '+' FLECHA_IZDA FLECHA_DCHA '&' '@' '|' '<' '>' GE LE EQ NEQ AND OR
 %right POTENCIA 
 %nonassoc '-' '~' '!' TAMANO
+
 
 
 %token AND AND_ASIG ARRAY CABECERA CADA CADENA CARACTER CONJUNTO CONSTANTES CONTINUAR CTC_CADENA
@@ -28,6 +30,8 @@
 %token FUNCION HACER HASH GE IDENTIFICADOR INDIRECCION LANZA LE MIENTRAS MOD_ASIG MULT_ASIG NADA NEQ
 %token OR OTRA OR_ASIG PARA POT_ASIG PRINCIPIO PROGRAMA POTENCIA REAL REF RESTA_ASIG RUTA SALTAR SI
 %token SINO SUMA_ASIG TAMANO TIPOS UNION VARIABLES XOR_ASIG 
+
+
 
 %%
 
@@ -38,11 +42,10 @@
 PROGRAMA : inicio_programa bloque_programa
 ;
 
+
 inicio_programa ::= ’programa’ IDENTIFICADOR ’;’ [ ’cabecera’ ( {RUTA} )+ ’;’ ]*
 inicio_programa : PROGRAMA IDENTIFICADOR ’;’
                 | PROGRAMA IDENTIFICADOR ’;’ ’cabecera’ ’,’ {RUTA} ’;’
-
-
 
 
 /************************/
@@ -63,7 +66,7 @@ especificacion_tipo : especifiacion_tipo 'ref' tipo_basico
 tipo_basico : IDENTIFICADOR 
   |tipo_escalar
   |tipo_enumerado 
-  ;
+;
 
 
 tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC};}
@@ -85,6 +88,7 @@ tipo_estructurado : 'estructura' 'principio' tipo_estructurado linea_campos 'fin
 | 'union' 'principio' tipo_estructurado linea_campos 'fin'
 | 'union' 'principio' linea_campos 'fin'
 ;
+
 
 
 linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
@@ -228,6 +232,21 @@ df :  df instruccion
 /*****************/
 /* instrucciones */
 /*****************/
+instruccion : instruccion_expresion
+  | instruccion_bifurcacion
+  | instruccion_bucle
+  | instruccion_salto
+  | instruccion_destino_salto
+  | instruccion_devolver
+  | instruccion_vacia
+  | instruccion_lanzamiento_excepcion
+  | instruccion_captura_excepcion
+  ;
+
+instruccion_expresion : expresion_funcional ';'
+  | asignacion ';'
+  ;
+
 
 instruccion : instruccion_expresion
   | instruccion_bifurcacion
@@ -243,6 +262,7 @@ instruccion : instruccion_expresion
 instruccion_expresion : expresion_funcional ';'
   | asignacion ';'
   ;
+
 
 asignacion : expresion_indexada operador_asignacion expresion ;
 
@@ -260,8 +280,10 @@ operador_asignacion : '='
   | '=|'
   ;
 
+
 instruccion_bifurcacion : 'si' '(' expresion ')' accion a b
   'fin'
+
 
 a : a otros_casos
   |
@@ -278,6 +300,7 @@ accion : instruccion
   | bloque_instrucciones
   ;
 
+
 instruccion_bucle ::= ’mientras’ ’(’ expresion ’)’ accion
   | ’hacer’ accion ’mientras’ ’( expresion ’)’ ’;’
   | ’para’ ’(’ ( asignacion )+ ’;’ expresion ’;’ ( asignacion ) + ’)’ accion
@@ -287,6 +310,8 @@ instruccion_bucle ::= ’mientras’ ’(’ expresion ’)’ accion
 instruccion_salto : 'saltar' IDENTIFICADOR ';'
 | 'continuar' ';' 
 | 'escape' ';'
+ç
+ç
 ;
 
 instruccion_destino_salto : 'etiqueta' IDENTIFICADOR ';'
@@ -306,12 +331,14 @@ instruccion_captura_excepcion : 'ejecuta' bloque_instrucciones clausulas
 
 clausulas : clausulas_excepcion c
   | clausula_defecto
+
   ;
 
 c : clausula_defecto
   |
   ;
   
+
 clausulas_excepcion : [ clausula_excepcion_especifica ]* clausula_excepcion_general
 ;
 

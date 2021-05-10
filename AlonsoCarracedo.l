@@ -1,6 +1,7 @@
 %{
   #include <stdio.h>
   #include "tokens.h"
+  #include "mini.tab.h"
 %}
 
 %option yylineno
