@@ -42,6 +42,8 @@ programa : inicio_programa bloque_programa                {printf("programa --> 
 ;
 
 
+inicio_programa : PROGRAMA IDENTIFICADOR ';' r_cabecera   {printf("inicio_programa --> PROGRAMA IDENTIFICADOR ; r_cabecera\n");}
+  ;
 
 r_cabecera : r_cabecera CABECERA r_rutas ';'              {printf("r_cabecera --> r_cabecera CABECERA r_rutas\n");}
   |                                                       {printf("r_cabecera --> \n");}
@@ -64,7 +66,19 @@ bloque_programa :
 /* declaracion de tipos */
 /************************/
 
+declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
+  |                                                       {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
+  ;
 
+l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo"):}
+  | declaracion_tipo                                      {printf("l_decl_tipo --> declaracion_tipo");}
+  ;
+
+declaracion_tipo : IDENTIFICADOR ES especificacion_tipo ';' {printf("declaracion_tipo --> TIPOS l_decl_tipo FIN");}
+  ;
+
+especificacion_tipo : l_ref tipo_basico                   {printf("especificacion_tipo --> TIPOS l_decl_tipo FIN");}
+  ;
 
 l_ref : l_ref REF                                         {printf("l_decl_tipo --> TIPOS l_decl_tipo FIN");}
   |                                                       {printf("l_decl_tipo --> TIPOS l_decl_tipo FIN");}
@@ -77,14 +91,42 @@ tipo_basico : IDENTIFICADOR                               {printf("tipo_basico -
   ;
 
 
+tipo_escalar : ENTERO                                     {printf("tipo_escalar --> ENTERO");}
+  |REAL                                                   {printf("tipo_escalar --> REAL");}
+  |CARACTER                                               {printf("tipo_escalar --> CARACTER");}
+  |CADENA                                                 {printf("tipo_escalar --> CADENA");}
+  |FICHERO                                                {printf("tipo_escalar --> FICHERO");}
+  |EXCEPCION                                              {printf("tipo_escalar --> EXCEPCION");}
+  ;
 
+tipo_enumerado: ARRAY DE especificacion_tipo              {printf("tipo_enumerado --> ARRAY DE especificacion_tipo");}
+| HASH DE especificacion_tipo                             {printf("tipo_enumerado --> HASH DE especificacion_tipo");}
+| CONJUNTO DE especificacion_tipo                         {printf("tipo_enumerado --> CONJUNTO DE especificacion_tipo");}
+;
+
+
+tipo_estructurado : ESTRUCTURA PRINCIPIO tipo_estructurado linea_campos FIN   {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campos FIN");}
+| ESTRUCTURA PRINCIPIO linea_campos FIN                                       {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campos FIN");}
+| UNION PRINCIPIO tipo_estructurado linea_campos FIN                          {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campos FIN");}
+| UNION PRINCIPIO linea_campos FIN                                            {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN");}
+;
+
+linea_campo : l_campo ES especificacion_tipo ';'          {printf("linea_campo --> EXCEPCION");}
+  ;
+
+l_campo : l_campo ',' IDENTIFICADOR                       {printf("l_campo --> l_campo ',' IDENTIFICADOR");}
+  | IDENTIFICADOR                                         {printf("l_campo --> EXCEPCION");}
+  ;
 
 
 /*****************************/
 /* declaracion de constantes */
 /*****************************/
 
+declaraciones_constantes : 'constantes' s 'fin'
+;
 
+s : s declaracion_constante
   | declaracion_constante
   ;
 
@@ -99,14 +141,30 @@ constante: CTC_ENTERA
 | constante_estructurada
 ;
 
+constante_enumerada : '(' sa ')'
+| '(' sb ')'
+;
 
+sa : saa
+ |
+ ;
+saa : saa ',' constante
+ | constante
+ ;
+
+sb : sbb
+ |
+ ;
+sbb : sbb ',' elemento_hash
  | elemento_hash
  ;  
 
 elemento_hash : CTC_CADENA '->' constante
 ;
 
+constante_estructurada : '{' sc '}'
 
+sc : sc ',' campo_constante
  | campo_constante
  ;
 
@@ -119,7 +177,21 @@ campo_constante : IDENTIFICADOR '=' constante
 /****************************/
 
 
+declaraciones_variables : 'variables' s 'fin'
 
+s: s declaracion_variables
+  | declaracion_variables
+  ;
+
+declaracion_variables : sa ':' especificacion_tipo ';'
+  | sa ':' especificacion_tipo [ '=' sb ]? ';'
+  ;
+
+sb :  sb ',' expresion
+  | expresion
+  ;
+
+sa : sa ',' IDENTIFICADOR
   | IDENTIFICADOR
   ;
 
@@ -129,56 +201,6 @@ campo_constante : IDENTIFICADOR '=' constante
 /* declaracion de funciones */
 /****************************/
 
-
-declaracion_funcion : 'funcion' IDENTIFICADOR '->' tipo_salida cuerpo_funcion
- | 'funcion' IDENTIFICADOR lista_parametros '->' tipo_salida cuerpo_funcion
- ;
-
-lista_parametros : '(' l_parametros parametros ')'
-
-l_parametros : l_parametros parametros ';'
- | 
- ;
-
-parametros : rep_ident ':' especificacion_tipo 
- | rep_ident ':' especificacion_tipo '=' l_expr_constante
- ;
-
-rep_ident : rep_ident ',' IDENTIFICADOR
- | IDENTIFICADOR
- ;
-
-l_expr_constante : l_expr_constante ',' expresion_constante
- | expresion_constante
- ;
-
-tipo_salida : especificacion_tipo 
-| 'nada'
-;
-
-cuerpo_funcion: declaraciones_constantes
- | declaraciones_variables
- | rep_declaracion_funcion
- | bloque_instrucciones
- ;
-
-declaraciones_constantes :  
- | declaraciones_constantes
- ;
-
-declaraciones_variables : 
- | declaraciones_variables
- ;
-
-rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion
- | 
- ;
-
-bloque_instrucciones : 'principio' l_instruccion 'fin'
-
-l_instruccion :  l_instruccion instruccion
- | instruccion
- ;
 
 /*****************/
 /* instrucciones */
@@ -292,106 +314,6 @@ c : clausula_defecto
 
 clausulas_excepcion : [ clausula_excepcion_especifica ]* clausula_excepcion_general
 ;
-
-clausula_excepcion_especifica : 'excepcion' IDENTIFICADOR bloque_instrucciones
-;
-
-clausula_excepcion_general : 'otra' 'excepcion' bloque_instrucciones
-;
-
-clausula_defecto : 'defecto' bloque_instrucciones
-;
-
-instruccion : instruccion_expresion
-  | instruccion_bifurcacion
-  | instruccion_bucle
-  | instruccion_salto
-  | instruccion_destino_salto
-  | instruccion_devolver
-  | instruccion_vacia
-  | instruccion_lanzamiento_excepcion
-  | instruccion_captura_excepcion
-  ;
-
-instruccion_expresion : expresion_funcional ';'
-  | asignacion ';'
-  ;
-
-asignacion : expresion_indexada operador_asignacion expresion 
-;
-
-operador_asignacion : '='
-  | '=+'
-  | '=-' 
-  | '=*'
-  | '=/' 
-  | '=%' 
-  | '=**' 
-  | '=<-' 
-  | '=->' 
-  | '=&' 
-  | '=@' 
-  | '=|'
-  ;
-
-instruccion_bifurcacion : 'si' '(' expresion ')' accion l_otros_casos 'fin'
-  | 'si' '(' expresion ')' accion a 'sino' accion 'fin'
-  ;
-
-l_otros_casos : l_otros_casos otros_casos
-  |
-  ;
-
-
-otros_casos : 'si' 'encambio' '(' expresion ')' accion
-  ;
-
-accion : instruccion
-  | bloque_instrucciones
-  ;
-
-instruccion_bucle ::= 'mientras' '(' expresion ')' accion
-  | 'hacer' accion 'mientras' '(' expresion ')' ';'
-  | 'para' '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
-  | 'para' 'cada' IDENTIFICADOR '(' expresion ')' accion
-  ;
-
-l_asignaciones : l_asignaciones ',' asignacion
-  | asignacion
-  ; 
-
-instruccion_salto : 'saltar' IDENTIFICADOR ';'
-  | 'continuar' ';' 
-  | 'escape' ';'
-  ;
-
-instruccion_destino_salto : 'etiqueta' IDENTIFICADOR ';'
-;
-
-instruccion_devolver : 'devolver' ';'
-  | 'devolver' expresion ';'
-  ;
-
-instruccion_vacia : ';'
-;
-
-instruccion_lanzamiento_excepcion : 'lanza' 'excepcion' IDENTIFICADOR ';'
-;
-
-instruccion_captura_excepcion : 'ejecuta' bloque_instrucciones clausulas
-;
-
-clausulas : clausulas_excepcion 
-  | clausulas_excepcion clausula_defecto
-  ;
-
-  
-clausulas_excepcion : l_clausula_excepcion_especifica clausula_excepcion_general
-;
-
-l_clausula_excepcion_especifica : l_clausula_excepcion_especifica clausula_excepcion_especifica
-  | 
-  ;
 
 clausula_excepcion_especifica : 'excepcion' IDENTIFICADOR bloque_instrucciones
 ;
