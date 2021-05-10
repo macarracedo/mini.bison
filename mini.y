@@ -105,10 +105,10 @@ tipo_enumerado: ARRAY DE especificacion_tipo              {printf("tipo_enumerad
 ;
 
 
-tipo_estructurado : ESTRUCTURA PRINCIPIO tipo_estructurado linea_campos FIN   {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campos FIN");}
-| ESTRUCTURA PRINCIPIO linea_campos FIN                                       {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campos FIN");}
-| UNION PRINCIPIO tipo_estructurado linea_campos FIN                          {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campos FIN");}
-| UNION PRINCIPIO linea_campos FIN                                            {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN");}
+tipo_estructurado : ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN   {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN");}
+| ESTRUCTURA PRINCIPIO linea_campo FIN                                       {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campo FIN");}
+| UNION PRINCIPIO tipo_estructurado linea_campo FIN                          {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campo FIN");}
+| UNION PRINCIPIO linea_campo FIN                                            {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN");}
 ;
 
 linea_campo : l_campo ES especificacion_tipo ';'          {printf("linea_campo --> EXCEPCION");}
@@ -288,7 +288,7 @@ operador_asignacion : '='
   ;
 
 instruccion_bifurcacion : SI '(' expresion ')' accion l_otros_casos FIN
-  | SI '(' expresion ')' accion a SINO accion FIN
+  | SI '(' expresion ')' accion l_otros_casos SINO accion FIN
   ;
 
 l_otros_casos : l_otros_casos otros_casos
@@ -303,7 +303,7 @@ accion : instruccion
   | bloque_instrucciones
   ;
 
-
+instruccion_bucle: MIENTRAS '(' expresion ')' accion
   | HACER accion 'mientras' '(' expresion ')' ';'
   | PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
   | PARA CADA IDENTIFICADOR '(' expresion ')' accion
@@ -375,7 +375,7 @@ expresion_indexada : expresion_basica
 expresion_basica : IDENTIFICADOR
 | '(' expresion ')'
 | '^' expresion_basica
-| '\' expresion_basica
+| '\\' expresion_basica
 ;
 
 indice : '[' expresion ']'
