@@ -346,13 +346,13 @@ l_clausula_excepcion_especifica : l_clausula_excepcion_especifica clausula_excep
   | 
   ;
 
-clausula_excepcion_especifica : 'excepcion' IDENTIFICADOR bloque_instrucciones
+clausula_excepcion_especifica : EXCEPCION IDENTIFICADOR bloque_instrucciones
 ;
 
-clausula_excepcion_general : 'otra' 'excepcion' bloque_instrucciones
+clausula_excepcion_general : OTRA EXCEPCION bloque_instrucciones
 ;
 
-clausula_defecto : 'defecto' bloque_instrucciones
+clausula_defecto : DEFECTO bloque_instrucciones
 ;
 
 /***************/
