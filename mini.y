@@ -39,54 +39,76 @@
 /* programa */
 /************/
 
-PROGRAMA : inicio_programa bloque_programa
+programa : inicio_programa bloque_programa                {printf("programa --> inicio_programa bloque_programa\n");}
 ;
 
 
-inicio_programa ::= ’programa’ IDENTIFICADOR ’;’ [ ’cabecera’ ( {RUTA} )+ ’;’ ]*
-inicio_programa : PROGRAMA IDENTIFICADOR ’;’
-                | PROGRAMA IDENTIFICADOR ’;’ ’cabecera’ ’,’ {RUTA} ’;’
+inicio_programa : PROGRAMA IDENTIFICADOR ';' r_cabecera   {printf("inicio_programa --> PROGRAMA IDENTIFICADOR ; r_cabecera\n");}
+  ;
 
+r_cabecera : r_cabecera CABECERA r_rutas ';'              {printf("r_cabecera --> r_cabecera CABECERA r_rutas\n");}
+  |                                                       {printf("r_cabecera --> \n");}
+  ;
+
+r_rutas : r_rutas ',' RUTA                                {printf("r_rutas --> r_rutas RUTA\n");}
+  |RUTA                                                   {printf("r_rutas --> RUTA\n");}
+  ;
+
+bloque_programa :
+    declaraciones_tipos                                   {printf("r_cabecera --> \n");}
+    declaraciones_constantes                              {printf("r_cabecera --> \n");}
+    declaraciones_variables                               {printf("r_cabecera --> \n");}
+    declaracion_funcion                                   {printf("r_cabecera --> \n");}
+    bloque_instrucciones                                  {printf("r_cabecera --> \n");}
+    |error                                                {yyerror;}
+    ;
 
 /************************/
 /* declaracion de tipos */
 /************************/
 
-declaraciones_tipos : 'tipos' s declaracion_tipo 'fin' ';'
-| 'tipos' declaracion_tipo 'fin' ';'
-;
+declaraciones_tipos : TIPOS l_decl_tipo FIN
+  |
+  ;
 
-declaracion_tipo : IDENTIFICADOR 'es' especifiacion_tipo ';' 
+l_decl_tipo : l_decl_tipo declaracion_tipo
+  ;
 
-especificacion_tipo : especifiacion_tipo 'ref' tipo_basico
-| tipo_basico
-;
+declaracion_tipo : IDENTIFICADOR ES especificacion_tipo ';'
+  ;
 
+especifiacion_tipo : l_ref tipo_basico [REF]*
+  ;
+
+l_ref : l_ref REF
+  |
+  ;
 
 tipo_basico : IDENTIFICADOR 
-  |tipo_escalar
-  |tipo_enumerado 
-;
+  | tipo_escalar
+  | tipo_enumerado
+  | tipo_estructurado
+  ;
 
 
-tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC};}
-  |REAL               {$$ = {NUMREAL}|| {NUMREALEXP};}
+tipo_escalar : ENTERO {$$ = {DECIMAL} || {OCTAL} || {HEXADEC};} //creo que esto no hace falta porque ya se estableció esto en flex
+  |REAL               {$$ = {NUMREAL} || {NUMREALEXP};}
   |CARACTER           {$$ = {CARACTER};}
   |CADENA             {$$ = {CADENA};}
   |FICHERO            
-  |EXCEPCION ;
+  |EXCEPCION
+  ;
 
-
-tipo_enumerado: 'array' 'de' especificacion_tipo
-| 'hash' 'de' especificacion_tipo
-| 'conjunto' 'de' especificacion_tipo
+tipo_enumerado: ARRAY DE especificacion_tipo
+| HASH DE especificacion_tipo
+| CONJUNTO DE especificacion_tipo
 ;
 
 
-tipo_estructurado : 'estructura' 'principio' tipo_estructurado linea_campos 'fin'
-| 'estructura' 'principio' linea_campos 'fin'
-| 'union' 'principio' tipo_estructurado linea_campos 'fin'
-| 'union' 'principio' linea_campos 'fin'
+tipo_estructurado : ESTRUCTURA PRINCIPIO tipo_estructurado linea_campos FIN
+| ESTRUCTURA PRINCIPIO linea_campos FIN
+| UNION PRINCIPIO tipo_estructurado linea_campos FIN
+| UNION PRINCIPIO linea_campos FIN
 ;
 
 
@@ -160,8 +182,8 @@ s: s declaracion_variables
   | declaracion_variables
   ;
 
-declaracion_variables : sa ':'' especificacion_tipo ';'
-  | sa ':'' especificacion_tipo [ '=' sb ]? ';'
+declaracion_variables : sa ':' especificacion_tipo ';'
+  | sa ':' especificacion_tipo [ '=' sb ]? ';'
   ;
 
 sb :  sb ',' expresion
@@ -251,7 +273,7 @@ accion : instruccion
   ;
 
 
-instruccion_bucle ::= ’mientras’ ’(’ expresion ’)’ accion
+instruccion_bucle : ’mientras’ ’(’ expresion ’)’ accion
   | ’hacer’ accion ’mientras’ ’( expresion ’)’ ’;’
   | ’para’ ’(’ ( asignacion )+ ’;’ expresion ’;’ ( asignacion ) + ’)’ accion
   | ’para’ ’cada’ IDENTIFICADOR ’(’ expresion ’)’ accion
