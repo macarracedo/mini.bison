@@ -93,15 +93,6 @@ tipo_enumerado: 'array' 'de' especificacion_tipo
 | 'hash' 'de' especificacion_tipo
 | 'conjunto' 'de' especificacion_tipo
 ;
-
-
-tipo_estructurado : 'estructura' 'principio' tipo_estructurado linea_campos 'fin'
-| 'estructura' 'principio' linea_campos 'fin'
-| 'union' 'principio' tipo_estructurado linea_campos 'fin'
-| 'union' 'principio' linea_campos 'fin'
-;
-
-
 linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
            | IDENTIFICADOR 'es' especificacion_tipo ';' 
            ;
@@ -171,8 +162,7 @@ l_declaracion: l_declaracion declaracion_variables
   | declaracion_variables
   ;
 
-declaracion_variables : l_ident ':' especificacion_tipo ';'
-  | l_ident ':' especificacion_tipo  '=' l_expr  ';'
+
   ;
 
 l_expr :  l_expr ',' expresion
@@ -292,7 +282,7 @@ accion : instruccion
   | bloque_instrucciones
   ;
 
-instruccion_bucle : 'mientras' '(' expresion ')' accion
+
   | 'hacer' accion 'mientras' '(' expresion ')' ';'
   | 'para' '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
   | 'para' 'cada' IDENTIFICADOR '(' expresion ')' accion
@@ -372,14 +362,7 @@ indice : '[' expresion ']'
 | '{' expresion '}'
 ;
 
-expresion_funcional : IDENTIFICADOR '(' rep_expresion ')'
-;
 
-rep_expresion :  rep_expresiones 
-|
-;
-rep_expresiones : rep_expresiones ',' expresion
-| expresion
 ; 
 
 operador : operador_binario
