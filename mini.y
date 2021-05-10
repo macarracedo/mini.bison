@@ -139,8 +139,8 @@ constante: CTC_ENTERA
 ;
 
 constante_enumerada : '(' l_constante ')'
-| '(' l_elemento_hash ')'
-;
+  | '(' l_elemento_hash ')'
+  ;
 
 l_constante : rep_constante
  |
@@ -156,8 +156,8 @@ rep_elemento_hash : rep_elemento_hash ',' elemento_hash
  | elemento_hash
  ;  
 
-elemento_hash : CTC_CADENA '->' constante
-;
+elemento_hash : CTC_CADENA FD_ASIG constante
+ ;
 
 constante_estructurada : '{' l_campo_constante '}'
 
@@ -166,7 +166,7 @@ l_campo_constante : l_campo_constante ',' campo_constante
  ;
 
 campo_constante : IDENTIFICADOR '=' constante
-;
+ ;
 
 
 /****************************/
@@ -199,8 +199,8 @@ l_ident : l_ident ',' IDENTIFICADOR
 /****************************/
 
 
-declaracion_funcion : FUNCION IDENTIFICADOR '->' tipo_salida cuerpo_funcion
- | 'funcion' IDENTIFICADOR lista_parametros '->' tipo_salida cuerpo_funcion
+declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion
+ | FUNCION IDENTIFICADOR lista_parametros FD_ASIG tipo_salida cuerpo_funcion
  ;
 
 lista_parametros : '(' l_parametros parametros ')'
@@ -225,18 +225,18 @@ tipo_salida : especificacion_tipo
 | NADA
 ;
 
-cuerpo_funcion: declaraciones_constantes
- | declaraciones_variables
+cuerpo_funcion: l_declaraciones_constantes
+ | l_declaraciones_variables
  | rep_declaracion_funcion
  | bloque_instrucciones
  ;
 
-declaraciones_constantes :  
- | declaraciones_constantes
+l_declaraciones_constantes : declaraciones_constantes
+ | 
  ;
 
-declaraciones_variables : 
- | declaraciones_variables
+l_declaraciones_variables : declaraciones_variables
+ | 
  ;
 
 rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion
@@ -364,9 +364,9 @@ expresion_constante : CTC_ENTERA
 
 expresion_indexada : expresion_basica
 | expresion_indexada '.' expresion_basica
-| expresion_indexada '^.' expresion_basica
+| expresion_indexada INDIRECCION expresion_basica
 | expresion_indexada indice
-| expresion_indexada '^.' indice
+| expresion_indexada INDIRECCION indice
 ;
 
 expresion_basica : IDENTIFICADOR
