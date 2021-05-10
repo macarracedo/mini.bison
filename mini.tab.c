@@ -628,7 +628,7 @@ static const char *const yytname[] =
   "TIPOS", "UNION", "VARIABLES", "XOR_ASIG", "';'", "','", "'='", "'('",
   "')'", "'-'", "'{'", "'}'", "':'", "'f'", "'.'", "'^'", "'\\\\'", "'['",
   "']'", "'&'", "'@'", "'|'", "'+'", "'>'", "'<'", "'~'", "'!'", "$accept",
-  "programa", "inicio_programa", "r_cabecera", "r_rutas",
+  "programa", "inicio_programa", "l_cabecera", "l_rutas",
   "bloque_programa", "$@1", "$@2", "$@3", "$@4", "declaraciones_tipos",
   "l_decl_tipo", "declaracion_tipo", "especificacion_tipo", "l_ref",
   "tipo_basico", "tipo_escalar", "tipo_enumerado", "tipo_estructurado",
@@ -1654,31 +1654,31 @@ yyreduce:
 
   case 3:
 #line 42 "mini.y"
-                                                          {printf("inicio_programa --> PROGRAMA IDENTIFICADOR ; r_cabecera\n");}
+                                                          {printf("inicio_programa --> PROGRAMA IDENTIFICADOR ; librerias\n");}
 #line 1659 "mini.tab.c"
     break;
 
   case 4:
 #line 45 "mini.y"
-                                                          {printf("r_cabecera --> r_cabecera CABECERA r_rutas\n");}
+                                                          {printf("l_cabecera --> l_cabecera CABECERA l_rutas \n");}
 #line 1665 "mini.tab.c"
     break;
 
   case 5:
 #line 46 "mini.y"
-                                                          {printf("r_cabecera --> \n");}
+                                                          {printf("l_cabecera --> \n");}
 #line 1671 "mini.tab.c"
     break;
 
   case 6:
 #line 49 "mini.y"
-                                                          {printf("r_rutas --> r_rutas RUTA\n");}
+                                                          {printf("l_rutas --> l_rutas RUTA\n");}
 #line 1677 "mini.tab.c"
     break;
 
   case 7:
 #line 50 "mini.y"
-                                                          {printf("r_rutas --> RUTA\n");}
+                                                          {printf("l_rutas --> RUTA\n");}
 #line 1683 "mini.tab.c"
     break;
 
@@ -1720,169 +1720,169 @@ yyreduce:
 
   case 14:
 #line 66 "mini.y"
-                                                          {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
+                                                          {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
 #line 1725 "mini.tab.c"
     break;
 
   case 15:
 #line 67 "mini.y"
-                                                          {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
+                                                          {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
 #line 1731 "mini.tab.c"
     break;
 
   case 16:
 #line 70 "mini.y"
-                                                          {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo");}
+                                                          {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo\n");}
 #line 1737 "mini.tab.c"
     break;
 
   case 17:
 #line 71 "mini.y"
-                                                          {printf("l_decl_tipo --> declaracion_tipo");}
+                                                          {printf("l_decl_tipo --> declaracion_tipo\n");}
 #line 1743 "mini.tab.c"
     break;
 
   case 18:
 #line 74 "mini.y"
-                                                            {printf("declaracion_tipo --> TIPOS l_decl_tipo FIN");}
+                                                            {printf("declaracion_tipo --> TIPOS l_decl_tipo FIN\n");}
 #line 1749 "mini.tab.c"
     break;
 
   case 19:
 #line 77 "mini.y"
-                                                          {printf("especificacion_tipo --> TIPOS l_decl_tipo FIN");}
+                                                          {printf("especificacion_tipo --> TIPOS l_decl_tipo FIN\n");}
 #line 1755 "mini.tab.c"
     break;
 
   case 20:
 #line 80 "mini.y"
-                                                          {printf("l_decl_tipo --> TIPOS l_decl_tipo FIN");}
+                                                          {printf("l_ref --> l_ref REF\n");}
 #line 1761 "mini.tab.c"
     break;
 
   case 21:
 #line 81 "mini.y"
-                                                          {printf("l_decl_tipo --> TIPOS l_decl_tipo FIN");}
+                                                          {printf("l_ref --> \n");}
 #line 1767 "mini.tab.c"
     break;
 
   case 22:
 #line 84 "mini.y"
-                                                          {printf("tipo_basico --> IDENTIFICADOR");}
+                                                          {printf("tipo_basico --> IDENTIFICADOR\n");}
 #line 1773 "mini.tab.c"
     break;
 
   case 23:
 #line 85 "mini.y"
-                                                          {printf("tipo_basico --> tipo_escalar");}
+                                                          {printf("tipo_basico --> tipo_escalar\n");}
 #line 1779 "mini.tab.c"
     break;
 
   case 24:
 #line 86 "mini.y"
-                                                          {printf("tipo_basico --> tipo_enumerado");}
+                                                          {printf("tipo_basico --> tipo_enumerado\n");}
 #line 1785 "mini.tab.c"
     break;
 
   case 25:
 #line 87 "mini.y"
-                                                          {printf("tipo_basico --> tipo_estructurado");}
+                                                          {printf("tipo_basico --> tipo_estructurado\n");}
 #line 1791 "mini.tab.c"
     break;
 
   case 26:
 #line 91 "mini.y"
-                                                          {printf("tipo_escalar --> ENTERO");}
+                                                          {printf("tipo_escalar --> ENTERO\n");}
 #line 1797 "mini.tab.c"
     break;
 
   case 27:
 #line 92 "mini.y"
-                                                          {printf("tipo_escalar --> REAL");}
+                                                          {printf("tipo_escalar --> REAL\n");}
 #line 1803 "mini.tab.c"
     break;
 
   case 28:
 #line 93 "mini.y"
-                                                          {printf("tipo_escalar --> CARACTER");}
+                                                          {printf("tipo_escalar --> CARACTER\n");}
 #line 1809 "mini.tab.c"
     break;
 
   case 29:
 #line 94 "mini.y"
-                                                          {printf("tipo_escalar --> CADENA");}
+                                                          {printf("tipo_escalar --> CADENA\n");}
 #line 1815 "mini.tab.c"
     break;
 
   case 30:
 #line 95 "mini.y"
-                                                          {printf("tipo_escalar --> FICHERO");}
+                                                          {printf("tipo_escalar --> FICHERO\n");}
 #line 1821 "mini.tab.c"
     break;
 
   case 31:
 #line 96 "mini.y"
-                                                          {printf("tipo_escalar --> EXCEPCION");}
+                                                          {printf("tipo_escalar --> EXCEPCION\n");}
 #line 1827 "mini.tab.c"
     break;
 
   case 32:
 #line 99 "mini.y"
-                                                          {printf("tipo_enumerado --> ARRAY DE especificacion_tipo");}
+                                                          {printf("tipo_enumerado --> ARRAY DE especificacion_tipo\n");}
 #line 1833 "mini.tab.c"
     break;
 
   case 33:
 #line 100 "mini.y"
-                                                          {printf("tipo_enumerado --> HASH DE especificacion_tipo");}
+                                                          {printf("tipo_enumerado --> HASH DE especificacion_tipo\n");}
 #line 1839 "mini.tab.c"
     break;
 
   case 34:
 #line 101 "mini.y"
-                                                          {printf("tipo_enumerado --> CONJUNTO DE especificacion_tipo");}
+                                                          {printf("tipo_enumerado --> CONJUNTO DE especificacion_tipo\n");}
 #line 1845 "mini.tab.c"
     break;
 
   case 35:
 #line 105 "mini.y"
-                                                                             {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN");}
+                                                                             {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN\n");}
 #line 1851 "mini.tab.c"
     break;
 
   case 36:
 #line 106 "mini.y"
-                                                                             {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campo FIN");}
+                                                                             {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campo FIN\n");}
 #line 1857 "mini.tab.c"
     break;
 
   case 37:
 #line 107 "mini.y"
-                                                                             {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campo FIN");}
+                                                                             {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campo FIN\n");}
 #line 1863 "mini.tab.c"
     break;
 
   case 38:
 #line 108 "mini.y"
-                                                                             {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN");}
+                                                                             {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN\n");}
 #line 1869 "mini.tab.c"
     break;
 
   case 39:
 #line 111 "mini.y"
-                                                          {printf("linea_campo --> EXCEPCION");}
+                                                          {printf("linea_campo --> EXCEPCION\n");}
 #line 1875 "mini.tab.c"
     break;
 
   case 40:
 #line 114 "mini.y"
-                                                          {printf("l_campo --> l_campo ',' IDENTIFICADOR");}
+                                                          {printf("l_campo --> l_campo ',' IDENTIFICADOR\n");}
 #line 1881 "mini.tab.c"
     break;
 
   case 41:
 #line 115 "mini.y"
-                                                          {printf("l_campo --> EXCEPCION");}
+                                                          {printf("l_campo --> EXCEPCION\n");}
 #line 1887 "mini.tab.c"
     break;
 
@@ -2119,7 +2119,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 431 "mini.y"
+#line 432 "mini.y"
 
 
 int yyerror(char *s) {

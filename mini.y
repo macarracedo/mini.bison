@@ -39,15 +39,15 @@ programa : inicio_programa bloque_programa                {printf("programa --> 
 ;
 
 
-inicio_programa : PROGRAMA IDENTIFICADOR ';' r_cabecera   {printf("inicio_programa --> PROGRAMA IDENTIFICADOR ; r_cabecera\n");}
+inicio_programa : PROGRAMA IDENTIFICADOR ';' l_cabecera   {printf("inicio_programa --> PROGRAMA IDENTIFICADOR ; librerias\n");}
   ;
 
-r_cabecera : r_cabecera CABECERA r_rutas ';'              {printf("r_cabecera --> r_cabecera CABECERA r_rutas\n");}
-  |                                                       {printf("r_cabecera --> \n");}
+l_cabecera : l_cabecera CABECERA l_rutas ';'              {printf("l_cabecera --> l_cabecera CABECERA l_rutas \n");}
+  |                                                       {printf("l_cabecera --> \n");}
   ;
 
-r_rutas : r_rutas ',' RUTA                                {printf("r_rutas --> r_rutas RUTA\n");}
-  |RUTA                                                   {printf("r_rutas --> RUTA\n");}
+l_rutas : l_rutas ',' RUTA                                {printf("l_rutas --> l_rutas RUTA\n");}
+  |RUTA                                                   {printf("l_rutas --> RUTA\n");}
   ;
 
 bloque_programa :
@@ -63,56 +63,56 @@ bloque_programa :
 /* declaracion de tipos */
 /************************/
 
-declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
-  |                                                       {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
+declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
+  |                                                       {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
   ;
 
-l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo");}
-  | declaracion_tipo                                      {printf("l_decl_tipo --> declaracion_tipo");}
+l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo\n");}
+  | declaracion_tipo                                      {printf("l_decl_tipo --> declaracion_tipo\n");}
   ;
 
-declaracion_tipo : IDENTIFICADOR ES especificacion_tipo ';' {printf("declaracion_tipo --> TIPOS l_decl_tipo FIN");}
+declaracion_tipo : IDENTIFICADOR ES especificacion_tipo ';' {printf("declaracion_tipo --> TIPOS l_decl_tipo FIN\n");}
   ;
 
-especificacion_tipo : l_ref tipo_basico                   {printf("especificacion_tipo --> TIPOS l_decl_tipo FIN");}
+especificacion_tipo : l_ref tipo_basico                   {printf("especificacion_tipo --> TIPOS l_decl_tipo FIN\n");}
   ;
 
-l_ref : l_ref REF                                         {printf("l_decl_tipo --> TIPOS l_decl_tipo FIN");}
-  |                                                       {printf("l_decl_tipo --> TIPOS l_decl_tipo FIN");}
+l_ref : l_ref REF                                         {printf("l_ref --> l_ref REF\n");}
+  |                                                       {printf("l_ref --> \n");}
   ;
 
-tipo_basico : IDENTIFICADOR                               {printf("tipo_basico --> IDENTIFICADOR");}
-  | tipo_escalar                                          {printf("tipo_basico --> tipo_escalar");}
-  | tipo_enumerado                                        {printf("tipo_basico --> tipo_enumerado");}
-  | tipo_estructurado                                     {printf("tipo_basico --> tipo_estructurado");}
+tipo_basico : IDENTIFICADOR                               {printf("tipo_basico --> IDENTIFICADOR\n");}
+  | tipo_escalar                                          {printf("tipo_basico --> tipo_escalar\n");}
+  | tipo_enumerado                                        {printf("tipo_basico --> tipo_enumerado\n");}
+  | tipo_estructurado                                     {printf("tipo_basico --> tipo_estructurado\n");}
   ;
 
 
-tipo_escalar : ENTERO                                     {printf("tipo_escalar --> ENTERO");}
-  |REAL                                                   {printf("tipo_escalar --> REAL");}
-  |CARACTER                                               {printf("tipo_escalar --> CARACTER");}
-  |CADENA                                                 {printf("tipo_escalar --> CADENA");}
-  |FICHERO                                                {printf("tipo_escalar --> FICHERO");}
-  |EXCEPCION                                              {printf("tipo_escalar --> EXCEPCION");}
+tipo_escalar : ENTERO                                     {printf("tipo_escalar --> ENTERO\n");}
+  |REAL                                                   {printf("tipo_escalar --> REAL\n");}
+  |CARACTER                                               {printf("tipo_escalar --> CARACTER\n");}
+  |CADENA                                                 {printf("tipo_escalar --> CADENA\n");}
+  |FICHERO                                                {printf("tipo_escalar --> FICHERO\n");}
+  |EXCEPCION                                              {printf("tipo_escalar --> EXCEPCION\n");}
   ;
 
-tipo_enumerado: ARRAY DE especificacion_tipo              {printf("tipo_enumerado --> ARRAY DE especificacion_tipo");}
-| HASH DE especificacion_tipo                             {printf("tipo_enumerado --> HASH DE especificacion_tipo");}
-| CONJUNTO DE especificacion_tipo                         {printf("tipo_enumerado --> CONJUNTO DE especificacion_tipo");}
+tipo_enumerado: ARRAY DE especificacion_tipo              {printf("tipo_enumerado --> ARRAY DE especificacion_tipo\n");}
+| HASH DE especificacion_tipo                             {printf("tipo_enumerado --> HASH DE especificacion_tipo\n");}
+| CONJUNTO DE especificacion_tipo                         {printf("tipo_enumerado --> CONJUNTO DE especificacion_tipo\n");}
 ;
 
 
-tipo_estructurado : ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN   {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN");}
-| ESTRUCTURA PRINCIPIO linea_campo FIN                                       {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campo FIN");}
-| UNION PRINCIPIO tipo_estructurado linea_campo FIN                          {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campo FIN");}
-| UNION PRINCIPIO linea_campo FIN                                            {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN");}
+tipo_estructurado : ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN   {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN\n");}
+| ESTRUCTURA PRINCIPIO linea_campo FIN                                       {printf("tipo_estructurado --> ESTRUCTURA PRINCIPIO linea_campo FIN\n");}
+| UNION PRINCIPIO tipo_estructurado linea_campo FIN                          {printf("tipo_estructurado --> UNION PRINCIPIO tipo_estructurado linea_campo FIN\n");}
+| UNION PRINCIPIO linea_campo FIN                                            {printf("tipo_estructurado --> UNION PRINCIPIO linea_campos FIN\n");}
 ;
 
-linea_campo : l_campo ES especificacion_tipo ';'          {printf("linea_campo --> EXCEPCION");}
+linea_campo : l_campo ES especificacion_tipo ';'          {printf("linea_campo --> EXCEPCION\n");}
   ;
 
-l_campo : l_campo ',' IDENTIFICADOR                       {printf("l_campo --> l_campo ',' IDENTIFICADOR");}
-  | IDENTIFICADOR                                         {printf("l_campo --> EXCEPCION");}
+l_campo : l_campo ',' IDENTIFICADOR                       {printf("l_campo --> l_campo ',' IDENTIFICADOR\n");}
+  | IDENTIFICADOR                                         {printf("l_campo --> EXCEPCION\n");}
   ;
 
 
@@ -426,6 +426,7 @@ op_exp : SI expresion SINO expresion
   ;
 
 expresion_logica : ;
+
 
     
 %%

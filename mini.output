@@ -95,12 +95,12 @@ Gramática
 
     1 programa: inicio_programa bloque_programa
 
-    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' r_cabecera
+    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' l_cabecera
 
-    3 r_cabecera: r_cabecera CABECERA r_rutas ';'
+    3 l_cabecera: l_cabecera CABECERA l_rutas ';'
     4           | %empty
 
-    5 r_rutas: r_rutas ',' RUTA
+    5 l_rutas: l_rutas ',' RUTA
     6        | RUTA
 
     7 $@1: %empty
@@ -462,10 +462,10 @@ No terminales con las reglas donde aparecen
     inicio_programa (95)
         on left: 2
         on right: 1
-    r_cabecera (96)
+    l_cabecera (96)
         on left: 3 4
         on right: 2 3
-    r_rutas (97)
+    l_rutas (97)
         on left: 5 6
         on right: 3 5
     bloque_programa (98)
@@ -713,7 +713,7 @@ Estado 0
 
 Estado 1
 
-    2 inicio_programa: PROGRAMA . IDENTIFICADOR ';' r_cabecera
+    2 inicio_programa: PROGRAMA . IDENTIFICADOR ';' l_cabecera
 
     IDENTIFICADOR  desplazar e ir al estado 4
 
@@ -743,7 +743,7 @@ Estado 3
 
 Estado 4
 
-    2 inicio_programa: PROGRAMA IDENTIFICADOR . ';' r_cabecera
+    2 inicio_programa: PROGRAMA IDENTIFICADOR . ';' l_cabecera
 
     ';'  desplazar e ir al estado 10
 
@@ -790,11 +790,11 @@ Estado 9
 
 Estado 10
 
-    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' . r_cabecera
+    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' . l_cabecera
 
-    $default  reduce usando la regla 4 (r_cabecera)
+    $default  reduce usando la regla 4 (l_cabecera)
 
-    r_cabecera  ir al estado 15
+    l_cabecera  ir al estado 15
 
 
 Estado 11
@@ -835,8 +835,8 @@ Estado 14
 
 Estado 15
 
-    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' r_cabecera .
-    3 r_cabecera: r_cabecera . CABECERA r_rutas ';'
+    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' l_cabecera .
+    3 l_cabecera: l_cabecera . CABECERA l_rutas ';'
 
     CABECERA  desplazar e ir al estado 21
 
@@ -895,11 +895,11 @@ Estado 20
 
 Estado 21
 
-    3 r_cabecera: r_cabecera CABECERA . r_rutas ';'
+    3 l_cabecera: l_cabecera CABECERA . l_rutas ';'
 
     RUTA  desplazar e ir al estado 28
 
-    r_rutas  ir al estado 29
+    l_rutas  ir al estado 29
 
 
 Estado 22
@@ -972,15 +972,15 @@ Estado 27
 
 Estado 28
 
-    6 r_rutas: RUTA .
+    6 l_rutas: RUTA .
 
-    $default  reduce usando la regla 6 (r_rutas)
+    $default  reduce usando la regla 6 (l_rutas)
 
 
 Estado 29
 
-    3 r_cabecera: r_cabecera CABECERA r_rutas . ';'
-    5 r_rutas: r_rutas . ',' RUTA
+    3 l_cabecera: l_cabecera CABECERA l_rutas . ';'
+    5 l_rutas: l_rutas . ',' RUTA
 
     ';'  desplazar e ir al estado 53
     ','  desplazar e ir al estado 54
@@ -1178,14 +1178,14 @@ Estado 52
 
 Estado 53
 
-    3 r_cabecera: r_cabecera CABECERA r_rutas ';' .
+    3 l_cabecera: l_cabecera CABECERA l_rutas ';' .
 
-    $default  reduce usando la regla 3 (r_cabecera)
+    $default  reduce usando la regla 3 (l_cabecera)
 
 
 Estado 54
 
-    5 r_rutas: r_rutas ',' . RUTA
+    5 l_rutas: l_rutas ',' . RUTA
 
     RUTA  desplazar e ir al estado 66
 
@@ -1303,9 +1303,9 @@ Estado 65
 
 Estado 66
 
-    5 r_rutas: r_rutas ',' RUTA .
+    5 l_rutas: l_rutas ',' RUTA .
 
-    $default  reduce usando la regla 5 (r_rutas)
+    $default  reduce usando la regla 5 (l_rutas)
 
 
 Estado 67

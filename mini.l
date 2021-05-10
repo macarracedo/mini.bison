@@ -16,7 +16,8 @@ NUMREALEXP      {NUMREAL}exp((\+|\-)?({DECIMAL}|{OCTAL}|{HEXADEC}))
 CARACTER_SIMPLE (([^'#\n]){1}|(#('|a|b|f|n|r|t|v))|(#[1]?[0-7]{1,2})|(#[hH][1-7]?[0-9A-Fa-f]))
 CARACTER        '{CARACTER_SIMPLE}'
 CADENA          \'({CARACTER_SIMPLE}*(#\n)?)*\'
-RUTA            \|\/?({CARACTER_SIMPLE}+\/)*{CARACTER_SIMPLE}+\|
+RUTA2            \|\/?({CARACTER_SIMPLE}+\/)*{CARACTER_SIMPLE}+\|
+RUTA           [|][/]?[^\n|/]+([/][^\n|/]+)*[|]
 DELIMITADOR     (\{|\}|\(|\)|\:|\;|\,)
 OPERADOR        (\+|\-|\*|\/|\%|\&|\||\@|~|\<|\>|\!|\=|\.|\[|\]|\^|\\)
 
@@ -103,6 +104,8 @@ variables 		{printf("linea %d, palabra reservada: %s\n", yylineno, yytext); retu
 #-              	BEGIN(COMENTARIO);
 <COMENTARIO>.|\n  	;
 <COMENTARIO>-#  	BEGIN(INITIAL);
+
+[ \n\t]     ;
 
 .	printf("linea %d, error\n", yylineno);
 
