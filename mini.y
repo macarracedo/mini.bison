@@ -70,7 +70,7 @@ declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones
   |                                                       {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
   ;
 
-l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo"):}
+l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo");}
   | declaracion_tipo                                      {printf("l_decl_tipo --> declaracion_tipo");}
   ;
 
@@ -421,8 +421,7 @@ operador_unario: '-'
 ;
 
 
-expresion : expresion_logica
-| expresion_logica 'si' expresion 'sino' expresion
+expresion : SI
 ;
 
 
