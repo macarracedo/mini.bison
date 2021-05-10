@@ -1,0 +1,3829 @@
+No terminales inútiles en la gramática
+
+    operador
+    operador_binario
+    operador_unario
+
+
+Terminales no usados en la gramática
+
+    AND
+    EQ
+    FLECHA_DCHA
+    FLECHA_IZDA
+    GE
+    INDIRECCION
+    LE
+    NEQ
+    OR
+    POTENCIA
+    TAMANO
+    '&'
+    '@'
+    '|'
+    '+'
+    '>'
+    '<'
+    '~'
+    '!'
+
+
+Reglas inútiles en la gramática
+
+  180 operador: operador_binario
+  181         | operador_unario
+
+  182 operador_binario: '&'
+  183                 | '@'
+  184                 | '|'
+  185                 | POTENCIA
+  186                 | '+'
+  187                 | FLECHA_IZDA
+  188                 | FLECHA_DCHA
+  189                 | AND
+  190                 | OR
+  191                 | LE
+  192                 | GE
+  193                 | EQ
+  194                 | NEQ
+  195                 | '>'
+  196                 | '<'
+
+  197 operador_unario: '-'
+  198                | '~'
+  199                | '!'
+  200                | TAMANO
+
+
+La regla es inútil debido a los conflictos
+
+   58 l_elemento_hash: %empty
+
+   93 declaraciones_constantes: declaraciones_constantes
+
+   95 declaraciones_variables: declaraciones_variables
+
+   97 rep_declaracion_funcion: %empty
+
+  171 expresion_funcional: %empty
+
+
+Estado 20 conflictos: 3 reducción/reducción
+Estado 52 conflictos: 2 reducción/reducción
+Estado 94 conflictos: 1 reducción/reducción
+Estado 124 conflictos: 1 desplazamiento/reducción
+Estado 140 conflictos: 1 desplazamiento/reducción, 6 reducción/reducción
+Estado 144 conflictos: 1 desplazamiento/reducción
+Estado 148 conflictos: 1 desplazamiento/reducción
+Estado 159 conflictos: 1 desplazamiento/reducción
+Estado 184 conflictos: 3 reducción/reducción
+Estado 185 conflictos: 3 reducción/reducción
+Estado 187 conflictos: 2 desplazamiento/reducción
+Estado 192 conflictos: 1 desplazamiento/reducción, 6 reducción/reducción
+Estado 202 conflictos: 1 reducción/reducción
+Estado 279 conflictos: 1 desplazamiento/reducción
+Estado 283 conflictos: 1 desplazamiento/reducción
+Estado 307 conflictos: 1 desplazamiento/reducción
+Estado 316 conflictos: 1 desplazamiento/reducción
+Estado 319 conflictos: 1 desplazamiento/reducción
+Estado 326 conflictos: 1 desplazamiento/reducción
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: inicio_programa bloque_programa
+
+    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' r_cabecera
+
+    3 r_cabecera: r_cabecera CABECERA r_rutas ';'
+    4           | %empty
+
+    5 r_rutas: r_rutas ',' RUTA
+    6        | RUTA
+
+    7 $@1: %empty
+
+    8 $@2: %empty
+
+    9 $@3: %empty
+
+   10 $@4: %empty
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 declaraciones_variables $@3 declaracion_funcion $@4 bloque_instrucciones
+   12                | error
+
+   13 declaraciones_tipos: TIPOS l_decl_tipo FIN
+   14                    | %empty
+
+   15 l_decl_tipo: l_decl_tipo declaracion_tipo
+   16            | declaracion_tipo
+
+   17 declaracion_tipo: IDENTIFICADOR ES especificacion_tipo ';'
+
+   18 especificacion_tipo: l_ref tipo_basico
+
+   19 l_ref: l_ref REF
+   20      | %empty
+
+   21 tipo_basico: IDENTIFICADOR
+   22            | tipo_escalar
+   23            | tipo_enumerado
+   24            | tipo_estructurado
+
+   25 tipo_escalar: ENTERO
+   26             | REAL
+   27             | CARACTER
+   28             | CADENA
+   29             | FICHERO
+   30             | EXCEPCION
+
+   31 tipo_enumerado: ARRAY DE especificacion_tipo
+   32               | HASH DE especificacion_tipo
+   33               | CONJUNTO DE especificacion_tipo
+
+   34 tipo_estructurado: ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN
+   35                  | ESTRUCTURA PRINCIPIO linea_campo FIN
+   36                  | UNION PRINCIPIO tipo_estructurado linea_campo FIN
+   37                  | UNION PRINCIPIO linea_campo FIN
+
+   38 linea_campo: l_campo ES especificacion_tipo ';'
+
+   39 l_campo: l_campo ',' IDENTIFICADOR
+   40        | IDENTIFICADOR
+
+   41 declaraciones_constantes: CONSTANTES l_declaraciones_constantes FIN
+
+   42 l_declaraciones_constantes: l_declaraciones_constantes declaracion_constante
+   43                           | declaracion_constante
+
+   44 declaracion_constante: IDENTIFICADOR ES tipo_basico '=' constante ';'
+
+   45 constante: CTC_ENTERA
+   46          | CTC_REAL
+   47          | CTC_CARACTER
+   48          | CTC_CADENA
+   49          | constante_enumerada
+   50          | constante_estructurada
+
+   51 constante_enumerada: '(' l_constante ')'
+   52                    | '(' l_elemento_hash ')'
+
+   53 l_constante: rep_constante
+   54            | %empty
+
+   55 rep_constante: rep_constante ',' constante
+   56              | constante
+
+   57 l_elemento_hash: rep_elemento_hash
+   58                | %empty
+
+   59 rep_elemento_hash: rep_elemento_hash ',' elemento_hash
+   60                  | elemento_hash
+
+   61 elemento_hash: CTC_CADENA '-' constante
+
+   62 constante_estructurada: '{' l_campo_constante '}'
+
+   63 l_campo_constante: l_campo_constante ',' campo_constante
+   64                  | campo_constante
+
+   65 campo_constante: IDENTIFICADOR '=' constante
+
+   66 declaraciones_variables: VARIABLES l_declaracion FIN
+
+   67 l_declaracion: l_declaracion declaracion_variables
+   68              | declaracion_variables
+
+   69 declaracion_variables: l_ident ':' especificacion_tipo ';'
+   70                      | l_ident ':' especificacion_tipo '=' l_expr ';'
+
+   71 l_expr: l_expr ',' expresion
+   72       | expresion
+
+   73 l_ident: l_ident ',' IDENTIFICADOR
+   74        | IDENTIFICADOR
+
+   75 declaracion_funcion: FUNCION IDENTIFICADOR '-' tipo_salida cuerpo_funcion
+   76                    | 'f' IDENTIFICADOR lista_parametros '-' tipo_salida cuerpo_funcion
+
+   77 lista_parametros: '(' l_parametros parametros ')'
+
+   78 l_parametros: l_parametros parametros ';'
+   79             | %empty
+
+   80 parametros: rep_ident ':' especificacion_tipo
+   81           | rep_ident ':' especificacion_tipo '=' l_expr_constante
+
+   82 rep_ident: rep_ident ',' IDENTIFICADOR
+   83          | IDENTIFICADOR
+
+   84 l_expr_constante: l_expr_constante ',' expresion_constante
+   85                 | expresion_constante
+
+   86 tipo_salida: especificacion_tipo
+   87            | NADA
+
+   88 cuerpo_funcion: declaraciones_constantes
+   89               | declaraciones_variables
+   90               | rep_declaracion_funcion
+   91               | bloque_instrucciones
+
+   92 declaraciones_constantes: %empty
+   93                         | declaraciones_constantes
+
+   94 declaraciones_variables: %empty
+   95                        | declaraciones_variables
+
+   96 rep_declaracion_funcion: rep_declaracion_funcion declaracion_funcion
+   97                        | %empty
+
+   98 bloque_instrucciones: PRINCIPIO l_instruccion FIN
+
+   99 l_instruccion: l_instruccion instruccion
+  100              | instruccion
+
+  101 instruccion: instruccion_expresion
+  102            | instruccion_bifurcacion
+  103            | instruccion_bucle
+  104            | instruccion_salto
+  105            | instruccion_destino_salto
+  106            | instruccion_devolver
+  107            | instruccion_vacia
+  108            | instruccion_lanzamiento_excepcion
+  109            | instruccion_captura_excepcion
+
+  110 instruccion_expresion: expresion_funcional ';'
+  111                      | asignacion ';'
+
+  112 asignacion: expresion_indexada operador_asignacion expresion
+
+  113 operador_asignacion: '='
+  114                    | SUMA_ASIG
+  115                    | RESTA_ASIG
+  116                    | MULT_ASIG
+  117                    | DIV_ASIG
+  118                    | MOD_ASIG
+  119                    | POT_ASIG
+  120                    | FI_ASIG
+  121                    | FD_ASIG
+  122                    | AND_ASIG
+  123                    | XOR_ASIG
+  124                    | OR_ASIG
+
+  125 instruccion_bifurcacion: SI '(' expresion ')' accion l_otros_casos FIN
+  126                        | SI '(' expresion ')' accion l_otros_casos SINO accion FIN
+
+  127 l_otros_casos: l_otros_casos otros_casos
+  128              | %empty
+
+  129 otros_casos: SI ENCAMBIO '(' expresion ')' accion
+
+  130 accion: instruccion
+  131       | bloque_instrucciones
+
+  132 instruccion_bucle: MIENTRAS '(' expresion ')' accion
+  133                  | HACER accion MIENTRAS '(' expresion ')' ';'
+  134                  | PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
+  135                  | PARA CADA IDENTIFICADOR '(' expresion ')' accion
+
+  136 l_asignaciones: l_asignaciones ',' asignacion
+  137               | asignacion
+
+  138 instruccion_salto: SALTAR IDENTIFICADOR ';'
+  139                  | CONTINUAR ';'
+  140                  | ESCAPE ';'
+
+  141 instruccion_destino_salto: ETIQUETA IDENTIFICADOR ';'
+
+  142 instruccion_devolver: DEVOLVER ';'
+  143                     | DEVOLVER expresion ';'
+
+  144 instruccion_vacia: ';'
+
+  145 instruccion_lanzamiento_excepcion: LANZA EXCEPCION IDENTIFICADOR ';'
+
+  146 instruccion_captura_excepcion: EJECUTA bloque_instrucciones clausulas
+
+  147 clausulas: clausulas_excepcion
+  148          | clausulas_excepcion clausula_defecto
+
+  149 clausulas_excepcion: l_clausula_excepcion_especifica clausula_excepcion_general
+
+  150 l_clausula_excepcion_especifica: l_clausula_excepcion_especifica clausula_excepcion_especifica
+  151                                | %empty
+
+  152 clausula_excepcion_especifica: EXCEPCION IDENTIFICADOR bloque_instrucciones
+
+  153 clausula_excepcion_general: OTRA EXCEPCION bloque_instrucciones
+
+  154 clausula_defecto: DEFECTO bloque_instrucciones
+
+  155 expresion_constante: CTC_ENTERA
+  156                    | CTC_REAL
+  157                    | CTC_CADENA
+  158                    | CTC_CARACTER
+
+  159 expresion_indexada: expresion_basica
+  160                   | expresion_indexada '.' expresion_basica
+  161                   | expresion_indexada '^' expresion_basica
+  162                   | expresion_indexada indice
+  163                   | expresion_indexada '^' indice
+
+  164 expresion_basica: IDENTIFICADOR
+  165                 | '(' expresion ')'
+  166                 | '^' expresion_basica
+  167                 | '\\' expresion_basica
+
+  168 indice: '[' expresion ']'
+  169       | '{' expresion '}'
+
+  170 expresion_funcional: IDENTIFICADOR '(' l_expresion ')'
+  171                    | %empty
+
+  172 l_expresion: l_expresiones
+  173            | %empty
+
+  174 l_expresiones: l_expresiones ',' expresion
+  175              | expresion
+
+  176 expresion: expresion_logica op_exp
+
+  177 op_exp: SI expresion SINO expresion
+  178       | %empty
+
+  179 expresion_logica: %empty
+
+
+Terminales con las reglas donde aparecen
+
+    $end (0) 0
+    '!' (33)
+    '&' (38)
+    '(' (40) 51 52 77 125 126 129 132 133 134 135 165 170
+    ')' (41) 51 52 77 125 126 129 132 133 134 135 165 170
+    '+' (43)
+    ',' (44) 5 39 55 59 63 71 73 82 84 136 174
+    '-' (45) 61 75 76
+    '.' (46) 160
+    ':' (58) 69 70 80 81
+    ';' (59) 2 3 17 38 44 69 70 78 110 111 133 134 138 139 140 141 142 143 144 145
+    '<' (60)
+    '=' (61) 44 65 70 81 113
+    '>' (62)
+    '@' (64)
+    '[' (91) 168
+    '\\' (92) 167
+    ']' (93) 168
+    '^' (94) 161 163 166
+    'f' (102) 76
+    '{' (123) 62 169
+    '|' (124)
+    '}' (125) 62 169
+    '~' (126)
+    error (256) 12
+    AND (258)
+    AND_ASIG (259) 122
+    ARRAY (260) 31
+    CABECERA (261) 3
+    CADA (262) 135
+    CADENA (263) 28
+    CARACTER (264) 27
+    CONJUNTO (265) 33
+    CONSTANTES (266) 41
+    CONTINUAR (267) 139
+    CTC_CADENA (268) 48 61 157
+    CTC_CARACTER (269) 47 158
+    CTC_ENTERA (270) 45 155
+    CTC_REAL (271) 46 156
+    DE (272) 31 32 33
+    DEFECTO (273) 154
+    DIV_ASIG (274) 117
+    DEVOLVER (275) 142 143
+    EJECUTA (276) 146
+    ENCAMBIO (277) 129
+    ENTERO (278) 25
+    EQ (279)
+    ES (280) 17 38 44
+    ESCAPE (281) 140
+    ESTRUCTURA (282) 34 35
+    ETIQUETA (283) 141
+    EXCEPCION (284) 30 145 152 153
+    FD_ASIG (285) 121
+    FI_ASIG (286) 120
+    FLECHA_DCHA (287)
+    FLECHA_IZDA (288)
+    FICHERO (289) 29
+    FIN (290) 13 34 35 36 37 41 66 98 125 126
+    FUNCION (291) 75
+    HACER (292) 133
+    HASH (293) 32
+    GE (294)
+    IDENTIFICADOR (295) 2 17 21 39 40 44 65 73 74 75 76 82 83 135 138 141 145 152 164 170
+    INDIRECCION (296)
+    LANZA (297) 145
+    LE (298)
+    MIENTRAS (299) 132 133
+    MOD_ASIG (300) 118
+    MULT_ASIG (301) 116
+    NADA (302) 87
+    NEQ (303)
+    OR (304)
+    OTRA (305) 153
+    OR_ASIG (306) 124
+    PARA (307) 134 135
+    POT_ASIG (308) 119
+    PRINCIPIO (309) 34 35 36 37 98
+    PROGRAMA (310) 2
+    POTENCIA (311)
+    REAL (312) 26
+    REF (313) 19
+    RESTA_ASIG (314) 115
+    RUTA (315) 5 6
+    SALTAR (316) 138
+    SI (317) 125 126 129 177
+    SINO (318) 126 177
+    SUMA_ASIG (319) 114
+    TAMANO (320)
+    TIPOS (321) 13
+    UNION (322) 36 37
+    VARIABLES (323) 66
+    XOR_ASIG (324) 123
+
+
+No terminales con las reglas donde aparecen
+
+    $accept (93)
+        on left: 0
+    programa (94)
+        on left: 1
+        on right: 0
+    inicio_programa (95)
+        on left: 2
+        on right: 1
+    r_cabecera (96)
+        on left: 3 4
+        on right: 2 3
+    r_rutas (97)
+        on left: 5 6
+        on right: 3 5
+    bloque_programa (98)
+        on left: 11 12
+        on right: 1
+    $@1 (99)
+        on left: 7
+        on right: 11
+    $@2 (100)
+        on left: 8
+        on right: 11
+    $@3 (101)
+        on left: 9
+        on right: 11
+    $@4 (102)
+        on left: 10
+        on right: 11
+    declaraciones_tipos (103)
+        on left: 13 14
+        on right: 11
+    l_decl_tipo (104)
+        on left: 15 16
+        on right: 13 15
+    declaracion_tipo (105)
+        on left: 17
+        on right: 15 16
+    especificacion_tipo (106)
+        on left: 18
+        on right: 17 31 32 33 38 69 70 80 81 86
+    l_ref (107)
+        on left: 19 20
+        on right: 18 19
+    tipo_basico (108)
+        on left: 21 22 23 24
+        on right: 18 44
+    tipo_escalar (109)
+        on left: 25 26 27 28 29 30
+        on right: 22
+    tipo_enumerado (110)
+        on left: 31 32 33
+        on right: 23
+    tipo_estructurado (111)
+        on left: 34 35 36 37
+        on right: 24 34 36
+    linea_campo (112)
+        on left: 38
+        on right: 34 35 36 37
+    l_campo (113)
+        on left: 39 40
+        on right: 38 39
+    declaraciones_constantes (114)
+        on left: 41 92 93
+        on right: 11 88 93
+    l_declaraciones_constantes (115)
+        on left: 42 43
+        on right: 41 42
+    declaracion_constante (116)
+        on left: 44
+        on right: 42 43
+    constante (117)
+        on left: 45 46 47 48 49 50
+        on right: 44 55 56 61 65
+    constante_enumerada (118)
+        on left: 51 52
+        on right: 49
+    l_constante (119)
+        on left: 53 54
+        on right: 51
+    rep_constante (120)
+        on left: 55 56
+        on right: 53 55
+    l_elemento_hash (121)
+        on left: 57 58
+        on right: 52
+    rep_elemento_hash (122)
+        on left: 59 60
+        on right: 57 59
+    elemento_hash (123)
+        on left: 61
+        on right: 59 60
+    constante_estructurada (124)
+        on left: 62
+        on right: 50
+    l_campo_constante (125)
+        on left: 63 64
+        on right: 62 63
+    campo_constante (126)
+        on left: 65
+        on right: 63 64
+    declaraciones_variables (127)
+        on left: 66 94 95
+        on right: 11 89 95
+    l_declaracion (128)
+        on left: 67 68
+        on right: 66 67
+    declaracion_variables (129)
+        on left: 69 70
+        on right: 67 68
+    l_expr (130)
+        on left: 71 72
+        on right: 70 71
+    l_ident (131)
+        on left: 73 74
+        on right: 69 70 73
+    declaracion_funcion (132)
+        on left: 75 76
+        on right: 11 96
+    lista_parametros (133)
+        on left: 77
+        on right: 76
+    l_parametros (134)
+        on left: 78 79
+        on right: 77 78
+    parametros (135)
+        on left: 80 81
+        on right: 77 78
+    rep_ident (136)
+        on left: 82 83
+        on right: 80 81 82
+    l_expr_constante (137)
+        on left: 84 85
+        on right: 81 84
+    tipo_salida (138)
+        on left: 86 87
+        on right: 75 76
+    cuerpo_funcion (139)
+        on left: 88 89 90 91
+        on right: 75 76
+    rep_declaracion_funcion (140)
+        on left: 96 97
+        on right: 90 96
+    bloque_instrucciones (141)
+        on left: 98
+        on right: 11 91 131 146 152 153 154
+    l_instruccion (142)
+        on left: 99 100
+        on right: 98 99
+    instruccion (143)
+        on left: 101 102 103 104 105 106 107 108 109
+        on right: 99 100 130
+    instruccion_expresion (144)
+        on left: 110 111
+        on right: 101
+    asignacion (145)
+        on left: 112
+        on right: 111 136 137
+    operador_asignacion (146)
+        on left: 113 114 115 116 117 118 119 120 121 122 123 124
+        on right: 112
+    instruccion_bifurcacion (147)
+        on left: 125 126
+        on right: 102
+    l_otros_casos (148)
+        on left: 127 128
+        on right: 125 126 127
+    otros_casos (149)
+        on left: 129
+        on right: 127
+    accion (150)
+        on left: 130 131
+        on right: 125 126 129 132 133 134 135
+    instruccion_bucle (151)
+        on left: 132 133 134 135
+        on right: 103
+    l_asignaciones (152)
+        on left: 136 137
+        on right: 134 136
+    instruccion_salto (153)
+        on left: 138 139 140
+        on right: 104
+    instruccion_destino_salto (154)
+        on left: 141
+        on right: 105
+    instruccion_devolver (155)
+        on left: 142 143
+        on right: 106
+    instruccion_vacia (156)
+        on left: 144
+        on right: 107
+    instruccion_lanzamiento_excepcion (157)
+        on left: 145
+        on right: 108
+    instruccion_captura_excepcion (158)
+        on left: 146
+        on right: 109
+    clausulas (159)
+        on left: 147 148
+        on right: 146
+    clausulas_excepcion (160)
+        on left: 149
+        on right: 147 148
+    l_clausula_excepcion_especifica (161)
+        on left: 150 151
+        on right: 149 150
+    clausula_excepcion_especifica (162)
+        on left: 152
+        on right: 150
+    clausula_excepcion_general (163)
+        on left: 153
+        on right: 149
+    clausula_defecto (164)
+        on left: 154
+        on right: 148
+    expresion_constante (165)
+        on left: 155 156 157 158
+        on right: 84 85
+    expresion_indexada (166)
+        on left: 159 160 161 162 163
+        on right: 112 160 161 162 163
+    expresion_basica (167)
+        on left: 164 165 166 167
+        on right: 159 160 161 166 167
+    indice (168)
+        on left: 168 169
+        on right: 162 163
+    expresion_funcional (169)
+        on left: 170 171
+        on right: 110
+    l_expresion (170)
+        on left: 172 173
+        on right: 170
+    l_expresiones (171)
+        on left: 174 175
+        on right: 172 174
+    expresion (172)
+        on left: 176
+        on right: 71 72 112 125 126 129 132 133 134 135 143 165 168 169 174 175 177
+    op_exp (173)
+        on left: 177 178
+        on right: 176
+    expresion_logica (174)
+        on left: 179
+        on right: 176
+
+
+Estado 0
+
+    0 $accept: . programa $end
+
+    PROGRAMA  desplazar e ir al estado 1
+
+    programa         ir al estado 2
+    inicio_programa  ir al estado 3
+
+
+Estado 1
+
+    2 inicio_programa: PROGRAMA . IDENTIFICADOR ';' r_cabecera
+
+    IDENTIFICADOR  desplazar e ir al estado 4
+
+
+Estado 2
+
+    0 $accept: programa . $end
+
+    $end  desplazar e ir al estado 5
+
+
+Estado 3
+
+    1 programa: inicio_programa . bloque_programa
+
+    error  desplazar e ir al estado 6
+    TIPOS  desplazar e ir al estado 7
+
+    CONSTANTES  reduce usando la regla 14 (declaraciones_tipos)
+    FUNCION     reduce usando la regla 14 (declaraciones_tipos)
+    VARIABLES   reduce usando la regla 14 (declaraciones_tipos)
+    'f'         reduce usando la regla 14 (declaraciones_tipos)
+
+    bloque_programa      ir al estado 8
+    declaraciones_tipos  ir al estado 9
+
+
+Estado 4
+
+    2 inicio_programa: PROGRAMA IDENTIFICADOR . ';' r_cabecera
+
+    ';'  desplazar e ir al estado 10
+
+
+Estado 5
+
+    0 $accept: programa $end .
+
+    $default  aceptar
+
+
+Estado 6
+
+   12 bloque_programa: error .
+
+    $default  reduce usando la regla 12 (bloque_programa)
+
+
+Estado 7
+
+   13 declaraciones_tipos: TIPOS . l_decl_tipo FIN
+
+    IDENTIFICADOR  desplazar e ir al estado 11
+
+    l_decl_tipo       ir al estado 12
+    declaracion_tipo  ir al estado 13
+
+
+Estado 8
+
+    1 programa: inicio_programa bloque_programa .
+
+    $default  reduce usando la regla 1 (programa)
+
+
+Estado 9
+
+   11 bloque_programa: declaraciones_tipos . $@1 declaraciones_constantes $@2 declaraciones_variables $@3 declaracion_funcion $@4 bloque_instrucciones
+
+    $default  reduce usando la regla 7 ($@1)
+
+    $@1  ir al estado 14
+
+
+Estado 10
+
+    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' . r_cabecera
+
+    $default  reduce usando la regla 4 (r_cabecera)
+
+    r_cabecera  ir al estado 15
+
+
+Estado 11
+
+   17 declaracion_tipo: IDENTIFICADOR . ES especificacion_tipo ';'
+
+    ES  desplazar e ir al estado 16
+
+
+Estado 12
+
+   13 declaraciones_tipos: TIPOS l_decl_tipo . FIN
+   15 l_decl_tipo: l_decl_tipo . declaracion_tipo
+
+    FIN            desplazar e ir al estado 17
+    IDENTIFICADOR  desplazar e ir al estado 11
+
+    declaracion_tipo  ir al estado 18
+
+
+Estado 13
+
+   16 l_decl_tipo: declaracion_tipo .
+
+    $default  reduce usando la regla 16 (l_decl_tipo)
+
+
+Estado 14
+
+   11 bloque_programa: declaraciones_tipos $@1 . declaraciones_constantes $@2 declaraciones_variables $@3 declaracion_funcion $@4 bloque_instrucciones
+
+    CONSTANTES  desplazar e ir al estado 19
+
+    $default  reduce usando la regla 92 (declaraciones_constantes)
+
+    declaraciones_constantes  ir al estado 20
+
+
+Estado 15
+
+    2 inicio_programa: PROGRAMA IDENTIFICADOR ';' r_cabecera .
+    3 r_cabecera: r_cabecera . CABECERA r_rutas ';'
+
+    CABECERA  desplazar e ir al estado 21
+
+    $default  reduce usando la regla 2 (inicio_programa)
+
+
+Estado 16
+
+   17 declaracion_tipo: IDENTIFICADOR ES . especificacion_tipo ';'
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 22
+    l_ref                ir al estado 23
+
+
+Estado 17
+
+   13 declaraciones_tipos: TIPOS l_decl_tipo FIN .
+
+    $default  reduce usando la regla 13 (declaraciones_tipos)
+
+
+Estado 18
+
+   15 l_decl_tipo: l_decl_tipo declaracion_tipo .
+
+    $default  reduce usando la regla 15 (l_decl_tipo)
+
+
+Estado 19
+
+   41 declaraciones_constantes: CONSTANTES . l_declaraciones_constantes FIN
+
+    IDENTIFICADOR  desplazar e ir al estado 24
+
+    l_declaraciones_constantes  ir al estado 25
+    declaracion_constante       ir al estado 26
+
+
+Estado 20
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes . $@2 declaraciones_variables $@3 declaracion_funcion $@4 bloque_instrucciones
+   93 declaraciones_constantes: declaraciones_constantes .
+
+    FUNCION    reduce usando la regla 8 ($@2)
+    FUNCION    [reduce usando la regla 93 (declaraciones_constantes)]
+    VARIABLES  reduce usando la regla 8 ($@2)
+    VARIABLES  [reduce usando la regla 93 (declaraciones_constantes)]
+    'f'        reduce usando la regla 8 ($@2)
+    'f'        [reduce usando la regla 93 (declaraciones_constantes)]
+    $default   reduce usando la regla 8 ($@2)
+
+    $@2  ir al estado 27
+
+
+Estado 21
+
+    3 r_cabecera: r_cabecera CABECERA . r_rutas ';'
+
+    RUTA  desplazar e ir al estado 28
+
+    r_rutas  ir al estado 29
+
+
+Estado 22
+
+   17 declaracion_tipo: IDENTIFICADOR ES especificacion_tipo . ';'
+
+    ';'  desplazar e ir al estado 30
+
+
+Estado 23
+
+   18 especificacion_tipo: l_ref . tipo_basico
+   19 l_ref: l_ref . REF
+
+    ARRAY          desplazar e ir al estado 31
+    CADENA         desplazar e ir al estado 32
+    CARACTER       desplazar e ir al estado 33
+    CONJUNTO       desplazar e ir al estado 34
+    ENTERO         desplazar e ir al estado 35
+    ESTRUCTURA     desplazar e ir al estado 36
+    EXCEPCION      desplazar e ir al estado 37
+    FICHERO        desplazar e ir al estado 38
+    HASH           desplazar e ir al estado 39
+    IDENTIFICADOR  desplazar e ir al estado 40
+    REAL           desplazar e ir al estado 41
+    REF            desplazar e ir al estado 42
+    UNION          desplazar e ir al estado 43
+
+    tipo_basico        ir al estado 44
+    tipo_escalar       ir al estado 45
+    tipo_enumerado     ir al estado 46
+    tipo_estructurado  ir al estado 47
+
+
+Estado 24
+
+   44 declaracion_constante: IDENTIFICADOR . ES tipo_basico '=' constante ';'
+
+    ES  desplazar e ir al estado 48
+
+
+Estado 25
+
+   41 declaraciones_constantes: CONSTANTES l_declaraciones_constantes . FIN
+   42 l_declaraciones_constantes: l_declaraciones_constantes . declaracion_constante
+
+    FIN            desplazar e ir al estado 49
+    IDENTIFICADOR  desplazar e ir al estado 24
+
+    declaracion_constante  ir al estado 50
+
+
+Estado 26
+
+   43 l_declaraciones_constantes: declaracion_constante .
+
+    $default  reduce usando la regla 43 (l_declaraciones_constantes)
+
+
+Estado 27
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 . declaraciones_variables $@3 declaracion_funcion $@4 bloque_instrucciones
+
+    VARIABLES  desplazar e ir al estado 51
+
+    $default  reduce usando la regla 94 (declaraciones_variables)
+
+    declaraciones_variables  ir al estado 52
+
+
+Estado 28
+
+    6 r_rutas: RUTA .
+
+    $default  reduce usando la regla 6 (r_rutas)
+
+
+Estado 29
+
+    3 r_cabecera: r_cabecera CABECERA r_rutas . ';'
+    5 r_rutas: r_rutas . ',' RUTA
+
+    ';'  desplazar e ir al estado 53
+    ','  desplazar e ir al estado 54
+
+
+Estado 30
+
+   17 declaracion_tipo: IDENTIFICADOR ES especificacion_tipo ';' .
+
+    $default  reduce usando la regla 17 (declaracion_tipo)
+
+
+Estado 31
+
+   31 tipo_enumerado: ARRAY . DE especificacion_tipo
+
+    DE  desplazar e ir al estado 55
+
+
+Estado 32
+
+   28 tipo_escalar: CADENA .
+
+    $default  reduce usando la regla 28 (tipo_escalar)
+
+
+Estado 33
+
+   27 tipo_escalar: CARACTER .
+
+    $default  reduce usando la regla 27 (tipo_escalar)
+
+
+Estado 34
+
+   33 tipo_enumerado: CONJUNTO . DE especificacion_tipo
+
+    DE  desplazar e ir al estado 56
+
+
+Estado 35
+
+   25 tipo_escalar: ENTERO .
+
+    $default  reduce usando la regla 25 (tipo_escalar)
+
+
+Estado 36
+
+   34 tipo_estructurado: ESTRUCTURA . PRINCIPIO tipo_estructurado linea_campo FIN
+   35                  | ESTRUCTURA . PRINCIPIO linea_campo FIN
+
+    PRINCIPIO  desplazar e ir al estado 57
+
+
+Estado 37
+
+   30 tipo_escalar: EXCEPCION .
+
+    $default  reduce usando la regla 30 (tipo_escalar)
+
+
+Estado 38
+
+   29 tipo_escalar: FICHERO .
+
+    $default  reduce usando la regla 29 (tipo_escalar)
+
+
+Estado 39
+
+   32 tipo_enumerado: HASH . DE especificacion_tipo
+
+    DE  desplazar e ir al estado 58
+
+
+Estado 40
+
+   21 tipo_basico: IDENTIFICADOR .
+
+    $default  reduce usando la regla 21 (tipo_basico)
+
+
+Estado 41
+
+   26 tipo_escalar: REAL .
+
+    $default  reduce usando la regla 26 (tipo_escalar)
+
+
+Estado 42
+
+   19 l_ref: l_ref REF .
+
+    $default  reduce usando la regla 19 (l_ref)
+
+
+Estado 43
+
+   36 tipo_estructurado: UNION . PRINCIPIO tipo_estructurado linea_campo FIN
+   37                  | UNION . PRINCIPIO linea_campo FIN
+
+    PRINCIPIO  desplazar e ir al estado 59
+
+
+Estado 44
+
+   18 especificacion_tipo: l_ref tipo_basico .
+
+    $default  reduce usando la regla 18 (especificacion_tipo)
+
+
+Estado 45
+
+   22 tipo_basico: tipo_escalar .
+
+    $default  reduce usando la regla 22 (tipo_basico)
+
+
+Estado 46
+
+   23 tipo_basico: tipo_enumerado .
+
+    $default  reduce usando la regla 23 (tipo_basico)
+
+
+Estado 47
+
+   24 tipo_basico: tipo_estructurado .
+
+    $default  reduce usando la regla 24 (tipo_basico)
+
+
+Estado 48
+
+   44 declaracion_constante: IDENTIFICADOR ES . tipo_basico '=' constante ';'
+
+    ARRAY          desplazar e ir al estado 31
+    CADENA         desplazar e ir al estado 32
+    CARACTER       desplazar e ir al estado 33
+    CONJUNTO       desplazar e ir al estado 34
+    ENTERO         desplazar e ir al estado 35
+    ESTRUCTURA     desplazar e ir al estado 36
+    EXCEPCION      desplazar e ir al estado 37
+    FICHERO        desplazar e ir al estado 38
+    HASH           desplazar e ir al estado 39
+    IDENTIFICADOR  desplazar e ir al estado 40
+    REAL           desplazar e ir al estado 41
+    UNION          desplazar e ir al estado 43
+
+    tipo_basico        ir al estado 60
+    tipo_escalar       ir al estado 45
+    tipo_enumerado     ir al estado 46
+    tipo_estructurado  ir al estado 47
+
+
+Estado 49
+
+   41 declaraciones_constantes: CONSTANTES l_declaraciones_constantes FIN .
+
+    $default  reduce usando la regla 41 (declaraciones_constantes)
+
+
+Estado 50
+
+   42 l_declaraciones_constantes: l_declaraciones_constantes declaracion_constante .
+
+    $default  reduce usando la regla 42 (l_declaraciones_constantes)
+
+
+Estado 51
+
+   66 declaraciones_variables: VARIABLES . l_declaracion FIN
+
+    IDENTIFICADOR  desplazar e ir al estado 61
+
+    l_declaracion          ir al estado 62
+    declaracion_variables  ir al estado 63
+    l_ident                ir al estado 64
+
+
+Estado 52
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 declaraciones_variables . $@3 declaracion_funcion $@4 bloque_instrucciones
+   95 declaraciones_variables: declaraciones_variables .
+
+    FUNCION   reduce usando la regla 9 ($@3)
+    FUNCION   [reduce usando la regla 95 (declaraciones_variables)]
+    'f'       reduce usando la regla 9 ($@3)
+    'f'       [reduce usando la regla 95 (declaraciones_variables)]
+    $default  reduce usando la regla 9 ($@3)
+
+    $@3  ir al estado 65
+
+
+Estado 53
+
+    3 r_cabecera: r_cabecera CABECERA r_rutas ';' .
+
+    $default  reduce usando la regla 3 (r_cabecera)
+
+
+Estado 54
+
+    5 r_rutas: r_rutas ',' . RUTA
+
+    RUTA  desplazar e ir al estado 66
+
+
+Estado 55
+
+   31 tipo_enumerado: ARRAY DE . especificacion_tipo
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 67
+    l_ref                ir al estado 23
+
+
+Estado 56
+
+   33 tipo_enumerado: CONJUNTO DE . especificacion_tipo
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 68
+    l_ref                ir al estado 23
+
+
+Estado 57
+
+   34 tipo_estructurado: ESTRUCTURA PRINCIPIO . tipo_estructurado linea_campo FIN
+   35                  | ESTRUCTURA PRINCIPIO . linea_campo FIN
+
+    ESTRUCTURA     desplazar e ir al estado 36
+    IDENTIFICADOR  desplazar e ir al estado 69
+    UNION          desplazar e ir al estado 43
+
+    tipo_estructurado  ir al estado 70
+    linea_campo        ir al estado 71
+    l_campo            ir al estado 72
+
+
+Estado 58
+
+   32 tipo_enumerado: HASH DE . especificacion_tipo
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 73
+    l_ref                ir al estado 23
+
+
+Estado 59
+
+   36 tipo_estructurado: UNION PRINCIPIO . tipo_estructurado linea_campo FIN
+   37                  | UNION PRINCIPIO . linea_campo FIN
+
+    ESTRUCTURA     desplazar e ir al estado 36
+    IDENTIFICADOR  desplazar e ir al estado 69
+    UNION          desplazar e ir al estado 43
+
+    tipo_estructurado  ir al estado 74
+    linea_campo        ir al estado 75
+    l_campo            ir al estado 72
+
+
+Estado 60
+
+   44 declaracion_constante: IDENTIFICADOR ES tipo_basico . '=' constante ';'
+
+    '='  desplazar e ir al estado 76
+
+
+Estado 61
+
+   74 l_ident: IDENTIFICADOR .
+
+    $default  reduce usando la regla 74 (l_ident)
+
+
+Estado 62
+
+   66 declaraciones_variables: VARIABLES l_declaracion . FIN
+   67 l_declaracion: l_declaracion . declaracion_variables
+
+    FIN            desplazar e ir al estado 77
+    IDENTIFICADOR  desplazar e ir al estado 61
+
+    declaracion_variables  ir al estado 78
+    l_ident                ir al estado 64
+
+
+Estado 63
+
+   68 l_declaracion: declaracion_variables .
+
+    $default  reduce usando la regla 68 (l_declaracion)
+
+
+Estado 64
+
+   69 declaracion_variables: l_ident . ':' especificacion_tipo ';'
+   70                      | l_ident . ':' especificacion_tipo '=' l_expr ';'
+   73 l_ident: l_ident . ',' IDENTIFICADOR
+
+    ','  desplazar e ir al estado 79
+    ':'  desplazar e ir al estado 80
+
+
+Estado 65
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 declaraciones_variables $@3 . declaracion_funcion $@4 bloque_instrucciones
+
+    FUNCION  desplazar e ir al estado 81
+    'f'      desplazar e ir al estado 82
+
+    declaracion_funcion  ir al estado 83
+
+
+Estado 66
+
+    5 r_rutas: r_rutas ',' RUTA .
+
+    $default  reduce usando la regla 5 (r_rutas)
+
+
+Estado 67
+
+   31 tipo_enumerado: ARRAY DE especificacion_tipo .
+
+    $default  reduce usando la regla 31 (tipo_enumerado)
+
+
+Estado 68
+
+   33 tipo_enumerado: CONJUNTO DE especificacion_tipo .
+
+    $default  reduce usando la regla 33 (tipo_enumerado)
+
+
+Estado 69
+
+   40 l_campo: IDENTIFICADOR .
+
+    $default  reduce usando la regla 40 (l_campo)
+
+
+Estado 70
+
+   34 tipo_estructurado: ESTRUCTURA PRINCIPIO tipo_estructurado . linea_campo FIN
+
+    IDENTIFICADOR  desplazar e ir al estado 69
+
+    linea_campo  ir al estado 84
+    l_campo      ir al estado 72
+
+
+Estado 71
+
+   35 tipo_estructurado: ESTRUCTURA PRINCIPIO linea_campo . FIN
+
+    FIN  desplazar e ir al estado 85
+
+
+Estado 72
+
+   38 linea_campo: l_campo . ES especificacion_tipo ';'
+   39 l_campo: l_campo . ',' IDENTIFICADOR
+
+    ES   desplazar e ir al estado 86
+    ','  desplazar e ir al estado 87
+
+
+Estado 73
+
+   32 tipo_enumerado: HASH DE especificacion_tipo .
+
+    $default  reduce usando la regla 32 (tipo_enumerado)
+
+
+Estado 74
+
+   36 tipo_estructurado: UNION PRINCIPIO tipo_estructurado . linea_campo FIN
+
+    IDENTIFICADOR  desplazar e ir al estado 69
+
+    linea_campo  ir al estado 88
+    l_campo      ir al estado 72
+
+
+Estado 75
+
+   37 tipo_estructurado: UNION PRINCIPIO linea_campo . FIN
+
+    FIN  desplazar e ir al estado 89
+
+
+Estado 76
+
+   44 declaracion_constante: IDENTIFICADOR ES tipo_basico '=' . constante ';'
+
+    CTC_CADENA    desplazar e ir al estado 90
+    CTC_CARACTER  desplazar e ir al estado 91
+    CTC_ENTERA    desplazar e ir al estado 92
+    CTC_REAL      desplazar e ir al estado 93
+    '('           desplazar e ir al estado 94
+    '{'           desplazar e ir al estado 95
+
+    constante               ir al estado 96
+    constante_enumerada     ir al estado 97
+    constante_estructurada  ir al estado 98
+
+
+Estado 77
+
+   66 declaraciones_variables: VARIABLES l_declaracion FIN .
+
+    $default  reduce usando la regla 66 (declaraciones_variables)
+
+
+Estado 78
+
+   67 l_declaracion: l_declaracion declaracion_variables .
+
+    $default  reduce usando la regla 67 (l_declaracion)
+
+
+Estado 79
+
+   73 l_ident: l_ident ',' . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 99
+
+
+Estado 80
+
+   69 declaracion_variables: l_ident ':' . especificacion_tipo ';'
+   70                      | l_ident ':' . especificacion_tipo '=' l_expr ';'
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 100
+    l_ref                ir al estado 23
+
+
+Estado 81
+
+   75 declaracion_funcion: FUNCION . IDENTIFICADOR '-' tipo_salida cuerpo_funcion
+
+    IDENTIFICADOR  desplazar e ir al estado 101
+
+
+Estado 82
+
+   76 declaracion_funcion: 'f' . IDENTIFICADOR lista_parametros '-' tipo_salida cuerpo_funcion
+
+    IDENTIFICADOR  desplazar e ir al estado 102
+
+
+Estado 83
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 declaraciones_variables $@3 declaracion_funcion . $@4 bloque_instrucciones
+
+    $default  reduce usando la regla 10 ($@4)
+
+    $@4  ir al estado 103
+
+
+Estado 84
+
+   34 tipo_estructurado: ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo . FIN
+
+    FIN  desplazar e ir al estado 104
+
+
+Estado 85
+
+   35 tipo_estructurado: ESTRUCTURA PRINCIPIO linea_campo FIN .
+
+    $default  reduce usando la regla 35 (tipo_estructurado)
+
+
+Estado 86
+
+   38 linea_campo: l_campo ES . especificacion_tipo ';'
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 105
+    l_ref                ir al estado 23
+
+
+Estado 87
+
+   39 l_campo: l_campo ',' . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 106
+
+
+Estado 88
+
+   36 tipo_estructurado: UNION PRINCIPIO tipo_estructurado linea_campo . FIN
+
+    FIN  desplazar e ir al estado 107
+
+
+Estado 89
+
+   37 tipo_estructurado: UNION PRINCIPIO linea_campo FIN .
+
+    $default  reduce usando la regla 37 (tipo_estructurado)
+
+
+Estado 90
+
+   48 constante: CTC_CADENA .
+
+    $default  reduce usando la regla 48 (constante)
+
+
+Estado 91
+
+   47 constante: CTC_CARACTER .
+
+    $default  reduce usando la regla 47 (constante)
+
+
+Estado 92
+
+   45 constante: CTC_ENTERA .
+
+    $default  reduce usando la regla 45 (constante)
+
+
+Estado 93
+
+   46 constante: CTC_REAL .
+
+    $default  reduce usando la regla 46 (constante)
+
+
+Estado 94
+
+   51 constante_enumerada: '(' . l_constante ')'
+   52                    | '(' . l_elemento_hash ')'
+
+    CTC_CADENA    desplazar e ir al estado 108
+    CTC_CARACTER  desplazar e ir al estado 91
+    CTC_ENTERA    desplazar e ir al estado 92
+    CTC_REAL      desplazar e ir al estado 93
+    '('           desplazar e ir al estado 94
+    '{'           desplazar e ir al estado 95
+
+    ')'       reduce usando la regla 54 (l_constante)
+    ')'       [reduce usando la regla 58 (l_elemento_hash)]
+    $default  reduce usando la regla 54 (l_constante)
+
+    constante               ir al estado 109
+    constante_enumerada     ir al estado 97
+    l_constante             ir al estado 110
+    rep_constante           ir al estado 111
+    l_elemento_hash         ir al estado 112
+    rep_elemento_hash       ir al estado 113
+    elemento_hash           ir al estado 114
+    constante_estructurada  ir al estado 98
+
+
+Estado 95
+
+   62 constante_estructurada: '{' . l_campo_constante '}'
+
+    IDENTIFICADOR  desplazar e ir al estado 115
+
+    l_campo_constante  ir al estado 116
+    campo_constante    ir al estado 117
+
+
+Estado 96
+
+   44 declaracion_constante: IDENTIFICADOR ES tipo_basico '=' constante . ';'
+
+    ';'  desplazar e ir al estado 118
+
+
+Estado 97
+
+   49 constante: constante_enumerada .
+
+    $default  reduce usando la regla 49 (constante)
+
+
+Estado 98
+
+   50 constante: constante_estructurada .
+
+    $default  reduce usando la regla 50 (constante)
+
+
+Estado 99
+
+   73 l_ident: l_ident ',' IDENTIFICADOR .
+
+    $default  reduce usando la regla 73 (l_ident)
+
+
+Estado 100
+
+   69 declaracion_variables: l_ident ':' especificacion_tipo . ';'
+   70                      | l_ident ':' especificacion_tipo . '=' l_expr ';'
+
+    ';'  desplazar e ir al estado 119
+    '='  desplazar e ir al estado 120
+
+
+Estado 101
+
+   75 declaracion_funcion: FUNCION IDENTIFICADOR . '-' tipo_salida cuerpo_funcion
+
+    '-'  desplazar e ir al estado 121
+
+
+Estado 102
+
+   76 declaracion_funcion: 'f' IDENTIFICADOR . lista_parametros '-' tipo_salida cuerpo_funcion
+
+    '('  desplazar e ir al estado 122
+
+    lista_parametros  ir al estado 123
+
+
+Estado 103
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 declaraciones_variables $@3 declaracion_funcion $@4 . bloque_instrucciones
+
+    PRINCIPIO  desplazar e ir al estado 124
+
+    bloque_instrucciones  ir al estado 125
+
+
+Estado 104
+
+   34 tipo_estructurado: ESTRUCTURA PRINCIPIO tipo_estructurado linea_campo FIN .
+
+    $default  reduce usando la regla 34 (tipo_estructurado)
+
+
+Estado 105
+
+   38 linea_campo: l_campo ES especificacion_tipo . ';'
+
+    ';'  desplazar e ir al estado 126
+
+
+Estado 106
+
+   39 l_campo: l_campo ',' IDENTIFICADOR .
+
+    $default  reduce usando la regla 39 (l_campo)
+
+
+Estado 107
+
+   36 tipo_estructurado: UNION PRINCIPIO tipo_estructurado linea_campo FIN .
+
+    $default  reduce usando la regla 36 (tipo_estructurado)
+
+
+Estado 108
+
+   48 constante: CTC_CADENA .
+   61 elemento_hash: CTC_CADENA . '-' constante
+
+    '-'  desplazar e ir al estado 127
+
+    $default  reduce usando la regla 48 (constante)
+
+
+Estado 109
+
+   56 rep_constante: constante .
+
+    $default  reduce usando la regla 56 (rep_constante)
+
+
+Estado 110
+
+   51 constante_enumerada: '(' l_constante . ')'
+
+    ')'  desplazar e ir al estado 128
+
+
+Estado 111
+
+   53 l_constante: rep_constante .
+   55 rep_constante: rep_constante . ',' constante
+
+    ','  desplazar e ir al estado 129
+
+    $default  reduce usando la regla 53 (l_constante)
+
+
+Estado 112
+
+   52 constante_enumerada: '(' l_elemento_hash . ')'
+
+    ')'  desplazar e ir al estado 130
+
+
+Estado 113
+
+   57 l_elemento_hash: rep_elemento_hash .
+   59 rep_elemento_hash: rep_elemento_hash . ',' elemento_hash
+
+    ','  desplazar e ir al estado 131
+
+    $default  reduce usando la regla 57 (l_elemento_hash)
+
+
+Estado 114
+
+   60 rep_elemento_hash: elemento_hash .
+
+    $default  reduce usando la regla 60 (rep_elemento_hash)
+
+
+Estado 115
+
+   65 campo_constante: IDENTIFICADOR . '=' constante
+
+    '='  desplazar e ir al estado 132
+
+
+Estado 116
+
+   62 constante_estructurada: '{' l_campo_constante . '}'
+   63 l_campo_constante: l_campo_constante . ',' campo_constante
+
+    ','  desplazar e ir al estado 133
+    '}'  desplazar e ir al estado 134
+
+
+Estado 117
+
+   64 l_campo_constante: campo_constante .
+
+    $default  reduce usando la regla 64 (l_campo_constante)
+
+
+Estado 118
+
+   44 declaracion_constante: IDENTIFICADOR ES tipo_basico '=' constante ';' .
+
+    $default  reduce usando la regla 44 (declaracion_constante)
+
+
+Estado 119
+
+   69 declaracion_variables: l_ident ':' especificacion_tipo ';' .
+
+    $default  reduce usando la regla 69 (declaracion_variables)
+
+
+Estado 120
+
+   70 declaracion_variables: l_ident ':' especificacion_tipo '=' . l_expr ';'
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    l_expr            ir al estado 135
+    expresion         ir al estado 136
+    expresion_logica  ir al estado 137
+
+
+Estado 121
+
+   75 declaracion_funcion: FUNCION IDENTIFICADOR '-' . tipo_salida cuerpo_funcion
+
+    NADA  desplazar e ir al estado 138
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 139
+    l_ref                ir al estado 23
+    tipo_salida          ir al estado 140
+
+
+Estado 122
+
+   77 lista_parametros: '(' . l_parametros parametros ')'
+
+    $default  reduce usando la regla 79 (l_parametros)
+
+    l_parametros  ir al estado 141
+
+
+Estado 123
+
+   76 declaracion_funcion: 'f' IDENTIFICADOR lista_parametros . '-' tipo_salida cuerpo_funcion
+
+    '-'  desplazar e ir al estado 142
+
+
+Estado 124
+
+   98 bloque_instrucciones: PRINCIPIO . l_instruccion FIN
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    l_instruccion                      ir al estado 159
+    instruccion                        ir al estado 160
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 125
+
+   11 bloque_programa: declaraciones_tipos $@1 declaraciones_constantes $@2 declaraciones_variables $@3 declaracion_funcion $@4 bloque_instrucciones .
+
+    $default  reduce usando la regla 11 (bloque_programa)
+
+
+Estado 126
+
+   38 linea_campo: l_campo ES especificacion_tipo ';' .
+
+    $default  reduce usando la regla 38 (linea_campo)
+
+
+Estado 127
+
+   61 elemento_hash: CTC_CADENA '-' . constante
+
+    CTC_CADENA    desplazar e ir al estado 90
+    CTC_CARACTER  desplazar e ir al estado 91
+    CTC_ENTERA    desplazar e ir al estado 92
+    CTC_REAL      desplazar e ir al estado 93
+    '('           desplazar e ir al estado 94
+    '{'           desplazar e ir al estado 95
+
+    constante               ir al estado 174
+    constante_enumerada     ir al estado 97
+    constante_estructurada  ir al estado 98
+
+
+Estado 128
+
+   51 constante_enumerada: '(' l_constante ')' .
+
+    $default  reduce usando la regla 51 (constante_enumerada)
+
+
+Estado 129
+
+   55 rep_constante: rep_constante ',' . constante
+
+    CTC_CADENA    desplazar e ir al estado 90
+    CTC_CARACTER  desplazar e ir al estado 91
+    CTC_ENTERA    desplazar e ir al estado 92
+    CTC_REAL      desplazar e ir al estado 93
+    '('           desplazar e ir al estado 94
+    '{'           desplazar e ir al estado 95
+
+    constante               ir al estado 175
+    constante_enumerada     ir al estado 97
+    constante_estructurada  ir al estado 98
+
+
+Estado 130
+
+   52 constante_enumerada: '(' l_elemento_hash ')' .
+
+    $default  reduce usando la regla 52 (constante_enumerada)
+
+
+Estado 131
+
+   59 rep_elemento_hash: rep_elemento_hash ',' . elemento_hash
+
+    CTC_CADENA  desplazar e ir al estado 176
+
+    elemento_hash  ir al estado 177
+
+
+Estado 132
+
+   65 campo_constante: IDENTIFICADOR '=' . constante
+
+    CTC_CADENA    desplazar e ir al estado 90
+    CTC_CARACTER  desplazar e ir al estado 91
+    CTC_ENTERA    desplazar e ir al estado 92
+    CTC_REAL      desplazar e ir al estado 93
+    '('           desplazar e ir al estado 94
+    '{'           desplazar e ir al estado 95
+
+    constante               ir al estado 178
+    constante_enumerada     ir al estado 97
+    constante_estructurada  ir al estado 98
+
+
+Estado 133
+
+   63 l_campo_constante: l_campo_constante ',' . campo_constante
+
+    IDENTIFICADOR  desplazar e ir al estado 115
+
+    campo_constante  ir al estado 179
+
+
+Estado 134
+
+   62 constante_estructurada: '{' l_campo_constante '}' .
+
+    $default  reduce usando la regla 62 (constante_estructurada)
+
+
+Estado 135
+
+   70 declaracion_variables: l_ident ':' especificacion_tipo '=' l_expr . ';'
+   71 l_expr: l_expr . ',' expresion
+
+    ';'  desplazar e ir al estado 180
+    ','  desplazar e ir al estado 181
+
+
+Estado 136
+
+   72 l_expr: expresion .
+
+    $default  reduce usando la regla 72 (l_expr)
+
+
+Estado 137
+
+  176 expresion: expresion_logica . op_exp
+
+    SI  desplazar e ir al estado 182
+
+    $default  reduce usando la regla 178 (op_exp)
+
+    op_exp  ir al estado 183
+
+
+Estado 138
+
+   87 tipo_salida: NADA .
+
+    $default  reduce usando la regla 87 (tipo_salida)
+
+
+Estado 139
+
+   86 tipo_salida: especificacion_tipo .
+
+    $default  reduce usando la regla 86 (tipo_salida)
+
+
+Estado 140
+
+   75 declaracion_funcion: FUNCION IDENTIFICADOR '-' tipo_salida . cuerpo_funcion
+
+    CONSTANTES  desplazar e ir al estado 19
+    PRINCIPIO   desplazar e ir al estado 124
+    VARIABLES   desplazar e ir al estado 51
+
+    FUNCION    reduce usando la regla 92 (declaraciones_constantes)
+    FUNCION    [reduce usando la regla 94 (declaraciones_variables)]
+    FUNCION    [reduce usando la regla 97 (rep_declaracion_funcion)]
+    PRINCIPIO  [reduce usando la regla 92 (declaraciones_constantes)]
+    PRINCIPIO  [reduce usando la regla 94 (declaraciones_variables)]
+    PRINCIPIO  [reduce usando la regla 97 (rep_declaracion_funcion)]
+    'f'        reduce usando la regla 92 (declaraciones_constantes)
+    'f'        [reduce usando la regla 94 (declaraciones_variables)]
+    'f'        [reduce usando la regla 97 (rep_declaracion_funcion)]
+    $default   reduce usando la regla 92 (declaraciones_constantes)
+
+    declaraciones_constantes  ir al estado 184
+    declaraciones_variables   ir al estado 185
+    cuerpo_funcion            ir al estado 186
+    rep_declaracion_funcion   ir al estado 187
+    bloque_instrucciones      ir al estado 188
+
+
+Estado 141
+
+   77 lista_parametros: '(' l_parametros . parametros ')'
+   78 l_parametros: l_parametros . parametros ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 189
+
+    parametros  ir al estado 190
+    rep_ident   ir al estado 191
+
+
+Estado 142
+
+   76 declaracion_funcion: 'f' IDENTIFICADOR lista_parametros '-' . tipo_salida cuerpo_funcion
+
+    NADA  desplazar e ir al estado 138
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 139
+    l_ref                ir al estado 23
+    tipo_salida          ir al estado 192
+
+
+Estado 143
+
+  139 instruccion_salto: CONTINUAR . ';'
+
+    ';'  desplazar e ir al estado 193
+
+
+Estado 144
+
+  142 instruccion_devolver: DEVOLVER . ';'
+  143                     | DEVOLVER . expresion ';'
+
+    ';'  desplazar e ir al estado 194
+
+    ';'       [reduce usando la regla 179 (expresion_logica)]
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 195
+    expresion_logica  ir al estado 137
+
+
+Estado 145
+
+  146 instruccion_captura_excepcion: EJECUTA . bloque_instrucciones clausulas
+
+    PRINCIPIO  desplazar e ir al estado 124
+
+    bloque_instrucciones  ir al estado 196
+
+
+Estado 146
+
+  140 instruccion_salto: ESCAPE . ';'
+
+    ';'  desplazar e ir al estado 197
+
+
+Estado 147
+
+  141 instruccion_destino_salto: ETIQUETA . IDENTIFICADOR ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 198
+
+
+Estado 148
+
+  133 instruccion_bucle: HACER . accion MIENTRAS '(' expresion ')' ';'
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 201
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 149
+
+  164 expresion_basica: IDENTIFICADOR .
+  170 expresion_funcional: IDENTIFICADOR . '(' l_expresion ')'
+
+    '('  desplazar e ir al estado 202
+
+    $default  reduce usando la regla 164 (expresion_basica)
+
+
+Estado 150
+
+  145 instruccion_lanzamiento_excepcion: LANZA . EXCEPCION IDENTIFICADOR ';'
+
+    EXCEPCION  desplazar e ir al estado 203
+
+
+Estado 151
+
+  132 instruccion_bucle: MIENTRAS . '(' expresion ')' accion
+
+    '('  desplazar e ir al estado 204
+
+
+Estado 152
+
+  134 instruccion_bucle: PARA . '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
+  135                  | PARA . CADA IDENTIFICADOR '(' expresion ')' accion
+
+    CADA  desplazar e ir al estado 205
+    '('   desplazar e ir al estado 206
+
+
+Estado 153
+
+  138 instruccion_salto: SALTAR . IDENTIFICADOR ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 207
+
+
+Estado 154
+
+  125 instruccion_bifurcacion: SI . '(' expresion ')' accion l_otros_casos FIN
+  126                        | SI . '(' expresion ')' accion l_otros_casos SINO accion FIN
+
+    '('  desplazar e ir al estado 208
+
+
+Estado 155
+
+  144 instruccion_vacia: ';' .
+
+    $default  reduce usando la regla 144 (instruccion_vacia)
+
+
+Estado 156
+
+  165 expresion_basica: '(' . expresion ')'
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 209
+    expresion_logica  ir al estado 137
+
+
+Estado 157
+
+  166 expresion_basica: '^' . expresion_basica
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    expresion_basica  ir al estado 211
+
+
+Estado 158
+
+  167 expresion_basica: '\\' . expresion_basica
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    expresion_basica  ir al estado 212
+
+
+Estado 159
+
+   98 bloque_instrucciones: PRINCIPIO l_instruccion . FIN
+   99 l_instruccion: l_instruccion . instruccion
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    FIN            desplazar e ir al estado 213
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    instruccion                        ir al estado 214
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 160
+
+  100 l_instruccion: instruccion .
+
+    $default  reduce usando la regla 100 (l_instruccion)
+
+
+Estado 161
+
+  101 instruccion: instruccion_expresion .
+
+    $default  reduce usando la regla 101 (instruccion)
+
+
+Estado 162
+
+  111 instruccion_expresion: asignacion . ';'
+
+    ';'  desplazar e ir al estado 215
+
+
+Estado 163
+
+  102 instruccion: instruccion_bifurcacion .
+
+    $default  reduce usando la regla 102 (instruccion)
+
+
+Estado 164
+
+  103 instruccion: instruccion_bucle .
+
+    $default  reduce usando la regla 103 (instruccion)
+
+
+Estado 165
+
+  104 instruccion: instruccion_salto .
+
+    $default  reduce usando la regla 104 (instruccion)
+
+
+Estado 166
+
+  105 instruccion: instruccion_destino_salto .
+
+    $default  reduce usando la regla 105 (instruccion)
+
+
+Estado 167
+
+  106 instruccion: instruccion_devolver .
+
+    $default  reduce usando la regla 106 (instruccion)
+
+
+Estado 168
+
+  107 instruccion: instruccion_vacia .
+
+    $default  reduce usando la regla 107 (instruccion)
+
+
+Estado 169
+
+  108 instruccion: instruccion_lanzamiento_excepcion .
+
+    $default  reduce usando la regla 108 (instruccion)
+
+
+Estado 170
+
+  109 instruccion: instruccion_captura_excepcion .
+
+    $default  reduce usando la regla 109 (instruccion)
+
+
+Estado 171
+
+  112 asignacion: expresion_indexada . operador_asignacion expresion
+  160 expresion_indexada: expresion_indexada . '.' expresion_basica
+  161                   | expresion_indexada . '^' expresion_basica
+  162                   | expresion_indexada . indice
+  163                   | expresion_indexada . '^' indice
+
+    AND_ASIG    desplazar e ir al estado 216
+    DIV_ASIG    desplazar e ir al estado 217
+    FD_ASIG     desplazar e ir al estado 218
+    FI_ASIG     desplazar e ir al estado 219
+    MOD_ASIG    desplazar e ir al estado 220
+    MULT_ASIG   desplazar e ir al estado 221
+    OR_ASIG     desplazar e ir al estado 222
+    POT_ASIG    desplazar e ir al estado 223
+    RESTA_ASIG  desplazar e ir al estado 224
+    SUMA_ASIG   desplazar e ir al estado 225
+    XOR_ASIG    desplazar e ir al estado 226
+    '='         desplazar e ir al estado 227
+    '{'         desplazar e ir al estado 228
+    '.'         desplazar e ir al estado 229
+    '^'         desplazar e ir al estado 230
+    '['         desplazar e ir al estado 231
+
+    operador_asignacion  ir al estado 232
+    indice               ir al estado 233
+
+
+Estado 172
+
+  159 expresion_indexada: expresion_basica .
+
+    $default  reduce usando la regla 159 (expresion_indexada)
+
+
+Estado 173
+
+  110 instruccion_expresion: expresion_funcional . ';'
+
+    ';'  desplazar e ir al estado 234
+
+
+Estado 174
+
+   61 elemento_hash: CTC_CADENA '-' constante .
+
+    $default  reduce usando la regla 61 (elemento_hash)
+
+
+Estado 175
+
+   55 rep_constante: rep_constante ',' constante .
+
+    $default  reduce usando la regla 55 (rep_constante)
+
+
+Estado 176
+
+   61 elemento_hash: CTC_CADENA . '-' constante
+
+    '-'  desplazar e ir al estado 127
+
+
+Estado 177
+
+   59 rep_elemento_hash: rep_elemento_hash ',' elemento_hash .
+
+    $default  reduce usando la regla 59 (rep_elemento_hash)
+
+
+Estado 178
+
+   65 campo_constante: IDENTIFICADOR '=' constante .
+
+    $default  reduce usando la regla 65 (campo_constante)
+
+
+Estado 179
+
+   63 l_campo_constante: l_campo_constante ',' campo_constante .
+
+    $default  reduce usando la regla 63 (l_campo_constante)
+
+
+Estado 180
+
+   70 declaracion_variables: l_ident ':' especificacion_tipo '=' l_expr ';' .
+
+    $default  reduce usando la regla 70 (declaracion_variables)
+
+
+Estado 181
+
+   71 l_expr: l_expr ',' . expresion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 235
+    expresion_logica  ir al estado 137
+
+
+Estado 182
+
+  177 op_exp: SI . expresion SINO expresion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 236
+    expresion_logica  ir al estado 137
+
+
+Estado 183
+
+  176 expresion: expresion_logica op_exp .
+
+    $default  reduce usando la regla 176 (expresion)
+
+
+Estado 184
+
+   88 cuerpo_funcion: declaraciones_constantes .
+   93 declaraciones_constantes: declaraciones_constantes .
+
+    FUNCION    reduce usando la regla 88 (cuerpo_funcion)
+    FUNCION    [reduce usando la regla 93 (declaraciones_constantes)]
+    PRINCIPIO  reduce usando la regla 88 (cuerpo_funcion)
+    PRINCIPIO  [reduce usando la regla 93 (declaraciones_constantes)]
+    'f'        reduce usando la regla 88 (cuerpo_funcion)
+    'f'        [reduce usando la regla 93 (declaraciones_constantes)]
+    $default   reduce usando la regla 88 (cuerpo_funcion)
+
+
+Estado 185
+
+   89 cuerpo_funcion: declaraciones_variables .
+   95 declaraciones_variables: declaraciones_variables .
+
+    FUNCION    reduce usando la regla 89 (cuerpo_funcion)
+    FUNCION    [reduce usando la regla 95 (declaraciones_variables)]
+    PRINCIPIO  reduce usando la regla 89 (cuerpo_funcion)
+    PRINCIPIO  [reduce usando la regla 95 (declaraciones_variables)]
+    'f'        reduce usando la regla 89 (cuerpo_funcion)
+    'f'        [reduce usando la regla 95 (declaraciones_variables)]
+    $default   reduce usando la regla 89 (cuerpo_funcion)
+
+
+Estado 186
+
+   75 declaracion_funcion: FUNCION IDENTIFICADOR '-' tipo_salida cuerpo_funcion .
+
+    $default  reduce usando la regla 75 (declaracion_funcion)
+
+
+Estado 187
+
+   90 cuerpo_funcion: rep_declaracion_funcion .
+   96 rep_declaracion_funcion: rep_declaracion_funcion . declaracion_funcion
+
+    FUNCION  desplazar e ir al estado 81
+    'f'      desplazar e ir al estado 82
+
+    FUNCION   [reduce usando la regla 90 (cuerpo_funcion)]
+    'f'       [reduce usando la regla 90 (cuerpo_funcion)]
+    $default  reduce usando la regla 90 (cuerpo_funcion)
+
+    declaracion_funcion  ir al estado 237
+
+
+Estado 188
+
+   91 cuerpo_funcion: bloque_instrucciones .
+
+    $default  reduce usando la regla 91 (cuerpo_funcion)
+
+
+Estado 189
+
+   83 rep_ident: IDENTIFICADOR .
+
+    $default  reduce usando la regla 83 (rep_ident)
+
+
+Estado 190
+
+   77 lista_parametros: '(' l_parametros parametros . ')'
+   78 l_parametros: l_parametros parametros . ';'
+
+    ';'  desplazar e ir al estado 238
+    ')'  desplazar e ir al estado 239
+
+
+Estado 191
+
+   80 parametros: rep_ident . ':' especificacion_tipo
+   81           | rep_ident . ':' especificacion_tipo '=' l_expr_constante
+   82 rep_ident: rep_ident . ',' IDENTIFICADOR
+
+    ','  desplazar e ir al estado 240
+    ':'  desplazar e ir al estado 241
+
+
+Estado 192
+
+   76 declaracion_funcion: 'f' IDENTIFICADOR lista_parametros '-' tipo_salida . cuerpo_funcion
+
+    CONSTANTES  desplazar e ir al estado 19
+    PRINCIPIO   desplazar e ir al estado 124
+    VARIABLES   desplazar e ir al estado 51
+
+    FUNCION    reduce usando la regla 92 (declaraciones_constantes)
+    FUNCION    [reduce usando la regla 94 (declaraciones_variables)]
+    FUNCION    [reduce usando la regla 97 (rep_declaracion_funcion)]
+    PRINCIPIO  [reduce usando la regla 92 (declaraciones_constantes)]
+    PRINCIPIO  [reduce usando la regla 94 (declaraciones_variables)]
+    PRINCIPIO  [reduce usando la regla 97 (rep_declaracion_funcion)]
+    'f'        reduce usando la regla 92 (declaraciones_constantes)
+    'f'        [reduce usando la regla 94 (declaraciones_variables)]
+    'f'        [reduce usando la regla 97 (rep_declaracion_funcion)]
+    $default   reduce usando la regla 92 (declaraciones_constantes)
+
+    declaraciones_constantes  ir al estado 184
+    declaraciones_variables   ir al estado 185
+    cuerpo_funcion            ir al estado 242
+    rep_declaracion_funcion   ir al estado 187
+    bloque_instrucciones      ir al estado 188
+
+
+Estado 193
+
+  139 instruccion_salto: CONTINUAR ';' .
+
+    $default  reduce usando la regla 139 (instruccion_salto)
+
+
+Estado 194
+
+  142 instruccion_devolver: DEVOLVER ';' .
+
+    $default  reduce usando la regla 142 (instruccion_devolver)
+
+
+Estado 195
+
+  143 instruccion_devolver: DEVOLVER expresion . ';'
+
+    ';'  desplazar e ir al estado 243
+
+
+Estado 196
+
+  146 instruccion_captura_excepcion: EJECUTA bloque_instrucciones . clausulas
+
+    $default  reduce usando la regla 151 (l_clausula_excepcion_especifica)
+
+    clausulas                        ir al estado 244
+    clausulas_excepcion              ir al estado 245
+    l_clausula_excepcion_especifica  ir al estado 246
+
+
+Estado 197
+
+  140 instruccion_salto: ESCAPE ';' .
+
+    $default  reduce usando la regla 140 (instruccion_salto)
+
+
+Estado 198
+
+  141 instruccion_destino_salto: ETIQUETA IDENTIFICADOR . ';'
+
+    ';'  desplazar e ir al estado 247
+
+
+Estado 199
+
+  131 accion: bloque_instrucciones .
+
+    $default  reduce usando la regla 131 (accion)
+
+
+Estado 200
+
+  130 accion: instruccion .
+
+    $default  reduce usando la regla 130 (accion)
+
+
+Estado 201
+
+  133 instruccion_bucle: HACER accion . MIENTRAS '(' expresion ')' ';'
+
+    MIENTRAS  desplazar e ir al estado 248
+
+
+Estado 202
+
+  170 expresion_funcional: IDENTIFICADOR '(' . l_expresion ')'
+
+    ')'       reduce usando la regla 173 (l_expresion)
+    ')'       [reduce usando la regla 179 (expresion_logica)]
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    l_expresion       ir al estado 249
+    l_expresiones     ir al estado 250
+    expresion         ir al estado 251
+    expresion_logica  ir al estado 137
+
+
+Estado 203
+
+  145 instruccion_lanzamiento_excepcion: LANZA EXCEPCION . IDENTIFICADOR ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 252
+
+
+Estado 204
+
+  132 instruccion_bucle: MIENTRAS '(' . expresion ')' accion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 253
+    expresion_logica  ir al estado 137
+
+
+Estado 205
+
+  135 instruccion_bucle: PARA CADA . IDENTIFICADOR '(' expresion ')' accion
+
+    IDENTIFICADOR  desplazar e ir al estado 254
+
+
+Estado 206
+
+  134 instruccion_bucle: PARA '(' . l_asignaciones ';' expresion ';' l_asignaciones ')' accion
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    asignacion          ir al estado 255
+    l_asignaciones      ir al estado 256
+    expresion_indexada  ir al estado 171
+    expresion_basica    ir al estado 172
+
+
+Estado 207
+
+  138 instruccion_salto: SALTAR IDENTIFICADOR . ';'
+
+    ';'  desplazar e ir al estado 257
+
+
+Estado 208
+
+  125 instruccion_bifurcacion: SI '(' . expresion ')' accion l_otros_casos FIN
+  126                        | SI '(' . expresion ')' accion l_otros_casos SINO accion FIN
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 258
+    expresion_logica  ir al estado 137
+
+
+Estado 209
+
+  165 expresion_basica: '(' expresion . ')'
+
+    ')'  desplazar e ir al estado 259
+
+
+Estado 210
+
+  164 expresion_basica: IDENTIFICADOR .
+
+    $default  reduce usando la regla 164 (expresion_basica)
+
+
+Estado 211
+
+  166 expresion_basica: '^' expresion_basica .
+
+    $default  reduce usando la regla 166 (expresion_basica)
+
+
+Estado 212
+
+  167 expresion_basica: '\\' expresion_basica .
+
+    $default  reduce usando la regla 167 (expresion_basica)
+
+
+Estado 213
+
+   98 bloque_instrucciones: PRINCIPIO l_instruccion FIN .
+
+    $default  reduce usando la regla 98 (bloque_instrucciones)
+
+
+Estado 214
+
+   99 l_instruccion: l_instruccion instruccion .
+
+    $default  reduce usando la regla 99 (l_instruccion)
+
+
+Estado 215
+
+  111 instruccion_expresion: asignacion ';' .
+
+    $default  reduce usando la regla 111 (instruccion_expresion)
+
+
+Estado 216
+
+  122 operador_asignacion: AND_ASIG .
+
+    $default  reduce usando la regla 122 (operador_asignacion)
+
+
+Estado 217
+
+  117 operador_asignacion: DIV_ASIG .
+
+    $default  reduce usando la regla 117 (operador_asignacion)
+
+
+Estado 218
+
+  121 operador_asignacion: FD_ASIG .
+
+    $default  reduce usando la regla 121 (operador_asignacion)
+
+
+Estado 219
+
+  120 operador_asignacion: FI_ASIG .
+
+    $default  reduce usando la regla 120 (operador_asignacion)
+
+
+Estado 220
+
+  118 operador_asignacion: MOD_ASIG .
+
+    $default  reduce usando la regla 118 (operador_asignacion)
+
+
+Estado 221
+
+  116 operador_asignacion: MULT_ASIG .
+
+    $default  reduce usando la regla 116 (operador_asignacion)
+
+
+Estado 222
+
+  124 operador_asignacion: OR_ASIG .
+
+    $default  reduce usando la regla 124 (operador_asignacion)
+
+
+Estado 223
+
+  119 operador_asignacion: POT_ASIG .
+
+    $default  reduce usando la regla 119 (operador_asignacion)
+
+
+Estado 224
+
+  115 operador_asignacion: RESTA_ASIG .
+
+    $default  reduce usando la regla 115 (operador_asignacion)
+
+
+Estado 225
+
+  114 operador_asignacion: SUMA_ASIG .
+
+    $default  reduce usando la regla 114 (operador_asignacion)
+
+
+Estado 226
+
+  123 operador_asignacion: XOR_ASIG .
+
+    $default  reduce usando la regla 123 (operador_asignacion)
+
+
+Estado 227
+
+  113 operador_asignacion: '=' .
+
+    $default  reduce usando la regla 113 (operador_asignacion)
+
+
+Estado 228
+
+  169 indice: '{' . expresion '}'
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 260
+    expresion_logica  ir al estado 137
+
+
+Estado 229
+
+  160 expresion_indexada: expresion_indexada '.' . expresion_basica
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    expresion_basica  ir al estado 261
+
+
+Estado 230
+
+  161 expresion_indexada: expresion_indexada '^' . expresion_basica
+  163                   | expresion_indexada '^' . indice
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '{'            desplazar e ir al estado 228
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+    '['            desplazar e ir al estado 231
+
+    expresion_basica  ir al estado 262
+    indice            ir al estado 263
+
+
+Estado 231
+
+  168 indice: '[' . expresion ']'
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 264
+    expresion_logica  ir al estado 137
+
+
+Estado 232
+
+  112 asignacion: expresion_indexada operador_asignacion . expresion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 265
+    expresion_logica  ir al estado 137
+
+
+Estado 233
+
+  162 expresion_indexada: expresion_indexada indice .
+
+    $default  reduce usando la regla 162 (expresion_indexada)
+
+
+Estado 234
+
+  110 instruccion_expresion: expresion_funcional ';' .
+
+    $default  reduce usando la regla 110 (instruccion_expresion)
+
+
+Estado 235
+
+   71 l_expr: l_expr ',' expresion .
+
+    $default  reduce usando la regla 71 (l_expr)
+
+
+Estado 236
+
+  177 op_exp: SI expresion . SINO expresion
+
+    SINO  desplazar e ir al estado 266
+
+
+Estado 237
+
+   96 rep_declaracion_funcion: rep_declaracion_funcion declaracion_funcion .
+
+    $default  reduce usando la regla 96 (rep_declaracion_funcion)
+
+
+Estado 238
+
+   78 l_parametros: l_parametros parametros ';' .
+
+    $default  reduce usando la regla 78 (l_parametros)
+
+
+Estado 239
+
+   77 lista_parametros: '(' l_parametros parametros ')' .
+
+    $default  reduce usando la regla 77 (lista_parametros)
+
+
+Estado 240
+
+   82 rep_ident: rep_ident ',' . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 267
+
+
+Estado 241
+
+   80 parametros: rep_ident ':' . especificacion_tipo
+   81           | rep_ident ':' . especificacion_tipo '=' l_expr_constante
+
+    $default  reduce usando la regla 20 (l_ref)
+
+    especificacion_tipo  ir al estado 268
+    l_ref                ir al estado 23
+
+
+Estado 242
+
+   76 declaracion_funcion: 'f' IDENTIFICADOR lista_parametros '-' tipo_salida cuerpo_funcion .
+
+    $default  reduce usando la regla 76 (declaracion_funcion)
+
+
+Estado 243
+
+  143 instruccion_devolver: DEVOLVER expresion ';' .
+
+    $default  reduce usando la regla 143 (instruccion_devolver)
+
+
+Estado 244
+
+  146 instruccion_captura_excepcion: EJECUTA bloque_instrucciones clausulas .
+
+    $default  reduce usando la regla 146 (instruccion_captura_excepcion)
+
+
+Estado 245
+
+  147 clausulas: clausulas_excepcion .
+  148          | clausulas_excepcion . clausula_defecto
+
+    DEFECTO  desplazar e ir al estado 269
+
+    $default  reduce usando la regla 147 (clausulas)
+
+    clausula_defecto  ir al estado 270
+
+
+Estado 246
+
+  149 clausulas_excepcion: l_clausula_excepcion_especifica . clausula_excepcion_general
+  150 l_clausula_excepcion_especifica: l_clausula_excepcion_especifica . clausula_excepcion_especifica
+
+    EXCEPCION  desplazar e ir al estado 271
+    OTRA       desplazar e ir al estado 272
+
+    clausula_excepcion_especifica  ir al estado 273
+    clausula_excepcion_general     ir al estado 274
+
+
+Estado 247
+
+  141 instruccion_destino_salto: ETIQUETA IDENTIFICADOR ';' .
+
+    $default  reduce usando la regla 141 (instruccion_destino_salto)
+
+
+Estado 248
+
+  133 instruccion_bucle: HACER accion MIENTRAS . '(' expresion ')' ';'
+
+    '('  desplazar e ir al estado 275
+
+
+Estado 249
+
+  170 expresion_funcional: IDENTIFICADOR '(' l_expresion . ')'
+
+    ')'  desplazar e ir al estado 276
+
+
+Estado 250
+
+  172 l_expresion: l_expresiones .
+  174 l_expresiones: l_expresiones . ',' expresion
+
+    ','  desplazar e ir al estado 277
+
+    $default  reduce usando la regla 172 (l_expresion)
+
+
+Estado 251
+
+  175 l_expresiones: expresion .
+
+    $default  reduce usando la regla 175 (l_expresiones)
+
+
+Estado 252
+
+  145 instruccion_lanzamiento_excepcion: LANZA EXCEPCION IDENTIFICADOR . ';'
+
+    ';'  desplazar e ir al estado 278
+
+
+Estado 253
+
+  132 instruccion_bucle: MIENTRAS '(' expresion . ')' accion
+
+    ')'  desplazar e ir al estado 279
+
+
+Estado 254
+
+  135 instruccion_bucle: PARA CADA IDENTIFICADOR . '(' expresion ')' accion
+
+    '('  desplazar e ir al estado 280
+
+
+Estado 255
+
+  137 l_asignaciones: asignacion .
+
+    $default  reduce usando la regla 137 (l_asignaciones)
+
+
+Estado 256
+
+  134 instruccion_bucle: PARA '(' l_asignaciones . ';' expresion ';' l_asignaciones ')' accion
+  136 l_asignaciones: l_asignaciones . ',' asignacion
+
+    ';'  desplazar e ir al estado 281
+    ','  desplazar e ir al estado 282
+
+
+Estado 257
+
+  138 instruccion_salto: SALTAR IDENTIFICADOR ';' .
+
+    $default  reduce usando la regla 138 (instruccion_salto)
+
+
+Estado 258
+
+  125 instruccion_bifurcacion: SI '(' expresion . ')' accion l_otros_casos FIN
+  126                        | SI '(' expresion . ')' accion l_otros_casos SINO accion FIN
+
+    ')'  desplazar e ir al estado 283
+
+
+Estado 259
+
+  165 expresion_basica: '(' expresion ')' .
+
+    $default  reduce usando la regla 165 (expresion_basica)
+
+
+Estado 260
+
+  169 indice: '{' expresion . '}'
+
+    '}'  desplazar e ir al estado 284
+
+
+Estado 261
+
+  160 expresion_indexada: expresion_indexada '.' expresion_basica .
+
+    $default  reduce usando la regla 160 (expresion_indexada)
+
+
+Estado 262
+
+  161 expresion_indexada: expresion_indexada '^' expresion_basica .
+
+    $default  reduce usando la regla 161 (expresion_indexada)
+
+
+Estado 263
+
+  163 expresion_indexada: expresion_indexada '^' indice .
+
+    $default  reduce usando la regla 163 (expresion_indexada)
+
+
+Estado 264
+
+  168 indice: '[' expresion . ']'
+
+    ']'  desplazar e ir al estado 285
+
+
+Estado 265
+
+  112 asignacion: expresion_indexada operador_asignacion expresion .
+
+    $default  reduce usando la regla 112 (asignacion)
+
+
+Estado 266
+
+  177 op_exp: SI expresion SINO . expresion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 286
+    expresion_logica  ir al estado 137
+
+
+Estado 267
+
+   82 rep_ident: rep_ident ',' IDENTIFICADOR .
+
+    $default  reduce usando la regla 82 (rep_ident)
+
+
+Estado 268
+
+   80 parametros: rep_ident ':' especificacion_tipo .
+   81           | rep_ident ':' especificacion_tipo . '=' l_expr_constante
+
+    '='  desplazar e ir al estado 287
+
+    $default  reduce usando la regla 80 (parametros)
+
+
+Estado 269
+
+  154 clausula_defecto: DEFECTO . bloque_instrucciones
+
+    PRINCIPIO  desplazar e ir al estado 124
+
+    bloque_instrucciones  ir al estado 288
+
+
+Estado 270
+
+  148 clausulas: clausulas_excepcion clausula_defecto .
+
+    $default  reduce usando la regla 148 (clausulas)
+
+
+Estado 271
+
+  152 clausula_excepcion_especifica: EXCEPCION . IDENTIFICADOR bloque_instrucciones
+
+    IDENTIFICADOR  desplazar e ir al estado 289
+
+
+Estado 272
+
+  153 clausula_excepcion_general: OTRA . EXCEPCION bloque_instrucciones
+
+    EXCEPCION  desplazar e ir al estado 290
+
+
+Estado 273
+
+  150 l_clausula_excepcion_especifica: l_clausula_excepcion_especifica clausula_excepcion_especifica .
+
+    $default  reduce usando la regla 150 (l_clausula_excepcion_especifica)
+
+
+Estado 274
+
+  149 clausulas_excepcion: l_clausula_excepcion_especifica clausula_excepcion_general .
+
+    $default  reduce usando la regla 149 (clausulas_excepcion)
+
+
+Estado 275
+
+  133 instruccion_bucle: HACER accion MIENTRAS '(' . expresion ')' ';'
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 291
+    expresion_logica  ir al estado 137
+
+
+Estado 276
+
+  170 expresion_funcional: IDENTIFICADOR '(' l_expresion ')' .
+
+    $default  reduce usando la regla 170 (expresion_funcional)
+
+
+Estado 277
+
+  174 l_expresiones: l_expresiones ',' . expresion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 292
+    expresion_logica  ir al estado 137
+
+
+Estado 278
+
+  145 instruccion_lanzamiento_excepcion: LANZA EXCEPCION IDENTIFICADOR ';' .
+
+    $default  reduce usando la regla 145 (instruccion_lanzamiento_excepcion)
+
+
+Estado 279
+
+  132 instruccion_bucle: MIENTRAS '(' expresion ')' . accion
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 293
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 280
+
+  135 instruccion_bucle: PARA CADA IDENTIFICADOR '(' . expresion ')' accion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 294
+    expresion_logica  ir al estado 137
+
+
+Estado 281
+
+  134 instruccion_bucle: PARA '(' l_asignaciones ';' . expresion ';' l_asignaciones ')' accion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 295
+    expresion_logica  ir al estado 137
+
+
+Estado 282
+
+  136 l_asignaciones: l_asignaciones ',' . asignacion
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    asignacion          ir al estado 296
+    expresion_indexada  ir al estado 171
+    expresion_basica    ir al estado 172
+
+
+Estado 283
+
+  125 instruccion_bifurcacion: SI '(' expresion ')' . accion l_otros_casos FIN
+  126                        | SI '(' expresion ')' . accion l_otros_casos SINO accion FIN
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 297
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 284
+
+  169 indice: '{' expresion '}' .
+
+    $default  reduce usando la regla 169 (indice)
+
+
+Estado 285
+
+  168 indice: '[' expresion ']' .
+
+    $default  reduce usando la regla 168 (indice)
+
+
+Estado 286
+
+  177 op_exp: SI expresion SINO expresion .
+
+    $default  reduce usando la regla 177 (op_exp)
+
+
+Estado 287
+
+   81 parametros: rep_ident ':' especificacion_tipo '=' . l_expr_constante
+
+    CTC_CADENA    desplazar e ir al estado 298
+    CTC_CARACTER  desplazar e ir al estado 299
+    CTC_ENTERA    desplazar e ir al estado 300
+    CTC_REAL      desplazar e ir al estado 301
+
+    l_expr_constante     ir al estado 302
+    expresion_constante  ir al estado 303
+
+
+Estado 288
+
+  154 clausula_defecto: DEFECTO bloque_instrucciones .
+
+    $default  reduce usando la regla 154 (clausula_defecto)
+
+
+Estado 289
+
+  152 clausula_excepcion_especifica: EXCEPCION IDENTIFICADOR . bloque_instrucciones
+
+    PRINCIPIO  desplazar e ir al estado 124
+
+    bloque_instrucciones  ir al estado 304
+
+
+Estado 290
+
+  153 clausula_excepcion_general: OTRA EXCEPCION . bloque_instrucciones
+
+    PRINCIPIO  desplazar e ir al estado 124
+
+    bloque_instrucciones  ir al estado 305
+
+
+Estado 291
+
+  133 instruccion_bucle: HACER accion MIENTRAS '(' expresion . ')' ';'
+
+    ')'  desplazar e ir al estado 306
+
+
+Estado 292
+
+  174 l_expresiones: l_expresiones ',' expresion .
+
+    $default  reduce usando la regla 174 (l_expresiones)
+
+
+Estado 293
+
+  132 instruccion_bucle: MIENTRAS '(' expresion ')' accion .
+
+    $default  reduce usando la regla 132 (instruccion_bucle)
+
+
+Estado 294
+
+  135 instruccion_bucle: PARA CADA IDENTIFICADOR '(' expresion . ')' accion
+
+    ')'  desplazar e ir al estado 307
+
+
+Estado 295
+
+  134 instruccion_bucle: PARA '(' l_asignaciones ';' expresion . ';' l_asignaciones ')' accion
+
+    ';'  desplazar e ir al estado 308
+
+
+Estado 296
+
+  136 l_asignaciones: l_asignaciones ',' asignacion .
+
+    $default  reduce usando la regla 136 (l_asignaciones)
+
+
+Estado 297
+
+  125 instruccion_bifurcacion: SI '(' expresion ')' accion . l_otros_casos FIN
+  126                        | SI '(' expresion ')' accion . l_otros_casos SINO accion FIN
+
+    $default  reduce usando la regla 128 (l_otros_casos)
+
+    l_otros_casos  ir al estado 309
+
+
+Estado 298
+
+  157 expresion_constante: CTC_CADENA .
+
+    $default  reduce usando la regla 157 (expresion_constante)
+
+
+Estado 299
+
+  158 expresion_constante: CTC_CARACTER .
+
+    $default  reduce usando la regla 158 (expresion_constante)
+
+
+Estado 300
+
+  155 expresion_constante: CTC_ENTERA .
+
+    $default  reduce usando la regla 155 (expresion_constante)
+
+
+Estado 301
+
+  156 expresion_constante: CTC_REAL .
+
+    $default  reduce usando la regla 156 (expresion_constante)
+
+
+Estado 302
+
+   81 parametros: rep_ident ':' especificacion_tipo '=' l_expr_constante .
+   84 l_expr_constante: l_expr_constante . ',' expresion_constante
+
+    ','  desplazar e ir al estado 310
+
+    $default  reduce usando la regla 81 (parametros)
+
+
+Estado 303
+
+   85 l_expr_constante: expresion_constante .
+
+    $default  reduce usando la regla 85 (l_expr_constante)
+
+
+Estado 304
+
+  152 clausula_excepcion_especifica: EXCEPCION IDENTIFICADOR bloque_instrucciones .
+
+    $default  reduce usando la regla 152 (clausula_excepcion_especifica)
+
+
+Estado 305
+
+  153 clausula_excepcion_general: OTRA EXCEPCION bloque_instrucciones .
+
+    $default  reduce usando la regla 153 (clausula_excepcion_general)
+
+
+Estado 306
+
+  133 instruccion_bucle: HACER accion MIENTRAS '(' expresion ')' . ';'
+
+    ';'  desplazar e ir al estado 311
+
+
+Estado 307
+
+  135 instruccion_bucle: PARA CADA IDENTIFICADOR '(' expresion ')' . accion
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 312
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 308
+
+  134 instruccion_bucle: PARA '(' l_asignaciones ';' expresion ';' . l_asignaciones ')' accion
+
+    IDENTIFICADOR  desplazar e ir al estado 210
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    asignacion          ir al estado 255
+    l_asignaciones      ir al estado 313
+    expresion_indexada  ir al estado 171
+    expresion_basica    ir al estado 172
+
+
+Estado 309
+
+  125 instruccion_bifurcacion: SI '(' expresion ')' accion l_otros_casos . FIN
+  126                        | SI '(' expresion ')' accion l_otros_casos . SINO accion FIN
+  127 l_otros_casos: l_otros_casos . otros_casos
+
+    FIN   desplazar e ir al estado 314
+    SI    desplazar e ir al estado 315
+    SINO  desplazar e ir al estado 316
+
+    otros_casos  ir al estado 317
+
+
+Estado 310
+
+   84 l_expr_constante: l_expr_constante ',' . expresion_constante
+
+    CTC_CADENA    desplazar e ir al estado 298
+    CTC_CARACTER  desplazar e ir al estado 299
+    CTC_ENTERA    desplazar e ir al estado 300
+    CTC_REAL      desplazar e ir al estado 301
+
+    expresion_constante  ir al estado 318
+
+
+Estado 311
+
+  133 instruccion_bucle: HACER accion MIENTRAS '(' expresion ')' ';' .
+
+    $default  reduce usando la regla 133 (instruccion_bucle)
+
+
+Estado 312
+
+  135 instruccion_bucle: PARA CADA IDENTIFICADOR '(' expresion ')' accion .
+
+    $default  reduce usando la regla 135 (instruccion_bucle)
+
+
+Estado 313
+
+  134 instruccion_bucle: PARA '(' l_asignaciones ';' expresion ';' l_asignaciones . ')' accion
+  136 l_asignaciones: l_asignaciones . ',' asignacion
+
+    ','  desplazar e ir al estado 282
+    ')'  desplazar e ir al estado 319
+
+
+Estado 314
+
+  125 instruccion_bifurcacion: SI '(' expresion ')' accion l_otros_casos FIN .
+
+    $default  reduce usando la regla 125 (instruccion_bifurcacion)
+
+
+Estado 315
+
+  129 otros_casos: SI . ENCAMBIO '(' expresion ')' accion
+
+    ENCAMBIO  desplazar e ir al estado 320
+
+
+Estado 316
+
+  126 instruccion_bifurcacion: SI '(' expresion ')' accion l_otros_casos SINO . accion FIN
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 321
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 317
+
+  127 l_otros_casos: l_otros_casos otros_casos .
+
+    $default  reduce usando la regla 127 (l_otros_casos)
+
+
+Estado 318
+
+   84 l_expr_constante: l_expr_constante ',' expresion_constante .
+
+    $default  reduce usando la regla 84 (l_expr_constante)
+
+
+Estado 319
+
+  134 instruccion_bucle: PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' . accion
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 322
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 320
+
+  129 otros_casos: SI ENCAMBIO . '(' expresion ')' accion
+
+    '('  desplazar e ir al estado 323
+
+
+Estado 321
+
+  126 instruccion_bifurcacion: SI '(' expresion ')' accion l_otros_casos SINO accion . FIN
+
+    FIN  desplazar e ir al estado 324
+
+
+Estado 322
+
+  134 instruccion_bucle: PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion .
+
+    $default  reduce usando la regla 134 (instruccion_bucle)
+
+
+Estado 323
+
+  129 otros_casos: SI ENCAMBIO '(' . expresion ')' accion
+
+    $default  reduce usando la regla 179 (expresion_logica)
+
+    expresion         ir al estado 325
+    expresion_logica  ir al estado 137
+
+
+Estado 324
+
+  126 instruccion_bifurcacion: SI '(' expresion ')' accion l_otros_casos SINO accion FIN .
+
+    $default  reduce usando la regla 126 (instruccion_bifurcacion)
+
+
+Estado 325
+
+  129 otros_casos: SI ENCAMBIO '(' expresion . ')' accion
+
+    ')'  desplazar e ir al estado 326
+
+
+Estado 326
+
+  129 otros_casos: SI ENCAMBIO '(' expresion ')' . accion
+
+    CONTINUAR      desplazar e ir al estado 143
+    DEVOLVER       desplazar e ir al estado 144
+    EJECUTA        desplazar e ir al estado 145
+    ESCAPE         desplazar e ir al estado 146
+    ETIQUETA       desplazar e ir al estado 147
+    HACER          desplazar e ir al estado 148
+    IDENTIFICADOR  desplazar e ir al estado 149
+    LANZA          desplazar e ir al estado 150
+    MIENTRAS       desplazar e ir al estado 151
+    PARA           desplazar e ir al estado 152
+    PRINCIPIO      desplazar e ir al estado 124
+    SALTAR         desplazar e ir al estado 153
+    SI             desplazar e ir al estado 154
+    ';'            desplazar e ir al estado 155
+    '('            desplazar e ir al estado 156
+    '^'            desplazar e ir al estado 157
+    '\\'           desplazar e ir al estado 158
+
+    ';'  [reduce usando la regla 171 (expresion_funcional)]
+
+    bloque_instrucciones               ir al estado 199
+    instruccion                        ir al estado 200
+    instruccion_expresion              ir al estado 161
+    asignacion                         ir al estado 162
+    instruccion_bifurcacion            ir al estado 163
+    accion                             ir al estado 327
+    instruccion_bucle                  ir al estado 164
+    instruccion_salto                  ir al estado 165
+    instruccion_destino_salto          ir al estado 166
+    instruccion_devolver               ir al estado 167
+    instruccion_vacia                  ir al estado 168
+    instruccion_lanzamiento_excepcion  ir al estado 169
+    instruccion_captura_excepcion      ir al estado 170
+    expresion_indexada                 ir al estado 171
+    expresion_basica                   ir al estado 172
+    expresion_funcional                ir al estado 173
+
+
+Estado 327
+
+  129 otros_casos: SI ENCAMBIO '(' expresion ')' accion .
+
+    $default  reduce usando la regla 129 (otros_casos)

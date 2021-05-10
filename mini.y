@@ -18,9 +18,6 @@
 }
 
 
-%left '*' '/' '%' '+' FLECHA_IZDA FLECHA_DCHA '&' '@' '|' '<' '>' GE LE EQ NEQ AND OR
-%right POTENCIA 
-%nonassoc '-' '~' '!' TAMANO
 
 
 %token AND AND_ASIG ARRAY CABECERA CADA CADENA CARACTER CONJUNTO CONSTANTES CONTINUAR CTC_CADENA
@@ -70,7 +67,7 @@ declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones
   |                                                       {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN");}
   ;
 
-l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo"):}
+l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo");}
   | declaracion_tipo                                      {printf("l_decl_tipo --> declaracion_tipo");}
   ;
 
@@ -274,17 +271,17 @@ asignacion : expresion_indexada operador_asignacion expresion
 ;
 
 operador_asignacion : '='
-  | '=+'
-  | '=-' 
-  | '=*'
-  | '=/' 
-  | '=%' 
-  | '=**' 
-  | '=<-' 
-  | '=->' 
-  | '=&' 
-  | '=@' 
-  | '=|'
+  | SUMA_ASIG
+  | RESTA_ASIG 
+  | MULT_ASIG
+  | DIV_ASIG 
+  | MOD_ASIG 
+  | POT_ASIG 
+  | FI_ASIG 
+  | FD_ASIG 
+  | AND_ASIG 
+  | XOR_ASIG 
+  | OR_ASIG
   ;
 
 instruccion_bifurcacion : SI '(' expresion ')' accion l_otros_casos FIN
@@ -304,7 +301,7 @@ accion : instruccion
   ;
 
 instruccion_bucle: MIENTRAS '(' expresion ')' accion
-  | HACER accion 'mientras' '(' expresion ')' ';'
+  | HACER accion MIENTRAS '(' expresion ')' ';'
   | PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
   | PARA CADA IDENTIFICADOR '(' expresion ')' accion
   ;
@@ -318,7 +315,7 @@ instruccion_salto : SALTAR IDENTIFICADOR ';'
   | ESCAPE ';'
   ;
 
-instruccion_destino_salto : 'etiqueta' IDENTIFICADOR ';'
+instruccion_destino_salto : ETIQUETA IDENTIFICADOR ';'
 ;
 
 instruccion_devolver : DEVOLVER ';'
@@ -386,7 +383,7 @@ expresion_funcional : IDENTIFICADOR '(' l_expresion ')'
 |;
 
 l_expresion : l_expresiones 
-|expresion
+|
 ; 
 
 l_expresiones : l_expresiones ',' expresion
@@ -421,11 +418,14 @@ operador_unario: '-'
 ;
 
 
-expresion : expresion_logica
-| expresion_logica 'si' expresion 'sino' expresion
+expresion : expresion_logica op_exp
 ;
 
+op_exp : SI expresion SINO expresion
+  |
+  ;
 
+expresion_logica : ;
 
     
 %%
