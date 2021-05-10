@@ -382,11 +382,16 @@ indice : '[' expresion ']'
 | '{' expresion '}'
 ;
 
-expresion_funcional : IDENTIFICADOR '(' a ')'
+expresion_funcional : IDENTIFICADOR '(' l_expresion ')'
 |;
-a : IDENTIFICADOR a ',' expresion
+
+l_expresion : l_expresiones 
 |expresion
 ; 
+
+l_expresiones : l_expresiones ',' expresion
+ | expresion
+ ;
 
 operador : operador_binario
 | operador_unario
