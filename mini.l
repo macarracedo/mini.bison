@@ -1,6 +1,5 @@
 %{
   #include <stdio.h>
-  //#include "tokens.h"
   #include "mini.tab.h"
 %}
 
@@ -109,17 +108,3 @@ variables 		{printf("linea %d, palabra reservada: %s\n", yylineno, yytext); retu
 
 
 %%
-
-
-// int yywrap() {
-//   return(1);
-// }
-
-// int main(int argc, char *argv[]) {
-//   if (argc < 2) {
-//     printf("Uso: ./mini NombreArchivo\n");
-//   } else {
-//     yyin = fopen(argv[1],"r");
-//     while (yylex());
-//   }
-// }
