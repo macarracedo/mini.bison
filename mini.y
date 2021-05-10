@@ -111,10 +111,10 @@ linea_campo:  linea_campo ',' IDENTIFICADOR 'es' especificacion_tipo ';'
 /* declaracion de constantes */
 /*****************************/
 
-declaraciones_constantes : 'constantes' s 'fin'
+declaraciones_constantes : 'constantes' l_declaraciones_constantes 'fin'
 ;
 
-s : s declaracion_constante
+l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante
   | declaracion_constante
   ;
 
@@ -129,30 +129,30 @@ constante: CTC_ENTERA
 | constante_estructurada
 ;
 
-constante_enumerada : '(' sa ')'
-| '(' sb ')'
+constante_enumerada : '(' l_constante ')'
+| '(' l_elemento_hash ')'
 ;
 
-sa : saa
+l_constante : rep_constante
  |
  ;
-saa : saa ',' constante
+rep_constante : rep_constante ',' constante
  | constante
  ;
 
-sb : sbb
+l_elemento_hash : rep_elemento_hash
  |
  ;
-sbb : sbb ',' elemento_hash
+rep_elemento_hash : rep_elemento_hash ',' elemento_hash
  | elemento_hash
  ;  
 
 elemento_hash : CTC_CADENA '->' constante
 ;
 
-constante_estructurada : '{' sc '}'
+constante_estructurada : '{' l_campo_constante '}'
 
-sc : sc ',' campo_constante
+l_campo_constante : l_campo_constante ',' campo_constante
  | campo_constante
  ;
 
@@ -234,9 +234,9 @@ rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion
  | 
  ;
 
-bloque_instrucciones : 'principio' df 'fin'
+bloque_instrucciones : 'principio' l_instruccion 'fin'
 
-df :  df instruccion
+l_instruccion :  l_instruccion instruccion
  | instruccion
  ;
 
@@ -259,7 +259,8 @@ instruccion_expresion : expresion_funcional ';'
   | asignacion ';'
   ;
 
-asignacion : expresion_indexada operador_asignacion expresion ;
+asignacion : expresion_indexada operador_asignacion expresion 
+;
 
 operador_asignacion : '='
   | '=+'
@@ -275,16 +276,14 @@ operador_asignacion : '='
   | '=|'
   ;
 
-instruccion_bifurcacion : 'si' '(' expresion ')' accion a b
-  'fin'
+instruccion_bifurcacion : 'si' '(' expresion ')' accion l_otros_casos 'fin'
+  | 'si' '(' expresion ')' accion a 'sino' accion 'fin'
+  ;
 
-a : a otros_casos
+l_otros_casos : l_otros_casos otros_casos
   |
   ;
 
-b : 'sino' accion
-  |
-  ;
 
 otros_casos : 'si' 'encambio' '(' expresion ')' accion
   ;
@@ -293,22 +292,27 @@ accion : instruccion
   | bloque_instrucciones
   ;
 
-instruccion_bucle ::= ’mientras’ ’(’ expresion ’)’ accion
-  | ’hacer’ accion ’mientras’ ’( expresion ’)’ ’;’
-  | ’para’ ’(’ ( asignacion )+ ’;’ expresion ’;’ ( asignacion ) + ’)’ accion
-  | ’para’ ’cada’ IDENTIFICADOR ’(’ expresion ’)’ accion
+instruccion_bucle ::= 'mientras' '(' expresion ')' accion
+  | 'hacer' accion 'mientras' '(' expresion ')' ';'
+  | 'para' '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
+  | 'para' 'cada' IDENTIFICADOR '(' expresion ')' accion
   ;
 
+l_asignaciones : l_asignaciones ',' asignacion
+  | asignacion
+  ; 
+
 instruccion_salto : 'saltar' IDENTIFICADOR ';'
-| 'continuar' ';' 
-| 'escape' ';'
-;
+  | 'continuar' ';' 
+  | 'escape' ';'
+  ;
 
 instruccion_destino_salto : 'etiqueta' IDENTIFICADOR ';'
 ;
 
-instruccion_devolver : 'devolver' [ expresion ]? ';'
-;
+instruccion_devolver : 'devolver' ';'
+  | 'devolver' expresion ';'
+  ;
 
 instruccion_vacia : ';'
 ;
@@ -319,16 +323,17 @@ instruccion_lanzamiento_excepcion : 'lanza' 'excepcion' IDENTIFICADOR ';'
 instruccion_captura_excepcion : 'ejecuta' bloque_instrucciones clausulas
 ;
 
-clausulas : clausulas_excepcion c
-  | clausula_defecto
+clausulas : clausulas_excepcion 
+  | clausulas_excepcion clausula_defecto
   ;
 
-c : clausula_defecto
-  |
-  ;
   
-clausulas_excepcion : [ clausula_excepcion_especifica ]* clausula_excepcion_general
+clausulas_excepcion : l_clausula_excepcion_especifica clausula_excepcion_general
 ;
+
+l_clausula_excepcion_especifica : l_clausula_excepcion_especifica clausula_excepcion_especifica
+  | 
+  ;
 
 clausula_excepcion_especifica : 'excepcion' IDENTIFICADOR bloque_instrucciones
 ;
