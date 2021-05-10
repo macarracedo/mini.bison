@@ -171,8 +171,8 @@ l_declaracion: l_declaracion declaracion_variables
   | declaracion_variables
   ;
 
-declaracion_variables : l_ident ':'' especificacion_tipo ';'
-  | l_ident ':'' especificacion_tipo [ '=' l_expr ]? ';'
+declaracion_variables : l_ident ':' especificacion_tipo ';'
+  | l_ident ':' especificacion_tipo  '=' l_expr  ';'
   ;
 
 l_expr :  l_expr ',' expresion
@@ -292,7 +292,7 @@ accion : instruccion
   | bloque_instrucciones
   ;
 
-instruccion_bucle ::= 'mientras' '(' expresion ')' accion
+instruccion_bucle : 'mientras' '(' expresion ')' accion
   | 'hacer' accion 'mientras' '(' expresion ')' ';'
   | 'para' '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
   | 'para' 'cada' IDENTIFICADOR '(' expresion ')' accion
