@@ -372,10 +372,14 @@ indice : '[' expresion ']'
 | '{' expresion '}'
 ;
 
-expresion_funcional : IDENTIFICADOR '(' a ')'
-|;
-a : IDENTIFICADOR a ',' expresion
-|expresion
+expresion_funcional : IDENTIFICADOR '(' rep_expresion ')'
+;
+
+rep_expresion :  rep_expresiones 
+|
+;
+rep_expresiones : rep_expresiones ',' expresion
+| expresion
 ; 
 
 operador : operador_binario
