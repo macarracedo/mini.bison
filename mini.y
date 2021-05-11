@@ -130,42 +130,42 @@ l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante {p
 declaracion_constante : IDENTIFICADOR ES tipo_basico '=' constante ';'        {printf("declaracion_constante : IDENTIFICADOR ES tipo_basico '=' constante ';'\n");}
 ;
 
-constante: CTC_ENTERA                                                         {printf("constante: CTC_ENTERA\n");}
-| CTC_REAL                                                                    {printf("constante: CTC_REAL\n");}
-| CTC_CARACTER                                                                {printf("constante: CTC_CARACTER\n");}
-| CTC_CADENA                                                                  {printf("constante: CTC_CADENA\n");}
-| constante_enumerada                                                         {printf("constante: constante_enumerada\n");}
-| constante_estructurada                                                      {printf("constante: constante_estructurada\n");}
+constante: CTC_ENTERA                                     {printf("constante: CTC_ENTERA\n");}
+| CTC_REAL                                                {printf("constante: CTC_REAL\n");}
+| CTC_CARACTER                                            {printf("constante: CTC_CARACTER\n");}
+| CTC_CADENA                                              {printf("constante: CTC_CADENA\n");}
+| constante_enumerada                                     {printf("constante: constante_enumerada\n");}
+| constante_estructurada                                  {printf("constante: constante_estructurada\n");}
 ;
 
-constante_enumerada : '(' l_constante ')'                                     {printf("constante_enumerada : '(' l_constante ')'\n");}
-  | '(' l_elemento_hash ')'                                                   {printf("constante_enumerada : '(' l_elemento_hash ')'\n");}
+constante_enumerada : '(' l_constante ')'                 {printf("constante_enumerada : '(' l_constante ')'\n");}
+  | '(' l_elemento_hash ')'                               {printf("constante_enumerada : '(' l_elemento_hash ')'\n");}
   ;
 
-l_constante : rep_constante                                                   {printf("l_constante : rep_constante\n");}
- |                                                                            {printf("l_constante : \n");}
+l_constante : rep_constante                               {printf("l_constante : rep_constante\n");}
+ |                                                        {printf("l_constante : \n");}
  ;
-rep_constante : rep_constante ',' constante                                   {printf("rep_constante : rep_constante ',' constante\n");}
- | constante                                                                  {printf("rep_constante : constante\n");}
+rep_constante : rep_constante ',' constante               {printf("rep_constante : rep_constante ',' constante\n");}
+ | constante                                              {printf("rep_constante : constante\n");}
  ;
 
-l_elemento_hash : rep_elemento_hash                                           {printf("l_elemento_hash : rep_elemento_hash\n");}
- |                                                                            {printf("l_elemento_hash : \n");}
+l_elemento_hash : rep_elemento_hash                       {printf("l_elemento_hash : rep_elemento_hash\n");}
+ |                                                        {printf("l_elemento_hash : \n");}
  ;
-rep_elemento_hash : rep_elemento_hash ',' elemento_hash                       {printf("rep_elemento_hash : rep_elemento_hash ',' elemento_hash\n");}
- | elemento_hash                                                              {printf("rep_elemento_hash : elemento_hash\n");}
+rep_elemento_hash : rep_elemento_hash ',' elemento_hash   {printf("rep_elemento_hash : rep_elemento_hash ',' elemento_hash\n");}
+ | elemento_hash                                          {printf("rep_elemento_hash : elemento_hash\n");}
  ;  
 
-elemento_hash : CTC_CADENA FD_ASIG constante                                  {printf("elemento_hash : CTC_CADENA FD_ASIG constante\n");}
+elemento_hash : CTC_CADENA FD_ASIG constante              {printf("elemento_hash : CTC_CADENA FD_ASIG constante\n");}
  ;
 
-constante_estructurada : '{' l_campo_constante '}'                            {printf("constante_estructurada : '{' l_campo_constante '}'\n");}
+constante_estructurada : '{' l_campo_constante '}'        {printf("constante_estructurada : '{' l_campo_constante '}'\n");}
 
-l_campo_constante : l_campo_constante ',' campo_constante                     {printf("l_campo_constante : l_campo_constante ',' campo_constante\n");}
- | campo_constante                                                            {printf("l_campo_constante : campo_constante\n");}
+l_campo_constante : l_campo_constante ',' campo_constante {printf("l_campo_constante : l_campo_constante ',' campo_constante\n");}
+ | campo_constante                                        {printf("l_campo_constante : campo_constante\n");}
  ;
 
-campo_constante : IDENTIFICADOR '=' constante                                 {printf("campo_constante : IDENTIFICADOR '=' constante\n");}
+campo_constante : IDENTIFICADOR '=' constante             {printf("campo_constante : IDENTIFICADOR '=' constante\n");}
  ;
 
 
@@ -174,22 +174,22 @@ campo_constante : IDENTIFICADOR '=' constante                                 {p
 /****************************/
 
 
-declaraciones_variables : VARIABLES l_declaracion FIN                         {printf("declaraciones_variables : campo_constante\n");}
+declaraciones_variables : VARIABLES l_declaracion FIN     {printf("declaraciones_variables : campo_constante\n");}
 
-l_declaracion: l_declaracion declaracion_variables                            {printf("l_declaracion : l_declaracion declaracion_variables\n");}
-  | declaracion_variables                                                     {printf("l_declaracion : declaracion_variables\n");}
+l_declaracion: l_declaracion declaracion_variables        {printf("l_declaracion : l_declaracion declaracion_variables\n");}
+  | declaracion_variables                                 {printf("l_declaracion : declaracion_variables\n");}
   ;
 
-declaracion_variables : l_ident ':' especificacion_tipo ';'                   {printf("declaracion_variables : l_ident ':' especificacion_tipo ';'\n");}
-  | l_ident ':' especificacion_tipo  '=' l_expr ';'                           {printf("declaracion_variables : l_ident ':' especificacion_tipo  '=' l_expr ';'\n");}
+declaracion_variables : l_ident ':' especificacion_tipo ';'                     {printf("declaracion_variables : l_ident ':' especificacion_tipo ';'\n");}
+  | l_ident ':' especificacion_tipo  '=' l_expr ';'                             {printf("declaracion_variables : l_ident ':' especificacion_tipo  '=' l_expr ';'\n");}
   ;
 
-l_expr :  l_expr ',' expresion                                                {printf("l_expr : l_expr ',' expresion\n");}
-  | expresion                                                                 {printf("l_expr : expresion\n");}
+l_expr :  l_expr ',' expresion                            {printf("l_expr : l_expr ',' expresion\n");}
+  | expresion                                             {printf("l_expr : expresion\n");}
   ;
 
-l_ident : l_ident ',' IDENTIFICADOR                                           {printf("l_ident : l_ident ',' IDENTIFICADOR\n");}
-  | IDENTIFICADOR                                                             {printf("l_ident : IDENTIFICADOR\n");}
+l_ident : l_ident ',' IDENTIFICADOR                       {printf("l_ident : l_ident ',' IDENTIFICADOR\n");}
+  | IDENTIFICADOR                                         {printf("l_ident : IDENTIFICADOR\n");}
   ;
 
 
@@ -203,64 +203,64 @@ declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion  
  | FUNCION IDENTIFICADOR lista_parametros FD_ASIG tipo_salida cuerpo_funcion    {printf("declaracion_funcion : FUNCION IDENTIFICADOR lista_parametros FD_ASIG tipo_salida cuerpo_funcion\n");}
  ;
 
-lista_parametros : '(' l_parametros parametros ')'                            {printf("lista_parametros : '(' l_parametros parametros ')'\n");}
+lista_parametros : '(' l_parametros parametros ')'        {printf("lista_parametros : '(' l_parametros parametros ')'\n");}
 
-l_parametros : l_parametros parametros ';'                                    {printf("l_parametros : l_parametros parametros ';'\n");}
- |                                                                            {printf("l_parametros : \n");}
+l_parametros : l_parametros parametros ';'                {printf("l_parametros : l_parametros parametros ';'\n");}
+ |                                                        {printf("l_parametros : \n");}
  ;
 
-parametros : rep_ident ':' especificacion_tipo                                {printf("parametros : rep_ident ':' especificacion_tipo\n");}
- | rep_ident ':' especificacion_tipo '=' l_expr_constante                     {printf("parametros : rep_ident ':' especificacion_tipo '=' l_expr_constante\n");}
+parametros : rep_ident ':' especificacion_tipo            {printf("parametros : rep_ident ':' especificacion_tipo\n");}
+ | rep_ident ':' especificacion_tipo '=' l_expr_constante {printf("parametros : rep_ident ':' especificacion_tipo '=' l_expr_constante\n");}
  ;
 
-rep_ident : rep_ident ',' IDENTIFICADOR                                       {printf("rep_ident : rep_ident ',' IDENTIFICADOR\n");}
- | IDENTIFICADOR                                                              {printf("rep_ident : IDENTIFICADOR\n");}
+rep_ident : rep_ident ',' IDENTIFICADOR                   {printf("rep_ident : rep_ident ',' IDENTIFICADOR\n");}
+ | IDENTIFICADOR                                          {printf("rep_ident : IDENTIFICADOR\n");}
  ; 
 
-l_expr_constante : l_expr_constante ',' expresion_constante
- | expresion_constante
+l_expr_constante : l_expr_constante ',' expresion_constante                     {printf("l_expr_constante : l_expr_constante ',' expresion_constante\n");}
+ | expresion_constante                                                          {printf("l_expr_constante : expresion_constante\n");}
  ;
 
-tipo_salida : especificacion_tipo 
-| NADA
+tipo_salida : especificacion_tipo                         {printf("tipo_salida : especificacion_tipo\n");}
+| NADA                                                    {printf("tipo_salida : NADA\n");}
 ;
 
-cuerpo_funcion: l_declaraciones_constantes
- | l_declaraciones_variables
- | rep_declaracion_funcion
- | bloque_instrucciones
+cuerpo_funcion: l_declaraciones_constantes                {printf("cuerpo_funcion : l_declaraciones_constantes\n");}
+ | l_declaraciones_variables                              {printf("cuerpo_funcion : l_declaraciones_variables\n");}
+ | rep_declaracion_funcion                                {printf("cuerpo_funcion : rep_declaracion_funcion\n");}
+ | bloque_instrucciones                                   {printf("cuerpo_funcion : bloque_instrucciones\n");}
  ;
 
-l_declaraciones_constantes : declaraciones_constantes
- | 
+l_declaraciones_constantes : declaraciones_constantes     {printf("l_declaraciones_constantes : declaraciones_constantes\n");}
+ |                                                        {printf("l_declaraciones_constantes : \n");}
  ;
 
-l_declaraciones_variables : declaraciones_variables
- | 
+l_declaraciones_variables : declaraciones_variables       {printf("l_declaraciones_variables : declaraciones_variables\n");}
+ |                                                        {printf("l_declaraciones_variables : \n");}
  ;
 
-rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion
- | 
+rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion         {printf("rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion\n");}
+ |                                                                            {printf("rep_declaracion_funcion : \n");}
  ;
 
-bloque_instrucciones : PRINCIPIO l_instruccion FIN
+bloque_instrucciones : PRINCIPIO l_instruccion FIN         {printf("bloque_instrucciones : PRINCIPIO l_instruccion FIN\n");}
 
-l_instruccion :  l_instruccion instruccion
- | instruccion
+l_instruccion :  l_instruccion instruccion                 {printf("l_instruccion : l_instruccion instruccion \n");}
+ | instruccion                                             {printf("l_instruccion : instruccion\n");}
  ;
 
 /*****************/
 /* instrucciones */
 /*****************/
-instruccion : instruccion_expresion
-  | instruccion_bifurcacion
-  | instruccion_bucle
-  | instruccion_salto
-  | instruccion_destino_salto
-  | instruccion_devolver
-  | instruccion_vacia
-  | instruccion_lanzamiento_excepcion
-  | instruccion_captura_excepcion
+instruccion : instruccion_expresion                         {printf("instruccion : instruccion_expresion\n");}
+  | instruccion_bifurcacion                                 {printf("instruccion : instruccion_bifurcacion\n");}
+  | instruccion_bucle                                       {printf("instruccion : instruccion_bucle\n");}
+  | instruccion_salto                                       {printf("instruccion : instruccion_salto\n");}
+  | instruccion_destino_salto                               {printf("instruccion : instruccion_destino_salto\n");}
+  | instruccion_devolver                                    {printf("instruccion : instruccion_devolver\n");}
+  | instruccion_vacia                                       {printf("instruccion : instruccion_vacia\n");}
+  | instruccion_lanzamiento_excepcion                       {printf("instruccion : instruccion_lanzamiento_excepcion\n");}
+  | instruccion_captura_excepcion                           {printf("instruccion : instruccion_captura_excepcion\n");}
   ;
 
 instruccion_expresion : expresion_funcional ';'
