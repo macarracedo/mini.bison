@@ -1886,8 +1886,422 @@ yyreduce:
 #line 1887 "mini.tab.c"
     break;
 
+  case 42:
+#line 123 "mini.y"
+                                                                              {printf("declaraciones_constantes : CONSTANTES l_declaraciones_constantes FIN\n");}
+#line 1893 "mini.tab.c"
+    break;
 
-#line 1891 "mini.tab.c"
+  case 43:
+#line 126 "mini.y"
+                                                                              {printf("l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante\n");}
+#line 1899 "mini.tab.c"
+    break;
+
+  case 44:
+#line 127 "mini.y"
+                                                                              {printf("l_declaraciones_constantes : declaracion_constante\n");}
+#line 1905 "mini.tab.c"
+    break;
+
+  case 45:
+#line 130 "mini.y"
+                                                                              {printf("declaracion_constante : IDENTIFICADOR ES tipo_basico '=' constante ';'\n");}
+#line 1911 "mini.tab.c"
+    break;
+
+  case 46:
+#line 133 "mini.y"
+                                                          {printf("constante: CTC_ENTERA\n");}
+#line 1917 "mini.tab.c"
+    break;
+
+  case 47:
+#line 134 "mini.y"
+                                                          {printf("constante: CTC_REAL\n");}
+#line 1923 "mini.tab.c"
+    break;
+
+  case 48:
+#line 135 "mini.y"
+                                                          {printf("constante: CTC_CARACTER\n");}
+#line 1929 "mini.tab.c"
+    break;
+
+  case 49:
+#line 136 "mini.y"
+                                                          {printf("constante: CTC_CADENA\n");}
+#line 1935 "mini.tab.c"
+    break;
+
+  case 50:
+#line 137 "mini.y"
+                                                          {printf("constante: constante_enumerada\n");}
+#line 1941 "mini.tab.c"
+    break;
+
+  case 51:
+#line 138 "mini.y"
+                                                          {printf("constante: constante_estructurada\n");}
+#line 1947 "mini.tab.c"
+    break;
+
+  case 52:
+#line 141 "mini.y"
+                                                          {printf("constante_enumerada : '(' l_constante ')'\n");}
+#line 1953 "mini.tab.c"
+    break;
+
+  case 53:
+#line 142 "mini.y"
+                                                          {printf("constante_enumerada : '(' l_elemento_hash ')'\n");}
+#line 1959 "mini.tab.c"
+    break;
+
+  case 54:
+#line 145 "mini.y"
+                                                          {printf("l_constante : rep_constante\n");}
+#line 1965 "mini.tab.c"
+    break;
+
+  case 55:
+#line 146 "mini.y"
+                                                          {printf("l_constante : \n");}
+#line 1971 "mini.tab.c"
+    break;
+
+  case 56:
+#line 148 "mini.y"
+                                                          {printf("rep_constante : rep_constante ',' constante\n");}
+#line 1977 "mini.tab.c"
+    break;
+
+  case 57:
+#line 149 "mini.y"
+                                                          {printf("rep_constante : constante\n");}
+#line 1983 "mini.tab.c"
+    break;
+
+  case 58:
+#line 152 "mini.y"
+                                                          {printf("l_elemento_hash : rep_elemento_hash\n");}
+#line 1989 "mini.tab.c"
+    break;
+
+  case 59:
+#line 153 "mini.y"
+                                                          {printf("l_elemento_hash : \n");}
+#line 1995 "mini.tab.c"
+    break;
+
+  case 60:
+#line 155 "mini.y"
+                                                          {printf("rep_elemento_hash : rep_elemento_hash ',' elemento_hash\n");}
+#line 2001 "mini.tab.c"
+    break;
+
+  case 61:
+#line 156 "mini.y"
+                                                          {printf("rep_elemento_hash : elemento_hash\n");}
+#line 2007 "mini.tab.c"
+    break;
+
+  case 62:
+#line 159 "mini.y"
+                                                          {printf("elemento_hash : CTC_CADENA FD_ASIG constante\n");}
+#line 2013 "mini.tab.c"
+    break;
+
+  case 63:
+#line 162 "mini.y"
+                                                          {printf("constante_estructurada : '{' l_campo_constante '}'\n");}
+#line 2019 "mini.tab.c"
+    break;
+
+  case 64:
+#line 164 "mini.y"
+                                                          {printf("l_campo_constante : l_campo_constante ',' campo_constante\n");}
+#line 2025 "mini.tab.c"
+    break;
+
+  case 65:
+#line 165 "mini.y"
+                                                          {printf("l_campo_constante : campo_constante\n");}
+#line 2031 "mini.tab.c"
+    break;
+
+  case 66:
+#line 168 "mini.y"
+                                                          {printf("campo_constante : IDENTIFICADOR '=' constante\n");}
+#line 2037 "mini.tab.c"
+    break;
+
+  case 67:
+#line 177 "mini.y"
+                                                          {printf("declaraciones_variables : campo_constante\n");}
+#line 2043 "mini.tab.c"
+    break;
+
+  case 68:
+#line 179 "mini.y"
+                                                          {printf("l_declaracion : l_declaracion declaracion_variables\n");}
+#line 2049 "mini.tab.c"
+    break;
+
+  case 69:
+#line 180 "mini.y"
+                                                          {printf("l_declaracion : declaracion_variables\n");}
+#line 2055 "mini.tab.c"
+    break;
+
+  case 70:
+#line 183 "mini.y"
+                                                                                {printf("declaracion_variables : l_ident ':' especificacion_tipo ';'\n");}
+#line 2061 "mini.tab.c"
+    break;
+
+  case 71:
+#line 184 "mini.y"
+                                                                                {printf("declaracion_variables : l_ident ':' especificacion_tipo  '=' l_expr ';'\n");}
+#line 2067 "mini.tab.c"
+    break;
+
+  case 72:
+#line 187 "mini.y"
+                                                          {printf("l_expr : l_expr ',' expresion\n");}
+#line 2073 "mini.tab.c"
+    break;
+
+  case 73:
+#line 188 "mini.y"
+                                                          {printf("l_expr : expresion\n");}
+#line 2079 "mini.tab.c"
+    break;
+
+  case 74:
+#line 191 "mini.y"
+                                                          {printf("l_ident : l_ident ',' IDENTIFICADOR\n");}
+#line 2085 "mini.tab.c"
+    break;
+
+  case 75:
+#line 192 "mini.y"
+                                                          {printf("l_ident : IDENTIFICADOR\n");}
+#line 2091 "mini.tab.c"
+    break;
+
+  case 76:
+#line 202 "mini.y"
+                                                                                {printf("declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion\n");}
+#line 2097 "mini.tab.c"
+    break;
+
+  case 77:
+#line 203 "mini.y"
+                                                                                {printf("declaracion_funcion : FUNCION IDENTIFICADOR lista_parametros FD_ASIG tipo_salida cuerpo_funcion\n");}
+#line 2103 "mini.tab.c"
+    break;
+
+  case 78:
+#line 206 "mini.y"
+                                                          {printf("lista_parametros : '(' l_parametros parametros ')'\n");}
+#line 2109 "mini.tab.c"
+    break;
+
+  case 79:
+#line 208 "mini.y"
+                                                          {printf("l_parametros : l_parametros parametros ';'\n");}
+#line 2115 "mini.tab.c"
+    break;
+
+  case 80:
+#line 209 "mini.y"
+                                                          {printf("l_parametros : \n");}
+#line 2121 "mini.tab.c"
+    break;
+
+  case 81:
+#line 212 "mini.y"
+                                                          {printf("parametros : rep_ident ':' especificacion_tipo\n");}
+#line 2127 "mini.tab.c"
+    break;
+
+  case 82:
+#line 213 "mini.y"
+                                                          {printf("parametros : rep_ident ':' especificacion_tipo '=' l_expr_constante\n");}
+#line 2133 "mini.tab.c"
+    break;
+
+  case 83:
+#line 216 "mini.y"
+                                                          {printf("rep_ident : rep_ident ',' IDENTIFICADOR\n");}
+#line 2139 "mini.tab.c"
+    break;
+
+  case 84:
+#line 217 "mini.y"
+                                                          {printf("rep_ident : IDENTIFICADOR\n");}
+#line 2145 "mini.tab.c"
+    break;
+
+  case 85:
+#line 220 "mini.y"
+                                                                                {printf("l_expr_constante : l_expr_constante ',' expresion_constante\n");}
+#line 2151 "mini.tab.c"
+    break;
+
+  case 86:
+#line 221 "mini.y"
+                                                                                {printf("l_expr_constante : expresion_constante\n");}
+#line 2157 "mini.tab.c"
+    break;
+
+  case 87:
+#line 224 "mini.y"
+                                                          {printf("tipo_salida : especificacion_tipo\n");}
+#line 2163 "mini.tab.c"
+    break;
+
+  case 88:
+#line 225 "mini.y"
+                                                          {printf("tipo_salida : NADA\n");}
+#line 2169 "mini.tab.c"
+    break;
+
+  case 89:
+#line 228 "mini.y"
+                                                          {printf("cuerpo_funcion : l_declaraciones_constantes\n");}
+#line 2175 "mini.tab.c"
+    break;
+
+  case 90:
+#line 229 "mini.y"
+                                                          {printf("cuerpo_funcion : l_declaraciones_variables\n");}
+#line 2181 "mini.tab.c"
+    break;
+
+  case 91:
+#line 230 "mini.y"
+                                                          {printf("cuerpo_funcion : rep_declaracion_funcion\n");}
+#line 2187 "mini.tab.c"
+    break;
+
+  case 92:
+#line 231 "mini.y"
+                                                          {printf("cuerpo_funcion : bloque_instrucciones\n");}
+#line 2193 "mini.tab.c"
+    break;
+
+  case 93:
+#line 234 "mini.y"
+                                                          {printf("l_declaraciones_constantes : declaraciones_constantes\n");}
+#line 2199 "mini.tab.c"
+    break;
+
+  case 94:
+#line 235 "mini.y"
+                                                          {printf("l_declaraciones_constantes : \n");}
+#line 2205 "mini.tab.c"
+    break;
+
+  case 95:
+#line 238 "mini.y"
+                                                          {printf("l_declaraciones_variables : declaraciones_variables\n");}
+#line 2211 "mini.tab.c"
+    break;
+
+  case 96:
+#line 239 "mini.y"
+                                                          {printf("l_declaraciones_variables : \n");}
+#line 2217 "mini.tab.c"
+    break;
+
+  case 97:
+#line 242 "mini.y"
+                                                                              {printf("rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion\n");}
+#line 2223 "mini.tab.c"
+    break;
+
+  case 98:
+#line 243 "mini.y"
+                                                                              {printf("rep_declaracion_funcion : \n");}
+#line 2229 "mini.tab.c"
+    break;
+
+  case 99:
+#line 246 "mini.y"
+                                                           {printf("bloque_instrucciones : PRINCIPIO l_instruccion FIN\n");}
+#line 2235 "mini.tab.c"
+    break;
+
+  case 100:
+#line 248 "mini.y"
+                                                           {printf("l_instruccion : l_instruccion instruccion \n");}
+#line 2241 "mini.tab.c"
+    break;
+
+  case 101:
+#line 249 "mini.y"
+                                                           {printf("l_instruccion : instruccion\n");}
+#line 2247 "mini.tab.c"
+    break;
+
+  case 102:
+#line 255 "mini.y"
+                                                            {printf("instruccion : instruccion_expresion\n");}
+#line 2253 "mini.tab.c"
+    break;
+
+  case 103:
+#line 256 "mini.y"
+                                                            {printf("instruccion : instruccion_bifurcacion\n");}
+#line 2259 "mini.tab.c"
+    break;
+
+  case 104:
+#line 257 "mini.y"
+                                                            {printf("instruccion : instruccion_bucle\n");}
+#line 2265 "mini.tab.c"
+    break;
+
+  case 105:
+#line 258 "mini.y"
+                                                            {printf("instruccion : instruccion_salto\n");}
+#line 2271 "mini.tab.c"
+    break;
+
+  case 106:
+#line 259 "mini.y"
+                                                            {printf("instruccion : instruccion_destino_salto\n");}
+#line 2277 "mini.tab.c"
+    break;
+
+  case 107:
+#line 260 "mini.y"
+                                                            {printf("instruccion : instruccion_devolver\n");}
+#line 2283 "mini.tab.c"
+    break;
+
+  case 108:
+#line 261 "mini.y"
+                                                            {printf("instruccion : instruccion_vacia\n");}
+#line 2289 "mini.tab.c"
+    break;
+
+  case 109:
+#line 262 "mini.y"
+                                                            {printf("instruccion : instruccion_lanzamiento_excepcion\n");}
+#line 2295 "mini.tab.c"
+    break;
+
+  case 110:
+#line 263 "mini.y"
+                                                            {printf("instruccion : instruccion_captura_excepcion\n");}
+#line 2301 "mini.tab.c"
+    break;
+
+
+#line 2305 "mini.tab.c"
 
       default: break;
     }

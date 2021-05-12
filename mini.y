@@ -1,4 +1,3 @@
-
 %{
   
   #include <stdio.h>
@@ -16,8 +15,6 @@
   double valor_real;
   char * texto;
 }
-
-
 
 
 %token AND AND_ASIG ARRAY CABECERA CADA CADENA CARACTER CONJUNTO CONSTANTES CONTINUAR CTC_CADENA
@@ -51,20 +48,34 @@ l_rutas : l_rutas ',' RUTA                                {printf("l_rutas --> l
   ;
 
 bloque_programa :
-    declaraciones_tipos                                   {printf("bloque_programa --> \n");}
-    declaraciones_constantes                              {printf("bloque_programa --> \n");}
-    declaraciones_variables                               {printf("bloque_programa --> \n");}
-    declaracion_funcion                                   {printf("bloque_programa --> \n");}
+    op_declaraciones_tipos                                   {printf("bloque_programa --> \n");}
+    op_declaraciones_constantes                              {printf("bloque_programa --> \n");}
+    op_declaraciones_variables                               {printf("bloque_programa --> \n");}
+    rep_declaracion_funcion                                   {printf("bloque_programa --> \n");}
     bloque_instrucciones                                  {printf("bloque_programa --> \n");}
     |error                                                {yyerror;}
     ;
 
+op_declaraciones_tipos : declaraciones_tipos
+  |
+  ;
+
+op_declaraciones_constantes : declaraciones_constantes
+  |
+  ;
+
+op_declaraciones_variables : declaraciones_variables
+  |
+  ;
+
+rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion     {printf("rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion\n");}
+  | declaracion_funcion                                                   {printf("rep_declaracion_funcion\n");}
+  ;
 /************************/
 /* declaracion de tipos */
 /************************/
 
 declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
-  |                                                       {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
   ;
 
 l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo\n");}
@@ -121,7 +132,7 @@ l_campo : l_campo ',' IDENTIFICADOR                       {printf("l_campo --> l
 /*****************************/
 
 declaraciones_constantes : CONSTANTES l_declaraciones_constantes FIN          {printf("declaraciones_constantes : CONSTANTES l_declaraciones_constantes FIN\n");}
-;
+  ;
 
 l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante {printf("l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante\n");}
   | declaracion_constante                                                     {printf("l_declaraciones_constantes : declaracion_constante\n");}
@@ -150,7 +161,6 @@ rep_constante : rep_constante ',' constante               {printf("rep_constante
  ;
 
 l_elemento_hash : rep_elemento_hash                       {printf("l_elemento_hash : rep_elemento_hash\n");}
- |                                                        {printf("l_elemento_hash : \n");}
  ;
 rep_elemento_hash : rep_elemento_hash ',' elemento_hash   {printf("rep_elemento_hash : rep_elemento_hash ',' elemento_hash\n");}
  | elemento_hash                                          {printf("rep_elemento_hash : elemento_hash\n");}
@@ -175,6 +185,7 @@ campo_constante : IDENTIFICADOR '=' constante             {printf("campo_constan
 
 
 declaraciones_variables : VARIABLES l_declaracion FIN     {printf("declaraciones_variables : campo_constante\n");}
+  ;
 
 l_declaracion: l_declaracion declaracion_variables        {printf("l_declaracion : l_declaracion declaracion_variables\n");}
   | declaracion_variables                                 {printf("l_declaracion : declaracion_variables\n");}
@@ -199,13 +210,17 @@ l_ident : l_ident ',' IDENTIFICADOR                       {printf("l_ident : l_i
 /****************************/
 
 
-declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion  {printf("declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion\n");}
- | FUNCION IDENTIFICADOR lista_parametros FD_ASIG tipo_salida cuerpo_funcion    {printf("declaracion_funcion : FUNCION IDENTIFICADOR lista_parametros FD_ASIG tipo_salida cuerpo_funcion\n");}
+declaracion_funcion : FUNCION IDENTIFICADOR op_lista_parametros FD_ASIG tipo_salida cuerpo_funcion {printf("declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion\n");}
  ;
 
-lista_parametros : '(' l_parametros parametros ')'        {printf("lista_parametros : '(' l_parametros parametros ')'\n");}
+op_lista_parametros : lista_parametros
+  |
+  ;
 
-l_parametros : l_parametros parametros ';'                {printf("l_parametros : l_parametros parametros ';'\n");}
+lista_parametros : '(' rep_parametros parametros ')'        {printf("lista_parametros : '(' l_parametros parametros ')'\n");}
+  ;
+
+rep_parametros : rep_parametros parametros ';'                {printf("l_parametros : l_parametros parametros ';'\n");}
  |                                                        {printf("l_parametros : \n");}
  ;
 
@@ -225,23 +240,12 @@ tipo_salida : especificacion_tipo                         {printf("tipo_salida :
 | NADA                                                    {printf("tipo_salida : NADA\n");}
 ;
 
-cuerpo_funcion: l_declaraciones_constantes                {printf("cuerpo_funcion : l_declaraciones_constantes\n");}
- | l_declaraciones_variables                              {printf("cuerpo_funcion : l_declaraciones_variables\n");}
+cuerpo_funcion: op_declaraciones_constantes                {printf("cuerpo_funcion : op_declaraciones_constantes\n");}
+ | op_declaraciones_variables                              {printf("cuerpo_funcion : op_declaraciones_variables\n");}
  | rep_declaracion_funcion                                {printf("cuerpo_funcion : rep_declaracion_funcion\n");}
  | bloque_instrucciones                                   {printf("cuerpo_funcion : bloque_instrucciones\n");}
  ;
 
-l_declaraciones_constantes : declaraciones_constantes     {printf("l_declaraciones_constantes : declaraciones_constantes\n");}
- |                                                        {printf("l_declaraciones_constantes : \n");}
- ;
-
-l_declaraciones_variables : declaraciones_variables       {printf("l_declaraciones_variables : declaraciones_variables\n");}
- |                                                        {printf("l_declaraciones_variables : \n");}
- ;
-
-rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion         {printf("rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion\n");}
- |                                                                            {printf("rep_declaracion_funcion : \n");}
- ;
 
 bloque_instrucciones : PRINCIPIO l_instruccion FIN         {printf("bloque_instrucciones : PRINCIPIO l_instruccion FIN\n");}
 
@@ -284,11 +288,14 @@ operador_asignacion : '='
   | OR_ASIG
   ;
 
-instruccion_bifurcacion : SI '(' expresion ')' accion l_otros_casos FIN
-  | SI '(' expresion ')' accion l_otros_casos SINO accion FIN
+instruccion_bifurcacion : SI '(' expresion ')' accion rep_otros_casos op_sino_accion FIN
   ;
 
-l_otros_casos : l_otros_casos otros_casos
+op_sino_accion : SINO accion
+  |
+  ;
+
+rep_otros_casos : rep_otros_casos otros_casos
   |
   ;
 
@@ -331,15 +338,18 @@ instruccion_lanzamiento_excepcion : LANZA EXCEPCION IDENTIFICADOR ';'
 instruccion_captura_excepcion : EJECUTA bloque_instrucciones clausulas
 ;
 
-clausulas : clausulas_excepcion 
-  | clausulas_excepcion clausula_defecto
+clausulas : clausulas_excepcion op_clausula_defecto
+  | clausula_defecto
   ;
 
+op_clausula_defecto : clausula_defecto
+  |
+  ;
   
-clausulas_excepcion : l_clausula_excepcion_especifica clausula_excepcion_general
+clausulas_excepcion : rep_clausula_excepcion_especifica clausula_excepcion_general
 ;
 
-l_clausula_excepcion_especifica : l_clausula_excepcion_especifica clausula_excepcion_especifica
+rep_clausula_excepcion_especifica : rep_clausula_excepcion_especifica clausula_excepcion_especifica
   | 
   ;
 
@@ -356,7 +366,12 @@ clausula_defecto : DEFECTO bloque_instrucciones
 /* expresiones */
 /***************/
 
-expresion_constante : CTC_ENTERA
+agrup_expresion : expresion_constante
+  | expresion_indexada
+  | expresion_funcional
+  ;
+
+expresion_constante : CTC_ENTERA      {printf("expresion_constante : CTC_ENTERA");}
 | CTC_REAL
 | CTC_CADENA
 | CTC_CARACTER
@@ -380,7 +395,7 @@ indice : '[' expresion ']'
 ;
 
 expresion_funcional : IDENTIFICADOR '(' l_expresion ')'
-|;
+;
 
 l_expresion : l_expresiones 
 |
@@ -390,34 +405,6 @@ l_expresiones : l_expresiones ',' expresion
  | expresion
  ;
 
-operador : operador_binario
-| operador_unario
-;
-
-operador_binario: '&'
-| '@'
-| '|'
-| POTENCIA
-| '+'
-| FLECHA_IZDA
-| FLECHA_DCHA
-| AND
-| OR
-| LE
-| GE
-| EQ
-| NEQ
-| '>'
-| '<'
-;
-
-operador_unario: '-'
-| '~'
-| '!'
-| TAMANO
-;
-
-
 expresion : expresion_logica op_exp
 ;
 
@@ -425,9 +412,66 @@ op_exp : SI expresion SINO expresion
   |
   ;
 
-expresion_logica : ;
+expresion_logica : expresion_logica_or
+  ;
 
+expresion_logica_or : expresion_logica_or OR expresion_logica_and
+  | expresion_logica_and
+  ;
+expresion_logica_and : expresion_logica_and AND expresion_eq
+  | expresion_eq
+  ;
 
+expresion_eq : expresion_eq EQ expresion_comp
+  | expresion_eq NEQ expresion_comp
+  | expresion_comp
+  ;
+
+expresion_comp : expresion_comp '<' expresion_bin_or
+  | expresion_comp '>' expresion_bin_or
+  | expresion_comp LE expresion_bin_or
+  | expresion_comp GE expresion_bin_or
+  | expresion_bin_or
+  ;
+
+expresion_bin_or : expresion_bin_or '|' expresion_bin_xor
+  | expresion_bin_xor
+  ;
+
+expresion_bin_xor : expresion_bin_xor '@' expresion_bin_and
+  | expresion_bin_and
+  ;
+
+expresion_bin_and : expresion_bin_and '&' expresion_desp
+  | expresion_desp
+  ;
+
+expresion_desp : expresion_desp FLECHA_DCHA expresion_aditiva
+  | expresion_desp FLECHA_IZDA expresion_aditiva
+  | expresion_aditiva
+  ;
+
+expresion_aditiva : expresion_aditiva '+' expresion_multiplicativa    {printf("expresion_aditiva : expresion_aditiva '+' expresion_multiplicativa");}
+  | expresion_aditiva '-' expresion_multiplicativa
+  | expresion_multiplicativa
+  ;
+
+expresion_multiplicativa : expresion_multiplicativa '*' expresion_potencia
+  | expresion_multiplicativa '/' expresion_potencia
+  | expresion_multiplicativa '%' expresion_potencia
+  | expresion_potencia
+  ;
+
+expresion_potencia : expresion_noassoc POTENCIA expresion_potencia
+  | expresion_noassoc
+  ;
+
+expresion_noassoc : '-' agrup_expresion
+  | '~' agrup_expresion
+  | '!' agrup_expresion
+  | TAMANO agrup_expresion
+  | agrup_expresion
+  ;
     
 %%
 
