@@ -123,7 +123,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "mini.y"
+#line 13 "mini.y"
 
   int valor_entero;
   double valor_real;

@@ -48,34 +48,24 @@ l_rutas : l_rutas ',' RUTA                                {printf("l_rutas --> l
   ;
 
 bloque_programa :
-    op_declaraciones_tipos                                   {printf("bloque_programa --> \n");}
-    op_declaraciones_constantes                              {printf("bloque_programa --> \n");}
-    op_declaraciones_variables                               {printf("bloque_programa --> \n");}
-    rep_declaracion_funcion                                   {printf("bloque_programa --> \n");}
-    bloque_instrucciones                                  {printf("bloque_programa --> \n");}
-    |error                                                {yyerror;}
+    declaraciones_tipos                                   {printf("bloque_programa --> \n");}
+    declaraciones_constantes                              {printf("bloque_programa --> \n");}
+    declaraciones_variables                               {printf("bloque_programa --> \n");}
+    rep_declaracion_funcion                                  {printf("bloque_programa --> \n");}
+    bloque_instrucciones                                     {printf("bloque_programa --> \n");}
+    | error                                               {yyerror;}
     ;
 
-op_declaraciones_tipos : declaraciones_tipos
-  |
-  ;
 
-op_declaraciones_constantes : declaraciones_constantes
-  |
-  ;
 
-op_declaraciones_variables : declaraciones_variables
-  |
-  ;
 
-rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion     {printf("rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion\n");}
-  | declaracion_funcion                                                   {printf("rep_declaracion_funcion\n");}
-  ;
 /************************/
 /* declaracion de tipos */
 /************************/
 
 declaraciones_tipos : TIPOS l_decl_tipo FIN               {printf("declaraciones_tipos --> TIPOS l_decl_tipo FIN\n");}
+  |
+  |error                                                  {yyerror;}
   ;
 
 l_decl_tipo : l_decl_tipo declaracion_tipo                {printf("l_decl_tipo --> l_decl_tipo declaracion_tipo\n");}
@@ -132,6 +122,7 @@ l_campo : l_campo ',' IDENTIFICADOR                       {printf("l_campo --> l
 /*****************************/
 
 declaraciones_constantes : CONSTANTES l_declaraciones_constantes FIN          {printf("declaraciones_constantes : CONSTANTES l_declaraciones_constantes FIN\n");}
+  |                                                                           {printf("delcaraciones_constantes : \n");}
   ;
 
 l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante {printf("l_declaraciones_constantes : l_declaraciones_constantes declaracion_constante\n");}
@@ -185,6 +176,7 @@ campo_constante : IDENTIFICADOR '=' constante             {printf("campo_constan
 
 
 declaraciones_variables : VARIABLES l_declaracion FIN     {printf("declaraciones_variables : campo_constante\n");}
+  |
   ;
 
 l_declaracion: l_declaracion declaracion_variables        {printf("l_declaracion : l_declaracion declaracion_variables\n");}
@@ -209,6 +201,9 @@ l_ident : l_ident ',' IDENTIFICADOR                       {printf("l_ident : l_i
 /* declaracion de funciones */
 /****************************/
 
+rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion     {printf("rep_declaracion_funcion : rep_declaracion_funcion declaracion_funcion\n");}
+  |
+  ;
 
 declaracion_funcion : FUNCION IDENTIFICADOR op_lista_parametros FD_ASIG tipo_salida cuerpo_funcion {printf("declaracion_funcion : FUNCION IDENTIFICADOR FD_ASIG tipo_salida cuerpo_funcion\n");}
  ;
@@ -220,8 +215,8 @@ op_lista_parametros : lista_parametros
 lista_parametros : '(' rep_parametros parametros ')'        {printf("lista_parametros : '(' l_parametros parametros ')'\n");}
   ;
 
-rep_parametros : rep_parametros parametros ';'                {printf("l_parametros : l_parametros parametros ';'\n");}
- |                                                        {printf("l_parametros : \n");}
+rep_parametros : rep_parametros parametros ';'              {printf("l_parametros : l_parametros parametros ';'\n");}
+ |                                                        
  ;
 
 parametros : rep_ident ':' especificacion_tipo            {printf("parametros : rep_ident ':' especificacion_tipo\n");}
@@ -240,8 +235,8 @@ tipo_salida : especificacion_tipo                         {printf("tipo_salida :
 | NADA                                                    {printf("tipo_salida : NADA\n");}
 ;
 
-cuerpo_funcion: op_declaraciones_constantes                {printf("cuerpo_funcion : op_declaraciones_constantes\n");}
- | op_declaraciones_variables                              {printf("cuerpo_funcion : op_declaraciones_variables\n");}
+cuerpo_funcion: declaraciones_constantes                {printf("cuerpo_funcion : declaraciones_constantes\n");}
+ | declaraciones_variables                              {printf("cuerpo_funcion : declaraciones_variables\n");}
  | rep_declaracion_funcion                                {printf("cuerpo_funcion : rep_declaracion_funcion\n");}
  | bloque_instrucciones                                   {printf("cuerpo_funcion : bloque_instrucciones\n");}
  ;
@@ -354,13 +349,13 @@ rep_clausula_excepcion_especifica : rep_clausula_excepcion_especifica clausula_e
   ;
 
 clausula_excepcion_especifica : EXCEPCION IDENTIFICADOR bloque_instrucciones
-;
+  ;
 
 clausula_excepcion_general : OTRA EXCEPCION bloque_instrucciones
-;
+  ;
 
 clausula_defecto : DEFECTO bloque_instrucciones
-;
+  ;
 
 /***************/
 /* expresiones */
@@ -380,9 +375,12 @@ expresion_constante : CTC_ENTERA      {printf("expresion_constante : CTC_ENTERA"
 expresion_indexada : expresion_basica
 | expresion_indexada '.' expresion_basica
 | expresion_indexada INDIRECCION expresion_basica
-| expresion_indexada indice
-| expresion_indexada INDIRECCION indice
+| expresion_indexada op_indireccion indice
 ;
+
+op_indireccion : INDIRECCION
+  |
+  ;
 
 expresion_basica : IDENTIFICADOR
 | '(' expresion ')'
