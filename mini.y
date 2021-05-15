@@ -368,114 +368,114 @@ bloque_instrucciones : GE;
 /* expresiones */
 /***************/
 
-agrup_expresion : expresion_constante
-  | expresion_indexada
-  | expresion_funcional
+agrup_expresion : expresion_constante       {printf("agrup_expresion : expresion_constante\n");}
+  | expresion_indexada                      {printf("agrup_expresion : expresion_indexada\n");}
+  | expresion_funcional                     {printf("agrup_expresion : expresion_funcional\n");}
   ;
 
-expresion_constante : CTC_ENTERA      {printf("expresion_constante : CTC_ENTERA");}
-| CTC_REAL
-| CTC_CADENA
-| CTC_CARACTER
+expresion_constante : CTC_ENTERA      {printf("expresion_constante : CTC_ENTERA\n");}
+| CTC_REAL                            {printf("expresion_constante : CTC_REAL\n");}
+| CTC_CADENA                          {printf("expresion_constante : CTC_CADENA\n");}  
+| CTC_CARACTER                        {printf("expresion_constante : CTC_CARACTER\n");}
 ;
 
-expresion_indexada : expresion_basica
-| expresion_indexada '.' expresion_basica
-| expresion_indexada INDIRECCION expresion_basica
-| expresion_indexada op_indireccion indice
+expresion_indexada : expresion_basica                 {printf("expresion_indexada : expresion_basica\n");}        
+| expresion_indexada '.' expresion_basica             {printf("expresion_indexada : expresion_indexada '.' expresion_basica\n");}
+| expresion_indexada INDIRECCION expresion_basica     {printf("expresion_indexada : expresion_indexada INDIRECCION expresion_basica\n");}
+| expresion_indexada op_indireccion indice            {printf("expresion_indexada : expresion_indexada op_indireccion indice\n");}
 ;
 
-op_indireccion : INDIRECCION
-  |
+op_indireccion : INDIRECCION                          {printf("op_indireccion : INDIRECCION\n");}
+  |                                                   {printf("agrup_expresion : \n");}
   ;
 
-expresion_basica : IDENTIFICADOR
-| '(' expresion ')'
-| '^' expresion_basica
-| '\\' expresion_basica
+expresion_basica : IDENTIFICADOR                      {printf("expresion_basica : IDENTIFICADOR\n");}
+| '(' expresion ')'                                   {printf("expresion_basica : '(' expresion ')'\n");}
+| '^' expresion_basica                                {printf("expresion_basica : '^' expresion_basica\n");}
+| '\\' expresion_basica                               {printf("expresion_basica : '\\' expresion_basica\n");}
 ;
 
-indice : '[' expresion ']'
-| '{' expresion '}'
+indice : '[' expresion ']'                            {printf("indice : '[' expresion ']'\n");}
+| '{' expresion '}'                                   {printf("indice : '{' expresion '}'\n");}
 ;
 
-expresion_funcional : IDENTIFICADOR '(' l_expresion ')'
+expresion_funcional : IDENTIFICADOR '(' l_expresion ')'  {printf("expresion_funcional : IDENTIFICADOR '(' l_expresion ')'\n");}
 ;
 
-l_expresion : l_expresiones 
-|
+l_expresion : l_expresiones                   {printf("l_expresion : l_expresiones\n");}
+|                                             {printf("l_expresion :  \n");}
 ; 
 
-l_expresiones : l_expresiones ',' expresion
- | expresion
+l_expresiones : l_expresiones ',' expresion         {printf("l_expresiones : l_expresiones ',' expresion\n");}
+ | expresion                                        {printf("l_expresiones : expresion\n");}
  ;
 
-expresion : expresion_logica op_exp
+expresion : expresion_logica op_exp                 {printf("expresion : expresion_logica op_exp\n");}
 ;
 
-op_exp : SI expresion SINO expresion
-  |
+op_exp : SI expresion SINO expresion                {printf("op_exp : SI expresion SINO expresion\n");}
+  |                                                 {printf("op_exp :  \n");}
   ;
 
-expresion_logica : expresion_logica_or
+expresion_logica : expresion_logica_or              {printf("expresion_logica :  expresion_logica_or\n");}
   ;
 
-expresion_logica_or : expresion_logica_or OR expresion_logica_and
-  | expresion_logica_and
+expresion_logica_or : expresion_logica_or OR expresion_logica_and           {printf("expresion_logica_or :  expresion_logica_or OR expresion_logica_and\n");}
+  | expresion_logica_and                                                    {printf("expresion_logica_or :  expresion_logica_and\n");}
   ;
-expresion_logica_and : expresion_logica_and AND expresion_eq
-  | expresion_eq
-  ;
-
-expresion_eq : expresion_eq EQ expresion_comp
-  | expresion_eq NEQ expresion_comp
-  | expresion_comp
+expresion_logica_and : expresion_logica_and AND expresion_eq                {printf("expresion_logica_and :  expresion_logica_and AND expresion_eq\n");}
+  | expresion_eq                                                            {printf("expresion_logica_and :  expresion_eq\n");}
   ;
 
-expresion_comp : expresion_comp '<' expresion_bin_or
-  | expresion_comp '>' expresion_bin_or
-  | expresion_comp LE expresion_bin_or
-  | expresion_comp GE expresion_bin_or
-  | expresion_bin_or
+expresion_eq : expresion_eq EQ expresion_comp                               {printf("expresion_eq :  expresion_eq EQ expresion_comp\n");}
+  | expresion_eq NEQ expresion_comp                                         {printf("expresion_eq :  expresion_eq NEQ expresion_comp\n");}
+  | expresion_comp                                                          {printf("expresion_eq :  expresion_comp\n");}
   ;
 
-expresion_bin_or : expresion_bin_or '|' expresion_bin_xor
-  | expresion_bin_xor
+expresion_comp : expresion_comp '<' expresion_bin_or                        {printf("expresion_comp :  expresion_comp '<' expresion_bin_or\n");}
+  | expresion_comp '>' expresion_bin_or                                     {printf("expresion_comp :  expresion_comp '>' expresion_bin_or\n");}
+  | expresion_comp LE expresion_bin_or                                      {printf("expresion_comp :  expresion_comp LE expresion_bin_or\n");}
+  | expresion_comp GE expresion_bin_or                                      {printf("expresion_comp :  expresion_comp GE expresion_bin_or\n");}
+  | expresion_bin_or                                                        {printf("expresion_comp :  expresion_bin_or\n");}
   ;
 
-expresion_bin_xor : expresion_bin_xor '@' expresion_bin_and
-  | expresion_bin_and
+expresion_bin_or : expresion_bin_or '|' expresion_bin_xor                   {printf("expresion_bin_or :  expresion_bin_or '|' expresion_bin_xor\n");}
+  | expresion_bin_xor                                                       {printf("expresion_bin_or :  expresion_bin_xor\n");}
   ;
 
-expresion_bin_and : expresion_bin_and '&' expresion_desp
-  | expresion_desp
+expresion_bin_xor : expresion_bin_xor '@' expresion_bin_and                 {printf("expresion_bin_xor :  expresion_bin_xor '@' expresion_bin_and\n");}
+  | expresion_bin_and                                                       {printf("expresion_bin_xor :  expresion_bin_and\n");}
   ;
 
-expresion_desp : expresion_desp FLECHA_DCHA expresion_aditiva
-  | expresion_desp FLECHA_IZDA expresion_aditiva
-  | expresion_aditiva
+expresion_bin_and : expresion_bin_and '&' expresion_desp                    {printf("expresion_bin_and :  expresion_bin_and '&' expresion_desp\n");}
+  | expresion_desp                                                          {printf("expresion_bin_and :  expresion_desp\n");}
+  ;
+
+expresion_desp : expresion_desp FLECHA_DCHA expresion_aditiva               {printf("expresion_desp :  expresion_desp FLECHA_DCHA expresion_aditiva\n");}
+  | expresion_desp FLECHA_IZDA expresion_aditiva                            {printf("expresion_desp :  expresion_desp FLECHA_IZDA expresion_aditiva\n");}
+  | expresion_aditiva                                                       {printf("expresion_desp :  expresion_aditiva\n");}
   ;
 
 expresion_aditiva : expresion_aditiva '+' expresion_multiplicativa    {printf("expresion_aditiva : expresion_aditiva '+' expresion_multiplicativa");}
-  | expresion_aditiva '-' expresion_multiplicativa
-  | expresion_multiplicativa
+  | expresion_aditiva '-' expresion_multiplicativa                    {printf("expresion_aditiva :  expresion_aditiva '-' expresion_multiplicativa\n");}
+  | expresion_multiplicativa                                          {printf("expresion_aditiva :  expresion_multiplicativa\n");}
   ;
 
-expresion_multiplicativa : expresion_multiplicativa '*' expresion_potencia
-  | expresion_multiplicativa '/' expresion_potencia
-  | expresion_multiplicativa '%' expresion_potencia
-  | expresion_potencia
+expresion_multiplicativa : expresion_multiplicativa '*' expresion_potencia          {printf("expresion_multiplicativa :  expresion_multiplicativa '*' expresion_potencia\n");}
+  | expresion_multiplicativa '/' expresion_potencia                                 {printf("expresion_multiplicativa :  expresion_multiplicativa '/' expresion_potencia\n");}
+  | expresion_multiplicativa '%' expresion_potencia                                 {printf("expresion_multiplicativa :  expresion_multiplicativa '%' expresion_potencia\n");}
+  | expresion_potencia                                                              {printf("expresion_multiplicativa :  expresion_potencia\n");}
   ;
 
-expresion_potencia : expresion_noassoc POTENCIA expresion_potencia
-  | expresion_noassoc
+expresion_potencia : expresion_noassoc POTENCIA expresion_potencia                  {printf("expresion_potencia :  expresion_noassoc POTENCIA expresion_potencia\n");}
+  | expresion_noassoc                                                               {printf("expresion_potencia :  expresion_noassoc\n");}
   ;
 
-expresion_noassoc : '-' agrup_expresion
-  | '~' agrup_expresion
-  | '!' agrup_expresion
-  | TAMANO agrup_expresion
-  | agrup_expresion
+expresion_noassoc : '-' agrup_expresion                                             {printf("expresion_noassoc :  '-' agrup_expresion\n");}
+  | '~' agrup_expresion                                                             {printf("expresion_noassoc :  '~' agrup_expresion\n");}
+  | '!' agrup_expresion                                                             {printf("expresion_noassoc :  '!' agrup_expresion\n");}
+  | TAMANO agrup_expresion                                                          {printf("expresion_noassoc :  TAMANO agrup_expresion\n");}
+  | agrup_expresion                                                                 {printf("expresion_noassoc :  agrup_expresion\n");}
   ;
     
 %%
