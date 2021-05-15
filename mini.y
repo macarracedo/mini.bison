@@ -264,99 +264,99 @@ instruccion : instruccion_expresion                         {printf("instruccion
   | error                                                   {yyerror;}
   ;
 
-instruccion_expresion : expresion_funcional ';'
-  | asignacion ';'
+instruccion_expresion : expresion_funcional ';'             {printf("instruccion_expresion : expresion_funcional ';'\n");}
+  | asignacion ';'                                          {printf("instruccion_expresion : asignacion ';'\n");}
   ;
 
-asignacion : expresion_indexada operador_asignacion expresion 
+asignacion : expresion_indexada operador_asignacion expresion     {printf("asignacion : expresion_indexada operador_asignacion expresion\n");}
 ;
 
-operador_asignacion : '='
-  | SUMA_ASIG
-  | RESTA_ASIG 
-  | MULT_ASIG
-  | DIV_ASIG 
-  | MOD_ASIG 
-  | POT_ASIG 
-  | FI_ASIG 
-  | FD_ASIG 
-  | AND_ASIG 
-  | XOR_ASIG 
-  | OR_ASIG
+operador_asignacion : '='                                   {printf("operador_asignacion : '='\n");}
+  | SUMA_ASIG                                               {printf("operador_asignacion : SUMA_ASIG\n");}
+  | RESTA_ASIG                                              {printf("operador_asignacion : RESTA_ASIG\n");}
+  | MULT_ASIG                                               {printf("operador_asignacion : MULT_ASIG\n");}
+  | DIV_ASIG                                                {printf("operador_asignacion : DIV_ASIG\n");}
+  | MOD_ASIG                                                {printf("operador_asignacion : MOD_ASIG\n");}
+  | POT_ASIG                                                {printf("operador_asignacion : POT_ASIG\n");}
+  | FI_ASIG                                                 {printf("operador_asignacion : FI_ASIG\n");}
+  | FD_ASIG                                                 {printf("operador_asignacion : FD_ASIG\n");}
+  | AND_ASIG                                                {printf("operador_asignacion : AND_ASIG\n");}
+  | XOR_ASIG                                                {printf("operador_asignacion : XOR_ASIG\n");}
+  | OR_ASIG                                                 {printf("operador_asignacion : OR_ASIG\n");}
   ;
 
-instruccion_bifurcacion : SI '(' expresion ')' accion rep_otros_casos op_sino_accion FIN
+instruccion_bifurcacion : SI '(' expresion ')' accion rep_otros_casos op_sino_accion FIN        {printf("instruccion_bifurcacion : SI '(' expresion ')' accion rep_otros_casos op_sino_accion FIN\n");}
   ;
 
-op_sino_accion : SINO accion
+op_sino_accion : SINO accion                                {printf("op_sino_accion : SINO accion\n");}
   |
   ;
 
-rep_otros_casos : rep_otros_casos otros_casos
-  |
+rep_otros_casos : rep_otros_casos otros_casos               {printf("rep_otros_casos : rep_otros_casos otros_casos\n");}
+  |                                                         {printf("rep_otros_casos : \n");}
   ;
 
 
-otros_casos : SI ENCAMBIO '(' expresion ')' accion
+otros_casos : SI ENCAMBIO '(' expresion ')' accion          {printf("otros_casos : SI ENCAMBIO '(' expresion ')' accion\n");}
   ;
 
-accion : instruccion
-  | bloque_instrucciones
+accion : instruccion                                        {printf("accion : instruccion\n");}
+  | bloque_instrucciones                                    {printf("accion : bloque_instrucciones\n");}
   ;
 
-instruccion_bucle: MIENTRAS '(' expresion ')' accion
-  | HACER accion MIENTRAS '(' expresion ')' ';'
-  | PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion
-  | PARA CADA IDENTIFICADOR '(' expresion ')' accion
+instruccion_bucle: MIENTRAS '(' expresion ')' accion                          {printf("instruccion_bucle : MIENTRAS '(' expresion ')' accion\n");}
+  | HACER accion MIENTRAS '(' expresion ')' ';'                               {printf("instruccion_bucle : HACER accion MIENTRAS '(' expresion ')' ';'\n");}
+  | PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion       {printf("instruccion_bucle : PARA '(' l_asignaciones ';' expresion ';' l_asignaciones ')' accion\n");}
+  | PARA CADA IDENTIFICADOR '(' expresion ')' accion                          {printf("instruccion_bucle : PARA CADA IDENTIFICADOR '(' expresion ')' accion\n");}
   ;
 
-l_asignaciones : l_asignaciones ',' asignacion
-  | asignacion
-  ; 
-
-instruccion_salto : SALTAR IDENTIFICADOR ';'
-  | CONTINUAR ';' 
-  | ESCAPE ';'
+l_asignaciones : l_asignaciones ',' asignacion              {printf("l_asignaciones : l_asignaciones ',' asignacion\n");}
+  | asignacion                                              {printf("l_asignaciones : asignacion\n");}
   ;
 
-instruccion_destino_salto : ETIQUETA IDENTIFICADOR ';'
+instruccion_salto : SALTAR IDENTIFICADOR ';'                {printf("instruccion_salto : SALTAR IDENTIFICADOR ';'\n");}
+  | CONTINUAR ';'                                           {printf("instruccion_salto : CONTINUAR ';'\n");}
+  | ESCAPE ';'                                              {printf("instruccion_salto : ESCAPE ';'\n");}
+  ;
+
+instruccion_destino_salto : ETIQUETA IDENTIFICADOR ';'      {printf("instruccion_destino_salto : ETIQUETA IDENTIFICADOR ';'\n");}
 ;
 
-instruccion_devolver : DEVOLVER ';'
-  | DEVOLVER expresion ';'
+instruccion_devolver : DEVOLVER ';'                         {printf("instruccion_devolver : DEVOLVER ';'\n");}
+  | DEVOLVER expresion ';'                                  {printf("instruccion_devolver : DEVOLVER expresion ';'\n");}
   ;
 
-instruccion_vacia : ';'
+instruccion_vacia : ';'                                     {printf("instruccion_vacia : ';'\n");}
 ;
 
-instruccion_lanzamiento_excepcion : LANZA EXCEPCION IDENTIFICADOR ';'
+instruccion_lanzamiento_excepcion : LANZA EXCEPCION IDENTIFICADOR ';'         {printf("instruccion_lanzamiento_excepcion : LANZA EXCEPCION IDENTIFICADOR ';'\n");}
 ;
 
-instruccion_captura_excepcion : EJECUTA bloque_instrucciones clausulas
+instruccion_captura_excepcion : EJECUTA bloque_instrucciones clausulas        {printf("instruccion_captura_excepcion : EJECUTA bloque_instrucciones clausulas\n");}
 ;
 
-clausulas : clausulas_excepcion op_clausula_defecto
-  | clausula_defecto
+clausulas : clausulas_excepcion op_clausula_defecto                           {printf("clausulas : clausulas_excepcion op_clausula_defecto\n");}
+  | clausula_defecto                                                          {printf("clausulas : clausula_defecto\n");}
   ;
 
-op_clausula_defecto : clausula_defecto
+op_clausula_defecto : clausula_defecto                                        {printf("op_clausula_defecto : clausula_defecto\n");}
   |
   ;
   
-clausulas_excepcion : rep_clausula_excepcion_especifica clausula_excepcion_general
+clausulas_excepcion : rep_clausula_excepcion_especifica clausula_excepcion_general                          {printf("clausulas_excepcion : rep_clausula_excepcion_especifica clausula_excepcion_general\n");}
 ;
 
-rep_clausula_excepcion_especifica : rep_clausula_excepcion_especifica clausula_excepcion_especifica
-  | 
+rep_clausula_excepcion_especifica : rep_clausula_excepcion_especifica clausula_excepcion_especifica         {printf("rep_clausula_excepcion_especifica : rep_clausula_excepcion_especifica clausula_excepcion_especifica\n");}
+  |                                                                                                         {printf("rep_clausula_excepcion_especifica : \n");}
   ;
 
-clausula_excepcion_especifica : EXCEPCION IDENTIFICADOR bloque_instrucciones
+clausula_excepcion_especifica : EXCEPCION IDENTIFICADOR bloque_instrucciones                                {printf("clausula_excepcion_especifica : EXCEPCION IDENTIFICADOR bloque_instrucciones\n");}
   ;
 
-clausula_excepcion_general : OTRA EXCEPCION bloque_instrucciones
+clausula_excepcion_general : OTRA EXCEPCION bloque_instrucciones                                            {printf("clausula_excepcion_general : OTRA EXCEPCION bloque_instrucciones\n");}
   ;
 
-clausula_defecto : DEFECTO bloque_instrucciones
+clausula_defecto : DEFECTO bloque_instrucciones                                                             {printf("clausula_defecto : DEFECTO bloque_instrucciones\n");}
   ;
 
 
